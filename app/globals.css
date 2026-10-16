@@ -1,21 +1,97 @@
 @import "tailwindcss";
+/* Animation utilities (animate-in, fade-in, accordion-down, ...) used by shadcn/ui. */
+@import "tw-animate-css";
+
+@theme {
+  --color-carbon:         #0C0C0C;
+  --color-mill-scale:     #171717;
+  --color-gunmetal:       #222222;
+  --color-graphite:       #2D2D2D;
+  --color-clinker:        #120101;
+  --color-oxblood:        #3E1010;
+  --color-ember:          #450909;
+  --color-iron-oxide:     #592B2B;
+  --color-cherry-dark:    #940202;
+  --color-cherry:         #C50000;
+  --color-cherry-bright:  #FF0000;
+  --color-chrome:         #F8F8F8;
+  --color-aluminium:      #CFCFCF;
+  --color-steel:          #7A7A7A;
+  --color-white:          #FFFFFF;
+}
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* shadcn/ui tokens, mapped onto the Metal Werx palette (dark surfaces). */
+  --card: #171717;
+  --card-foreground: #F8F8F8;
+  --popover: #171717;
+  --popover-foreground: #F8F8F8;
+  --primary: #C50000;
+  --primary-foreground: #F8F8F8;
+  --secondary: #222222;
+  --secondary-foreground: #F8F8F8;
+  --muted: #2D2D2D;
+  --muted-foreground: #CFCFCF;
+  --accent: #2D2D2D;
+  --accent-foreground: #F8F8F8;
+  --destructive: #FF0000;
+  --destructive-foreground: #F8F8F8;
+  --border: #2D2D2D;
+  --input: #2D2D2D;
+  --ring: #C50000;
+}
+
+/* A carbon surface for shadcn/ui components, which paint with bg-background and
+   text-foreground. Used by the navbar and its mobile sheet. */
+.surface-carbon {
+  --background: #0C0C0C;
+  --foreground: #F8F8F8;
+  background-color: var(--background);
+  color: var(--foreground);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-montserrat: var(--montserrat);
+  --font-saira-stencil: var(--saira-stencil);
+  --font-bebas-neue: var(--bebas-neue);
+  --font-oswald: var(--oswald);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+  }
+}
+
+@layer base {
+  /* Tailwind v4 borders default to currentColor; shadcn/ui expects the border token. */
+  * {
+    @apply border-border;
   }
 }
 
