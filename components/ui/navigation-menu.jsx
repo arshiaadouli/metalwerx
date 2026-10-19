@@ -1,5 +1,6 @@
 "use client"
 
+import { useRef } from "react"
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu"
 import { cva } from "class-variance-authority"
 import { ChevronDown } from "lucide-react"
@@ -43,13 +44,40 @@ function NavigationMenuItem({ className, ...props }) {
 }
 
 const navigationMenuTriggerStyle = cva(
-  "group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+  // focus-visible rather than focus, so a trigger clicked with the mouse doesn't
+  // stay highlighted after its menu closes.
+  "group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
 )
 
-function NavigationMenuTrigger({ className, children, ...props }) {
+// Radix opens a menu on hover and toggles it on every click, so the click that
+// usually follows a hover shut the menu again. The first mouse click after the
+// pointer arrives now leaves a hover-opened menu open; further clicks, taps and
+// the keyboard still toggle it.
+function NavigationMenuTrigger({ className, children, onPointerEnter, onPointerDown, onClick, ...props }) {
+  const pointerType = useRef("")
+  const clickedSinceEnter = useRef(false)
+
   return (
     <NavigationMenuPrimitive.Trigger
       className={cn(navigationMenuTriggerStyle(), "group", className)}
+      onPointerEnter={(event) => {
+        clickedSinceEnter.current = false
+        onPointerEnter?.(event)
+      }}
+      onPointerDown={(event) => {
+        pointerType.current = event.pointerType
+        onPointerDown?.(event)
+      }}
+      onClick={(event) => {
+        onClick?.(event)
+        // A keyboard-triggered click has detail 0.
+        const isMouse = event.detail > 0 && pointerType.current === "mouse"
+        const hoverOpened =
+          isMouse && !clickedSinceEnter.current && event.currentTarget.dataset.state === "open"
+        if (isMouse) clickedSinceEnter.current = true
+        // Radix skips its toggle when the default is prevented.
+        if (hoverOpened) event.preventDefault()
+      }}
       {...props}
     >
       {children}{" "}
