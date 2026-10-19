@@ -35,7 +35,7 @@ import {
 const Navbar1 = ({ logo, menu = [], mobileExtraLinks = [], auth }) => {
   return (
     // z-40 keeps the dropdown above page content (e.g. the hero's z-10 copy) but under portaled overlays (z-50).
-    <header className="surface-carbon relative z-40 border-b py-4 font-montserrat">
+    <header className="relative z-40 border-b py-4 font-montserrat">
       <div className="mx-auto max-w-7xl px-6">
         <nav className="hidden justify-between lg:flex">
           <div className="flex items-center gap-6">
@@ -51,10 +51,14 @@ const Navbar1 = ({ logo, menu = [], mobileExtraLinks = [], auth }) => {
           {auth && (
             <div className="flex items-center gap-2">
               <Button asChild variant="outline" size="sm" className="font-oswald uppercase tracking-[0.15em]">
-                <Link href={auth.login.url}>{auth.login.text}</Link>
+                <Link href={auth.login.url} title={auth.login.text}>
+                  {auth.login.text}
+                </Link>
               </Button>
               <Button asChild size="sm" className="font-oswald uppercase tracking-[0.15em]">
-                <Link href={auth.signup.url}>{auth.signup.text}</Link>
+                <Link href={auth.signup.url} title={auth.signup.text}>
+                  {auth.signup.text}
+                </Link>
               </Button>
             </div>
           )}
@@ -69,10 +73,10 @@ const Navbar1 = ({ logo, menu = [], mobileExtraLinks = [], auth }) => {
                   <span className="sr-only">Open menu</span>
                 </Button>
               </SheetTrigger>
-              {/* The sheet is portaled to <body>, so it restates the header's surface and font.
+              {/* The sheet is portaled to <body>, so it restates the header's font.
                   aria-describedby={undefined} tells Radix it has no description on purpose. */}
               <SheetContent
-                className="surface-carbon overflow-y-auto font-montserrat"
+                className="overflow-y-auto font-montserrat"
                 aria-describedby={undefined}
               >
                 <SheetHeader>
@@ -98,6 +102,7 @@ const Navbar1 = ({ logo, menu = [], mobileExtraLinks = [], auth }) => {
                             <Link
                               className="inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-md px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-accent-foreground"
                               href={link.url}
+                              title={link.name}
                             >
                               {link.name}
                             </Link>
@@ -110,12 +115,16 @@ const Navbar1 = ({ logo, menu = [], mobileExtraLinks = [], auth }) => {
                     <div className="flex flex-col gap-3">
                       <SheetClose asChild>
                         <Button asChild variant="outline" className="font-oswald uppercase tracking-[0.15em]">
-                          <Link href={auth.login.url}>{auth.login.text}</Link>
+                          <Link href={auth.login.url} title={auth.login.text}>
+                            {auth.login.text}
+                          </Link>
                         </Button>
                       </SheetClose>
                       <SheetClose asChild>
                         <Button asChild className="font-oswald uppercase tracking-[0.15em]">
-                          <Link href={auth.signup.url}>{auth.signup.text}</Link>
+                          <Link href={auth.signup.url} title={auth.signup.text}>
+                            {auth.signup.text}
+                          </Link>
                         </Button>
                       </SheetClose>
                     </div>
@@ -132,14 +141,20 @@ const Navbar1 = ({ logo, menu = [], mobileExtraLinks = [], auth }) => {
 
 // Extra props (e.g. loading, or onClick from SheetClose) go to the link.
 const NavbarLogo = ({ logo, loading, ...props }) => (
-  <Link href={logo.url} className="flex items-center gap-2" {...props}>
+  <Link
+    href={logo.url}
+    title={logo.alt}
+    className="flex items-center gap-2"
+    {...props}
+  >
     <Image
       src={logo.src}
       alt={logo.alt}
+      title={logo.alt}
       width={logo.width}
       height={logo.height}
       loading={loading}
-      className="h-8 w-auto lg:h-10"
+      className="h-8 w-auto lg:h-10 light:brightness-0"
     />
     {logo.title && <span className="text-lg font-semibold">{logo.title}</span>}
   </Link>
@@ -160,6 +175,7 @@ const renderMenuItem = (item) => {
                   <Link
                     className="flex select-none gap-4 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-muted hover:text-accent-foreground focus-visible:bg-muted"
                     href={subItem.url}
+                    title={subItem.title}
                   >
                     {subItem.icon}
                     <div>
@@ -188,6 +204,7 @@ const renderMenuItem = (item) => {
         <Link
           className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 font-oswald text-sm font-medium uppercase tracking-[0.15em] text-muted-foreground transition-colors hover:bg-muted hover:text-accent-foreground"
           href={item.url}
+          title={item.title}
         >
           {item.title}
         </Link>
@@ -209,6 +226,7 @@ const renderMobileMenuItem = (item) => {
               <Link
                 className="flex select-none gap-4 rounded-md p-3 leading-none outline-none transition-colors hover:bg-muted hover:text-accent-foreground focus-visible:bg-muted"
                 href={subItem.url}
+                title={subItem.title}
               >
                 {subItem.icon}
                 <div>
@@ -229,7 +247,7 @@ const renderMobileMenuItem = (item) => {
 
   return (
     <SheetClose asChild key={item.title}>
-      <Link href={item.url} className="font-semibold">
+      <Link href={item.url} title={item.title} className="font-semibold">
         {item.title}
       </Link>
     </SheetClose>

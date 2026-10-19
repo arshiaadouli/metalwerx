@@ -4,9 +4,12 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+// prisma-client-js generates into node_modules, which Next.js leaves unbundled,
+// so the query engine is found at runtime. The newer "prisma-client" generator
+// with an output in app/ gets bundled by Turbopack, and on Vercel the bundled
+// client looks for its engine in the wrong folder.
 generator client {
-  provider = "prisma-client"
-  output   = "../app/generated/prisma"
+  provider = "prisma-client-js"
 }
 
 

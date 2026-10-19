@@ -16,7 +16,7 @@ export async function generateMetadata({ params }) {
 
 export default function BlogPage({ params }) {
   return (
-    <div className="flex-1 bg-carbon text-chrome">
+    <div className="flex-1 bg-surface text-ink">
       <main className="mx-auto w-full max-w-3xl px-6 py-16 font-montserrat sm:py-24">
         <BackLink />
         {/* The back link is prerendered; the post is read from MongoDB on each request. */}
@@ -47,23 +47,23 @@ async function BlogArticle({ params }) {
         <div className="mt-6 h-1 w-16 bg-cherry" />
         <dl className="mt-6 flex flex-wrap gap-x-8 gap-y-3 font-oswald text-sm uppercase tracking-[0.2em]">
           <div className="flex gap-2">
-            <dt className="text-steel">Published</dt>
+            <dt className="text-ink-muted">Published</dt>
             <dd>
               <time dateTime={isoDate(blog.date)}>{formatDate(blog.date, "full")}</time>
             </dd>
           </div>
           <div className="flex gap-2">
-            <dt className="text-steel">Reading time</dt>
+            <dt className="text-ink-muted">Reading time</dt>
             <dd>{minutes} min</dd>
           </div>
           <div className="flex gap-2">
-            <dt className="text-steel">Words</dt>
+            <dt className="text-ink-muted">Words</dt>
             <dd>{words}</dd>
           </div>
         </dl>
       </header>
 
-      <div className="mt-10 space-y-6 border-t border-gunmetal pt-10 text-lg leading-8 text-aluminium">
+      <div className="mt-10 space-y-6 border-t border-line pt-10 text-lg leading-8 text-ink-soft">
         {paragraphs.map((paragraph, i) => (
           <p key={i} className="whitespace-pre-line">
             {paragraph}
@@ -71,7 +71,7 @@ async function BlogArticle({ params }) {
         ))}
       </div>
 
-      <footer className="mt-16 border-t border-gunmetal pt-8">
+      <footer className="mt-16 border-t border-line pt-8">
         <BackLink />
       </footer>
     </article>
@@ -82,7 +82,8 @@ function BackLink() {
   return (
     <Link
       href="/blogs"
-      className="font-oswald text-sm uppercase tracking-[0.2em] text-steel transition-colors hover:text-cherry-bright"
+      title="All posts"
+      className="font-oswald text-sm uppercase tracking-[0.2em] text-ink-muted transition-colors hover:text-ink-cherry"
     >
       ← All posts
     </Link>
@@ -93,14 +94,14 @@ function BlogSkeleton() {
   return (
     <div className="mt-10 animate-pulse">
       <p className="sr-only">Loading post…</p>
-      <div className="h-3 w-32 bg-gunmetal" />
-      <div className="mt-4 h-14 w-3/4 bg-gunmetal" />
-      <div className="mt-6 h-1 w-16 bg-gunmetal" />
-      <div className="mt-6 h-4 w-2/3 bg-gunmetal" />
-      <div className="mt-10 space-y-3 border-t border-gunmetal pt-10">
-        <div className="h-5 w-full bg-gunmetal" />
-        <div className="h-5 w-full bg-gunmetal" />
-        <div className="h-5 w-2/3 bg-gunmetal" />
+      <div className="h-3 w-32 bg-well" />
+      <div className="mt-4 h-14 w-3/4 bg-well" />
+      <div className="mt-6 h-1 w-16 bg-well" />
+      <div className="mt-6 h-4 w-2/3 bg-well" />
+      <div className="mt-10 space-y-3 border-t border-line pt-10">
+        <div className="h-5 w-full bg-well" />
+        <div className="h-5 w-full bg-well" />
+        <div className="h-5 w-2/3 bg-well" />
       </div>
     </div>
   );

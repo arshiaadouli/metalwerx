@@ -24,18 +24,19 @@ const Footer2 = ({
   const visibleSections = sections.slice(0, MAX_SECTIONS);
 
   return (
-    <footer className={cn("surface-carbon border-t py-16 font-montserrat", className)}>
+    <footer className={cn("border-t py-16 font-montserrat", className)}>
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-2 gap-8 lg:grid-cols-6">
           <div className="col-span-2 mb-8 lg:mb-0">
             {logo && (
-              <Link href={logo.url} className="inline-flex items-center">
+              <Link href={logo.url} title={logo.alt} className="inline-flex items-center">
                 <Image
                   src={logo.src}
                   alt={logo.alt}
+                  title={logo.alt}
                   width={logo.width}
                   height={logo.height}
-                  className="h-10 w-auto"
+                  className="h-10 w-auto light:brightness-0"
                 />
               </Link>
             )}
@@ -53,7 +54,11 @@ const Footer2 = ({
               <ul className="space-y-4 text-sm text-muted-foreground">
                 {section.links.map((link) => (
                   <li key={link.name} className="font-medium">
-                    <Link href={link.href} className="transition-colors hover:text-foreground">
+                    <Link
+                      href={link.href}
+                      title={link.name}
+                      className="transition-colors hover:text-foreground"
+                    >
                       {link.name}
                     </Link>
                   </li>
@@ -68,7 +73,11 @@ const Footer2 = ({
             <ul className="flex gap-4">
               {legalLinks.map((link) => (
                 <li key={link.name}>
-                  <Link href={link.href} className="underline transition-colors hover:text-foreground">
+                  <Link
+                    href={link.href}
+                    title={link.name}
+                    className="underline transition-colors hover:text-foreground"
+                  >
                     {link.name}
                   </Link>
                 </li>

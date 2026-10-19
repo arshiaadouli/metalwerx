@@ -10,8 +10,8 @@ import { Button } from "@/components/ui/button";
 
 // AnimatedHero from 21st.dev (animated-hero-section-1), ported to JSX and the
 // Metal Werx theme. Props:
-//   backgroundImageUrls string[]; with more than one, the photos crossfade
-//                       every `interval` ms (default 5000)
+//   backgroundImages    [{ src, alt, title }]; with more than one, the photos
+//                       crossfade every `interval` ms (default 5000)
 //   eyebrow?            small label above the title
 //   title, description  string
 //   ctaButton           { text, href } or { text, onClick }
@@ -54,7 +54,7 @@ const glassButtonClassName =
   "border border-chrome/20 bg-chrome/10 text-chrome backdrop-blur-sm transition-colors hover:bg-chrome/20";
 
 export const AnimatedHero = ({
-  backgroundImageUrls,
+  backgroundImages,
   interval = 5000,
   logo,
   navLinks = [],
@@ -75,13 +75,13 @@ export const AnimatedHero = ({
   // move anything, and Windows reports that preference whenever its animation
   // effects are switched off.
   useEffect(() => {
-    if (backgroundImageUrls.length < 2) return;
+    if (backgroundImages.length < 2) return;
     const timer = setTimeout(
-      () => setActiveImage((i) => (i + 1) % backgroundImageUrls.length),
+      () => setActiveImage((i) => (i + 1) % backgroundImages.length),
       interval
     );
     return () => clearTimeout(timer);
-  }, [activeImage, backgroundImageUrls.length, interval]);
+  }, [activeImage, backgroundImages.length, interval]);
 
   return (
     // reducedMotion="user" drops the slide-ins for visitors who ask for less motion.
@@ -93,15 +93,21 @@ export const AnimatedHero = ({
         )}
       >
         <div className="absolute inset-0 z-0">
-          {/* Every photo stays mounted so the next one is already loaded when it fades in. */}
-          {backgroundImageUrls.map((url, i) => (
-            <div
-              key={url}
+          {/* Every photo stays mounted so the next one is already loaded when it fades in.
+              Plain <img>s rather than next/image, so no next.config remotePatterns entry is
+              needed. The faded-out ones are hidden from screen readers. */}
+          {backgroundImages.map((image, i) => (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={image.src}
+              src={image.src}
+              alt={image.alt}
+              title={image.title}
+              aria-hidden={i !== activeImage}
               className={cn(
-                "absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out",
+                "absolute inset-0 size-full object-cover object-center transition-opacity duration-1000 ease-in-out",
                 i === activeImage ? "opacity-100" : "opacity-0"
               )}
-              style={{ backgroundImage: `url(${url})` }}
             />
           ))}
           {/* Darkest behind the left-aligned copy, so the photo shows through on the right. */}
@@ -109,13 +115,13 @@ export const AnimatedHero = ({
           <div className="absolute inset-0 bg-linear-to-r from-carbon/90 via-carbon/40 to-transparent" />
         </div>
 
-        {backgroundImageUrls.length > 1 && (
+        {backgroundImages.length > 1 && (
           <div className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 gap-2">
-            {backgroundImageUrls.map((url, i) => (
+            {backgroundImages.map((image, i) => (
               <button
-                key={url}
+                key={image.src}
                 type="button"
-                aria-label={`Show photo ${i + 1} of ${backgroundImageUrls.length}`}
+                aria-label={`Show photo ${i + 1} of ${backgroundImages.length}`}
                 aria-current={i === activeImage}
                 onClick={() => setActiveImage(i)}
                 className={cn(
@@ -134,6 +140,7 @@ export const AnimatedHero = ({
           <motion.a
             href={`#${nextSectionId}`}
             aria-label="Scroll to the next section"
+            title="Scroll to the next section"
             onClick={(event) => scrollToSection(event, nextSectionId)}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -162,6 +169,7 @@ export const AnimatedHero = ({
                 <Link
                   key={link.label}
                   href={link.href}
+                  title={link.label}
                   className="font-oswald text-sm uppercase tracking-[0.15em] text-chrome/80 transition-colors hover:text-chrome"
                 >
                   {link.label}
@@ -248,7 +256,9 @@ const scrollToSection = (event, id) => {
 const HeroButton = ({ cta, className }) =>
   cta.href ? (
     <Button asChild size="lg" className={className}>
-      <Link href={cta.href}>{cta.text}</Link>
+      <Link href={cta.href} title={cta.text}>
+        {cta.text}
+      </Link>
     </Button>
   ) : (
     <Button size="lg" className={className} onClick={cta.onClick}>

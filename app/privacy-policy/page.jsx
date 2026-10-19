@@ -26,7 +26,7 @@ export const metadata = {
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="flex-1 bg-carbon font-montserrat text-chrome">
+    <div className="flex-1 bg-surface font-montserrat text-ink">
       <header className="relative overflow-hidden bg-linear-to-br from-cherry-dark via-ember to-clinker">
         <div
           aria-hidden="true"
@@ -56,9 +56,9 @@ export default function PrivacyPolicyPage() {
       <main className="mx-auto w-full max-w-6xl px-6 py-16 sm:py-20 lg:grid lg:grid-cols-[16rem_1fr] lg:gap-12">
         <nav
           aria-label="On this page"
-          className="rounded-2xl border border-gunmetal border-t-4 border-t-cherry bg-mill-scale p-5 lg:sticky lg:top-8 lg:self-start"
+          className="rounded-2xl border border-line border-t-4 border-t-cherry bg-panel p-5 lg:sticky lg:top-8 lg:self-start"
         >
-          <p className="px-2 font-oswald text-xs uppercase tracking-[0.3em] text-steel">
+          <p className="px-2 font-oswald text-xs uppercase tracking-[0.3em] text-ink-muted">
             On this page
           </p>
           <ol className="mt-4 space-y-1">
@@ -66,9 +66,10 @@ export default function PrivacyPolicyPage() {
               <li key={id}>
                 <a
                   href={`#${id}`}
-                  className="group flex items-center gap-3 rounded-lg px-2 py-2 text-sm leading-5 text-aluminium transition-colors hover:bg-oxblood hover:text-white focus-visible:bg-oxblood focus-visible:text-white focus-visible:outline-none"
+                  title={title}
+                  className="group flex items-center gap-3 rounded-lg px-2 py-2 text-sm leading-5 text-ink-soft transition-colors hover:bg-oxblood hover:text-white focus-visible:bg-oxblood focus-visible:text-white focus-visible:outline-none"
                 >
-                  <span className="grid size-8 shrink-0 place-items-center rounded-md bg-cherry/15 text-cherry-bright transition-colors group-hover:bg-cherry group-hover:text-white group-focus-visible:bg-cherry group-focus-visible:text-white">
+                  <span className="grid size-8 shrink-0 place-items-center rounded-md bg-cherry/15 text-ink-cherry transition-colors group-hover:bg-cherry group-hover:text-white group-focus-visible:bg-cherry group-focus-visible:text-white">
                     <Icon aria-hidden="true" className="size-4" />
                   </span>
                   {title}
@@ -84,19 +85,19 @@ export default function PrivacyPolicyPage() {
               key={id}
               id={id}
               aria-labelledby={`${id}-heading`}
-              className="scroll-mt-8 overflow-hidden rounded-2xl border border-gunmetal bg-mill-scale"
+              className="scroll-mt-8 overflow-hidden rounded-2xl border border-line bg-panel"
             >
-              <div className="flex items-center gap-5 border-b-2 border-cherry bg-linear-to-r from-oxblood to-mill-scale px-6 py-6 sm:px-8">
+              <div className="flex items-center gap-5 border-b-2 border-cherry bg-linear-to-r from-oxblood to-panel light:from-cherry/10 px-6 py-6 sm:px-8">
                 <span className="grid size-14 shrink-0 place-items-center rounded-xl bg-cherry text-white shadow-lg shadow-cherry/30">
                   <Icon aria-hidden="true" className="size-7" />
                 </span>
                 <div>
-                  <p className="font-oswald text-xs uppercase tracking-[0.3em] text-aluminium">
+                  <p className="font-oswald text-xs uppercase tracking-[0.3em] text-ink-soft">
                     Section {String(i + 1).padStart(2, "0")}
                   </p>
                   <h2
                     id={`${id}-heading`}
-                    className="mt-1 font-bebas-neue text-3xl leading-none tracking-wide text-white sm:text-4xl"
+                    className="mt-1 font-bebas-neue text-3xl leading-none tracking-wide text-ink sm:text-4xl"
                   >
                     {title}
                   </h2>
@@ -125,7 +126,9 @@ export default function PrivacyPolicyPage() {
             size="lg"
             className="bg-white font-oswald uppercase tracking-[0.15em] text-cherry hover:bg-chrome"
           >
-            <Link href="/contact-us">Contact Us</Link>
+            <Link href="/contact-us" title="Contact Us">
+              Contact Us
+            </Link>
           </Button>
         </div>
       </section>
@@ -133,31 +136,31 @@ export default function PrivacyPolicyPage() {
   );
 }
 
-// 20px semibold counts as large text, so cherry-bright on mill-scale meets
-// WCAG AA contrast here.
+// 20px semibold counts as large text, so ink-cherry on the panel meets WCAG
+// AA contrast here.
 function Topic({ title, children }) {
   return (
     <div>
-      <h3 className="font-oswald text-xl font-semibold uppercase tracking-[0.12em] text-cherry-bright">
+      <h3 className="font-oswald text-xl font-semibold uppercase tracking-[0.12em] text-ink-cherry">
         {title}
       </h3>
-      <div className="mt-4 space-y-4 leading-7 text-aluminium">{children}</div>
+      <div className="mt-4 space-y-4 leading-7 text-ink-soft">{children}</div>
     </div>
   );
 }
 
 function QA({ question, children }) {
   return (
-    <div className="rounded-xl border-l-4 border-cherry bg-gunmetal p-5">
-      <h4 className="font-semibold text-white">{question}</h4>
-      <div className="mt-3 space-y-3 text-sm leading-6 text-aluminium">{children}</div>
+    <div className="rounded-xl border-l-4 border-cherry bg-well p-5">
+      <h4 className="font-semibold text-ink">{question}</h4>
+      <div className="mt-3 space-y-3 text-sm leading-6 text-ink-soft">{children}</div>
     </div>
   );
 }
 
 function Callout({ icon: Icon, label, children }) {
   return (
-    <div className="rounded-xl border border-iron-oxide bg-oxblood/60 p-5 text-chrome">
+    <div className="rounded-xl border border-iron-oxide bg-oxblood/60 p-5 text-ink light:border-cherry/25 light:bg-cherry/5">
       <p className="inline-flex items-center gap-2 rounded-full bg-cherry px-3 py-1 font-oswald text-xs uppercase tracking-[0.25em] text-white">
         <Icon aria-hidden="true" className="size-3.5" />
         {label}
@@ -392,9 +395,9 @@ function DataCollection() {
           {serverLogFields.map(({ label, icon: Icon }) => (
             <li
               key={label}
-              className="flex items-center gap-3 rounded-lg bg-gunmetal px-4 py-3 text-sm text-chrome"
+              className="flex items-center gap-3 rounded-lg bg-well px-4 py-3 text-sm text-ink"
             >
-              <Icon aria-hidden="true" className="size-5 shrink-0 text-cherry-bright" />
+              <Icon aria-hidden="true" className="size-5 shrink-0 text-ink-cherry" />
               {label}
             </li>
           ))}

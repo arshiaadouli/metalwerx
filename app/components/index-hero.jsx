@@ -8,11 +8,27 @@ import { AnimatedHero } from "@/components/ui/animated-hero-section-1";
 const unsplashPhoto = (id) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=2400&q=70`;
 
-const backgroundImageUrls = [
-  unsplashPhoto("1722695694560-f452b0919d3a"),
-  unsplashPhoto("1722695510527-cc033e43be1b"),
-  unsplashPhoto("1536094627107-abf98dedaa8f"),
-  unsplashPhoto("1723365316514-8509dea457f2"),
+const backgroundImages = [
+  {
+    src: unsplashPhoto("1722695694560-f452b0919d3a"),
+    alt: "An excavator's grapple lifting a bundle of scrap metal in a scrap yard",
+    title: "Excavator sorting scrap metal",
+  },
+  {
+    src: unsplashPhoto("1722695510527-cc033e43be1b"),
+    alt: "A grapple holding a crushed bale of scrap metal against a blue sky",
+    title: "Grapple lifting a bale of scrap",
+  },
+  {
+    src: unsplashPhoto("1536094627107-abf98dedaa8f"),
+    alt: "A worker in a hard hat cutting up scrap metal with a gas torch as sparks fly",
+    title: "Cutting up scrap metal with a torch",
+  },
+  {
+    src: unsplashPhoto("1723365316514-8509dea457f2"),
+    alt: "A pile of old motorbike parts, including brake shoes, switches and a speedometer",
+    title: "Mixed scrap motorbike parts",
+  },
 ];
 
 // The site navbar sits above the hero, so it gets no logo or navLinks of its own.
@@ -21,7 +37,7 @@ export default function IndexHero() {
   return (
     <AnimatedHero
       className="min-h-[calc(100svh-73px)]"
-      backgroundImageUrls={backgroundImageUrls}
+      backgroundImages={backgroundImages}
       eyebrow="Metal Werx Scrap Metal Recycling"
       title="Turn Your Scrap Metal Into Cash"
       description="We buy ferrous and non-ferrous metals, car bodies and batteries. Bring your scrap to the yard, hire a bin, or book a pickup."

@@ -8,17 +8,15 @@ const services = [
   { title: "Request a Bin", href: "/services#bin-hire", icon: FilePenLine },
 ];
 
-// cherry rather than cherry-bright on this white section: bright red text on
-// white falls short of WCAG AA contrast.
 export default function IndexCommercial() {
   return (
-    <section id="commercial" className="bg-white font-montserrat text-carbon">
+    <section id="commercial" className="bg-surface font-montserrat text-ink">
       <div className="mx-auto w-full max-w-7xl px-6 pt-20 sm:pt-24">
         <header className="text-center">
-          <h2 className="font-oswald text-2xl font-semibold uppercase tracking-[0.2em] text-cherry sm:text-3xl">
+          <h2 className="font-oswald text-2xl font-semibold uppercase tracking-[0.2em] text-ink-cherry sm:text-3xl">
             Commercial and Industrial Customers
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-sm tracking-wide text-graphite sm:text-base">
+          <p className="mx-auto mt-4 max-w-2xl text-sm tracking-wide text-ink-soft sm:text-base">
             We offer a range of services to make recycling your scrap more convenient and rewarding.
           </p>
         </header>
@@ -27,14 +25,15 @@ export default function IndexCommercial() {
             <li key={title}>
               <Link
                 href={href}
+                title={title}
                 className="group flex flex-col items-center gap-5 text-center focus-visible:outline-none"
               >
                 <Icon
                   aria-hidden="true"
                   strokeWidth={1.75}
-                  className="size-16 text-cherry transition-transform group-hover:-translate-y-1 group-focus-visible:-translate-y-1"
+                  className="size-16 text-ink-cherry transition-transform group-hover:-translate-y-1 group-focus-visible:-translate-y-1"
                 />
-                <span className="font-oswald text-lg uppercase tracking-[0.3em] text-carbon transition-colors group-hover:text-cherry group-focus-visible:text-cherry group-focus-visible:underline">
+                <span className="font-oswald text-lg uppercase tracking-[0.3em] text-ink transition-colors group-hover:text-ink-cherry group-focus-visible:text-ink-cherry group-focus-visible:underline">
                   {title}
                 </span>
               </Link>

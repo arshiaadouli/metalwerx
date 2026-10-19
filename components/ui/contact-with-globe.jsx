@@ -540,17 +540,17 @@ function FormDots({ className }) {
   );
 }
 
-const labelClassName = "font-oswald text-xs uppercase tracking-[0.25em] text-aluminium";
+const labelClassName = "font-oswald text-xs uppercase tracking-[0.25em] text-ink-soft";
 
 const fieldClassName =
-  "w-full rounded-lg border border-graphite bg-gunmetal px-4 py-2.5 text-sm text-chrome placeholder:text-steel outline-none transition-colors focus:border-cherry focus:ring-2 focus:ring-cherry/30";
+  "w-full rounded-lg border border-input bg-well px-4 py-2.5 text-sm text-ink placeholder:text-ink-muted outline-none transition-colors focus:border-cherry focus:ring-2 focus:ring-cherry/30";
 
 function Field({ id, label, optional, children }) {
   return (
     <div className="flex flex-col gap-2">
       <label htmlFor={id} className={labelClassName}>
         {label}
-        {optional && <span className="ml-2 normal-case tracking-normal text-steel">(optional)</span>}
+        {optional && <span className="ml-2 normal-case tracking-normal text-ink-muted">(optional)</span>}
       </label>
       {children}
     </div>
@@ -572,13 +572,13 @@ export default function ContactWithGlobe({
     <MotionConfig reducedMotion="user">
       <section
         className={cn(
-          "relative w-full overflow-hidden bg-carbon py-20 font-montserrat text-chrome sm:py-24",
+          "relative w-full overflow-hidden bg-surface py-20 font-montserrat text-ink sm:py-24",
           className
         )}
       >
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 h-[32rem] bg-[radial-gradient(ellipse_at_top,rgb(197_0_0/0.22),transparent_70%)]"
+          className="pointer-events-none absolute inset-x-0 top-0 h-[32rem] bg-[radial-gradient(ellipse_at_top,rgb(197_0_0/0.22),transparent_70%)] light:opacity-40"
         />
 
         <div className="relative mx-auto max-w-7xl px-6">
@@ -589,7 +589,7 @@ export default function ContactWithGlobe({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, ease: smoothEase }}
-              className="inline-flex items-center rounded-full bg-cherry/15 px-4 py-1.5 font-oswald text-xs uppercase tracking-[0.3em] text-cherry-bright ring-1 ring-cherry/40"
+              className="inline-flex items-center rounded-full bg-cherry/15 px-4 py-1.5 font-oswald text-xs uppercase tracking-[0.3em] text-ink-cherry ring-1 ring-cherry/40"
             >
               {eyebrow}
             </motion.p> */}
@@ -600,7 +600,7 @@ export default function ContactWithGlobe({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.9, delay: 0.15, ease: smoothEase }}
-              className="font-bebas-neue text-6xl leading-none tracking-wide text-white sm:text-7xl lg:text-8xl"
+              className="font-bebas-neue text-6xl leading-none tracking-wide text-ink sm:text-7xl lg:text-8xl"
             >
               {title}
             </motion.h1>
@@ -612,7 +612,7 @@ export default function ContactWithGlobe({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.9, delay: 0.3, ease: smoothEase }}
-                className="mt-2 max-w-xl text-lg leading-8 text-aluminium"
+                className="mt-2 max-w-xl text-lg leading-8 text-ink-soft"
               >
                 {description}
               </motion.p>
@@ -628,10 +628,10 @@ export default function ContactWithGlobe({
               className="flex flex-col gap-8"
             >
               <div className="flex flex-col gap-2">
-                <h2 className="font-bebas-neue text-4xl leading-none tracking-wide text-white">
+                <h2 className="font-bebas-neue text-4xl leading-none tracking-wide text-ink">
                   Get in Touch
                 </h2>
-                <p className="max-w-sm leading-7 text-aluminium">
+                <p className="max-w-sm leading-7 text-ink-soft">
                   Call or email the yard, or send us a message with what you&apos;ve got.
                 </p>
               </div>
@@ -649,20 +649,21 @@ export default function ContactWithGlobe({
                     >
                       <a
                         href={href}
+                        title={`${label}: ${value}${external ? " (opens in a new tab)" : ""}`}
                         {...(external && { target: "_blank", rel: "noopener noreferrer" })}
                         className="group flex w-fit items-center gap-4 rounded-lg focus-visible:outline-none"
                       >
                         <span
                           aria-hidden="true"
-                          className="grid size-11 shrink-0 place-items-center rounded-lg bg-cherry/15 text-cherry-bright transition-colors group-hover:bg-cherry group-hover:text-white group-focus-visible:bg-cherry group-focus-visible:text-white [&_svg]:size-5"
+                          className="grid size-11 shrink-0 place-items-center rounded-lg bg-cherry/15 text-ink-cherry transition-colors group-hover:bg-cherry group-hover:text-white group-focus-visible:bg-cherry group-focus-visible:text-white [&_svg]:size-5"
                         >
                           {icon}
                         </span>
                         <span className="flex flex-col">
-                          <span className="font-oswald text-xs uppercase tracking-[0.25em] text-steel">
+                          <span className="font-oswald text-xs uppercase tracking-[0.25em] text-ink-muted">
                             {label}
                           </span>
-                          <span className="text-chrome transition-colors group-hover:text-white group-focus-visible:text-white group-focus-visible:underline">
+                          <span className="text-ink group-focus-visible:underline">
                             {value}
                           </span>
                         </span>
@@ -681,7 +682,7 @@ export default function ContactWithGlobe({
                   strokeWidth={0.6}
                   graticuleOpacity={0.12}
                 />
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-carbon to-transparent" />
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-surface to-transparent" />
               </div>
             </motion.div>
 
@@ -690,13 +691,13 @@ export default function ContactWithGlobe({
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 1.0, delay: 0.35, ease: smoothEase }}
-              className="flex flex-col gap-6 rounded-2xl  bg-mill-scale p-6 sm:p-8"
+              className="flex flex-col gap-6 rounded-2xl bg-panel p-6 sm:p-8"
             >
               <div>
-                <h2 className="font-bebas-neue text-4xl leading-none tracking-wide text-white">
+                <h2 className="font-bebas-neue text-4xl leading-none tracking-wide text-ink">
                   Send a Message
                 </h2>
-                <p className="mt-2 text-sm leading-6 text-aluminium">
+                <p className="mt-2 text-sm leading-6 text-ink-soft">
                   Tell us what scrap you have and we&apos;ll get back to you with a quote.
                 </p>
               </div>
@@ -754,7 +755,7 @@ export default function ContactWithGlobe({
                 <Button
                   type="submit"
                   size="lg"
-                  className="group mt-1 w-fit gap-2 rounded-lg font-oswald uppercase tracking-[0.15em] text-white hover:bg-cherry-dark focus-visible:ring-offset-mill-scale"
+                  className="group mt-1 w-fit gap-2 rounded-lg font-oswald uppercase tracking-[0.15em] text-white hover:bg-cherry-dark focus-visible:ring-offset-panel"
                 >
                   Send Message
                   <ArrowRight

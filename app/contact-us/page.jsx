@@ -32,7 +32,7 @@ const contactLinks = [
 
 export default function ContactUsPage() {
   return (
-    <main className="flex-1 bg-carbon">
+    <main className="flex-1 bg-surface">
       <ContactWithGlobe
         title="Contact Us"
         description="Need a quote for your scrap, a pickup or a bin? Get in touch and we'll get back to you."

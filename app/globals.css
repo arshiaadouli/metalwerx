@@ -20,23 +20,41 @@
   --color-white:          #FFFFFF;
 }
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Tailwind's dark: variant, and a light: one, follow the theme on <html>
+   (data-theme) rather than the OS setting, so they agree with ThemeToggle. */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+@custom-variant light (&:where([data-theme=light], [data-theme=light] *));
 
-  /* shadcn/ui tokens, mapped onto the Metal Werx palette (dark surfaces). */
-  --card: #171717;
-  --card-foreground: #F8F8F8;
-  --popover: #171717;
-  --popover-foreground: #F8F8F8;
+/* Theme colours. The palette above stays the same in both themes, for things
+   that never change, like text over a photo or a cherry banner; these swap.
+   Dark is the default, and app/layout.jsx sets data-theme before first paint. */
+:root {
+  color-scheme: dark;
+
+  --surface: #0C0C0C;     /* page background (carbon) */
+  --panel: #171717;       /* cards (mill-scale) */
+  --well: #222222;        /* fills inside cards: fields, tiles, skeletons (gunmetal) */
+  --line: #222222;        /* card borders and dividers (gunmetal) */
+  --ink: #F8F8F8;         /* headings (chrome) */
+  --ink-soft: #CFCFCF;    /* body copy (aluminium) */
+  --ink-muted: #7A7A7A;   /* dates and labels (steel) */
+  --ink-cherry: #FF0000;  /* red text (cherry-bright) */
+
+  /* shadcn/ui tokens, mapped onto the theme colours. */
+  --background: var(--surface);
+  --foreground: var(--ink);
+  --card: var(--panel);
+  --card-foreground: var(--ink);
+  --popover: var(--panel);
+  --popover-foreground: var(--ink);
   --primary: #C50000;
   --primary-foreground: #F8F8F8;
   --secondary: #222222;
-  --secondary-foreground: #F8F8F8;
+  --secondary-foreground: var(--ink);
   --muted: #2D2D2D;
-  --muted-foreground: #CFCFCF;
+  --muted-foreground: var(--ink-soft);
   --accent: #2D2D2D;
-  --accent-foreground: #F8F8F8;
+  --accent-foreground: var(--ink);
   --destructive: #FF0000;
   --destructive-foreground: #F8F8F8;
   --border: #2D2D2D;
@@ -44,16 +62,37 @@
   --ring: #C50000;
 }
 
-/* A carbon surface for shadcn/ui components, which paint with bg-background and
-   text-foreground. Used by the navbar and its mobile sheet. */
-.surface-carbon {
-  --background: #0C0C0C;
-  --foreground: #F8F8F8;
-  background-color: var(--background);
-  color: var(--foreground);
+[data-theme="light"] {
+  color-scheme: light;
+
+  --surface: #FFFFFF;
+  --panel: #F8F8F8;
+  --well: #ECECEC;
+  --line: #E2E2E2;
+  --ink: #0C0C0C;
+  --ink-soft: #2D2D2D;
+  /* Steel and cherry-bright text fall short of WCAG AA contrast on white. */
+  --ink-muted: #666666;
+  --ink-cherry: #C50000;
+
+  --popover: var(--surface);
+  --secondary: #ECECEC;
+  --muted: #F0F0F0;
+  --muted-foreground: #525252;
+  --accent: #F0F0F0;
+  --border: #E2E2E2;
+  --input: #CFCFCF;
 }
 
 @theme inline {
+  --color-surface: var(--surface);
+  --color-panel: var(--panel);
+  --color-well: var(--well);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-cherry: var(--ink-cherry);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -79,13 +118,6 @@
   --font-saira-stencil: var(--saira-stencil);
   --font-bebas-neue: var(--bebas-neue);
   --font-oswald: var(--oswald);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 @layer base {
