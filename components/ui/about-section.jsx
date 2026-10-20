@@ -28,13 +28,17 @@ import { VerticalCutReveal } from "@/components/ui/vertical-cut-reveal";
 // The original's social icon links are left out: the yard has no social pages
 // yet, and lucide-react 1.x ships no brand icons to draw them with.
 
-// Steps play in animationNum order, each 0.4s after the one before.
-const revealVariants = {
+// Steps play in animationNum order, each STEP seconds after the one before.
+const STEP = 0.15;
+const DURATION = 0.35;
+
+// Exported so the rest of the About page can reveal in the same way.
+export const revealVariants = {
   visible: (i) => ({
     y: 0,
     opacity: 1,
     filter: "blur(0px)",
-    transition: { delay: i * 0.4, duration: 0.5 },
+    transition: { delay: i * STEP, duration: DURATION },
   }),
   hidden: {
     filter: "blur(10px)",
@@ -48,7 +52,7 @@ const fadeVariants = {
   visible: (i) => ({
     opacity: 1,
     filter: "blur(0px)",
-    transition: { delay: i * 0.4, duration: 0.5 },
+    transition: { delay: i * STEP, duration: DURATION },
   }),
   hidden: {
     filter: "blur(10px)",
@@ -180,17 +184,17 @@ export default function AboutSection({
           <div className="grid gap-8 lg:grid-cols-3">
             <div className="lg:col-span-2">
               <h1 className="mb-8 font-bebas-neue text-4xl leading-[1.1] tracking-wide text-ink sm:text-5xl md:text-6xl">
-                {/* Starts just after the last stat (step 4, at 1.6s). */}
+                {/* Starts just after the last stat (step 4). */}
                 <VerticalCutReveal
                   splitBy="words"
-                  staggerDuration={0.1}
+                  staggerDuration={0.05}
                   staggerFrom="first"
                   reverse
                   transition={{
                     type: "spring",
                     stiffness: 250,
                     damping: 30,
-                    delay: 1.8,
+                    delay: 5 * STEP,
                   }}
                 >
                   {title}

@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "broken-image",
+        "value": "*",
+        "files": [
+          "components/ui/shadcnblocks-com-navbar1.jsx"
+        ],
+        "createdAt": "2026-10-20T04:29:24.913Z",
+        "reason": "Claude: L174 is a code comment mentioning <img>, not a rendered tag; the real <img> at L179 has src, alt and title"
+      }
+    ]
+  }
+}

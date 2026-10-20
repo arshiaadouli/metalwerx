@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { MotionConfig, animate, motion } from "framer-motion";
+import { MotionConfig, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { CutTitle, Enter } from "@/components/ui/enter";
+import { scrollToSection } from "@/components/ui/scroll-link";
 
 // AnimatedHero from 21st.dev (animated-hero-section-1), ported to JSX and the
 // Metal Werx theme. Props:
@@ -24,29 +26,6 @@ import { Button } from "@/components/ui/button";
 //   className?          string
 // Server Components can't pass functions to this Client Component, so use
 // href there; onClick only works when the caller is itself a Client Component.
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.6,
-      ease: "easeOut",
-    },
-  },
-};
 
 const buttonClassName = "font-oswald uppercase tracking-[0.15em]";
 
@@ -180,38 +159,27 @@ export const AnimatedHero = ({
           </motion.header>
         )}
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-          className="relative z-10 mx-auto flex w-full max-w-7xl flex-col items-start justify-center px-6 py-24 text-left"
-        >
+        {/* Plays on load, one step after another, like every page header (see
+            components/ui/enter.jsx). */}
+        <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col items-start justify-center px-6 py-24 text-left">
           {/* cherry-bright rather than the blog's cherry: plain cherry is too dim over the photo. */}
           {eyebrow && (
-            <motion.p
-              variants={itemVariants}
+            <Enter
+              as="p"
+              step={0}
               className="font-oswald text-sm uppercase tracking-[0.3em] text-cherry-bright"
             >
               {eyebrow}
-            </motion.p>
+            </Enter>
           )}
           {/* Bebas Neue only ships weight 400, so no font-bold (it would be faux bold). */}
-          <motion.h1
-            variants={itemVariants}
-            className="mt-3 max-w-4xl font-bebas-neue text-6xl leading-none tracking-wide sm:text-7xl lg:text-8xl"
-          >
-            {title}
-          </motion.h1>
-          <motion.p
-            variants={itemVariants}
-            className="mt-6 max-w-2xl text-lg leading-8 text-aluminium"
-          >
+          <h1 className="mt-3 max-w-4xl font-bebas-neue text-6xl leading-none tracking-wide sm:text-7xl lg:text-8xl">
+            <CutTitle step={1}>{title}</CutTitle>
+          </h1>
+          <Enter as="p" step={2} className="mt-6 max-w-2xl text-lg leading-8 text-aluminium">
             {description}
-          </motion.p>
-          <motion.div
-            variants={itemVariants}
-            className="mt-10 flex flex-wrap items-center gap-4"
-          >
+          </Enter>
+          <Enter step={3} className="mt-10 flex flex-wrap items-center gap-4">
             <HeroButton cta={ctaButton} className={buttonClassName} />
             {secondaryCta && (
               <HeroButton
@@ -219,37 +187,11 @@ export const AnimatedHero = ({
                 className={cn(buttonClassName, glassButtonClassName)}
               />
             )}
-          </motion.div>
-        </motion.div>
+          </Enter>
+        </div>
       </section>
     </MotionConfig>
   );
-};
-
-// Eases the page down to the section rather than leaving it to the browser:
-// native smooth scrolling can't be slowed down or given an easing curve. The
-// plain #anchor still does the jump before hydration. Like the crossfade, this
-// ignores the reduced-motion preference, which Windows reports whenever its
-// animation effects are switched off.
-const scrollToSection = (event, id) => {
-  const target = document.getElementById(id);
-  if (!target) return;
-  event.preventDefault();
-
-  const controls = animate(
-    window.scrollY,
-    window.scrollY + target.getBoundingClientRect().top,
-    {
-      duration: 1.2,
-      ease: [0.65, 0, 0.35, 1], // ease-in-out cubic
-      onUpdate: (y) => window.scrollTo({ top: y, behavior: "instant" }),
-    }
-  );
-
-  // Hand the page back as soon as the visitor scrolls for themselves.
-  const stop = () => controls.stop();
-  window.addEventListener("wheel", stop, { once: true, passive: true });
-  window.addEventListener("touchstart", stop, { once: true, passive: true });
 };
 
 // A link when the CTA has an href, otherwise a button that calls onClick.

@@ -26,9 +26,14 @@ const montserrat = Montserrat({
   subsets: ["latin"],
 });
 
+// Next has no fallback metrics for Saira Stencil, so it can't build a
+// size-matched fallback. Turbopack still looks them up (and warns) unless
+// `fallback` is set, so name the fallback fonts ourselves.
 const sairaStencil = Saira_Stencil({
-  variable: "--saira-stencil",
+  // variable: "--saira-stencil",
   subsets: ["latin"],
+  adjustFontFallback: false,
+  fallback: ["Arial", "sans-serif"],
 });
 
 const bebasNeue = Bebas_Neue({

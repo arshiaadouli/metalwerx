@@ -1,12 +1,12 @@
 # Metal Werx
 
-Website for Metal Werx, a scrap metal recycling and cash-for-cars business. It's built with Next.js 16 (App Router), React 19 and Tailwind CSS 4. Blog posts are stored in MongoDB and read through Prisma 6.
+Website for Metal Werx, a scrap metal recycling and cash-for-cars business. It's built with Next.js 16 (App Router), React 19 and Tailwind CSS 4. Blog posts and the copy on the home and blog pages are managed in a Strapi 5 CMS, a separate project in `../metalwerx-cms`, and read through its REST API.
 
 ## Requirements
 
 - [Git](https://git-scm.com/)
 - [Node.js](https://nodejs.org/) 20.9 or newer, which includes npm. The project is developed on Node 24.
-- A MongoDB connection string. Only the blog pages need it; the rest of the site runs without a database.
+- The Strapi CMS in `../metalwerx-cms`, running. The home page and the blog pages need it; the rest of the site runs without it. The CMS is its own Git repository and isn't on GitHub yet, so for now it only exists on the development machine.
 
 ## Install on a new machine
 
@@ -27,27 +27,34 @@ npm ci
 
 Newer versions of npm may warn that some packages' install scripts are "not yet covered by allowScripts". You can ignore this warning: the install still finishes and the Prisma client is still generated.
 
-### 3. Create the `.env` file
+### 3. Start the Strapi CMS
 
-Environment files aren't committed to Git, so a fresh clone doesn't have one. Create a file named `.env` in the project root.
+In a second terminal, start Strapi from its folder next to this one:
 
-The development database is a MongoDB server on the private LAN at `192.168.15.46`. On a machine connected to that network, use:
-
-```env
-DATABASE_URL="mongodb://USER:PASSWORD@192.168.15.46:27017/metalwerx?authSource=admin&replicaSet=rs0"
+```bash
+cd ../metalwerx-cms
+npm run develop
 ```
 
-Ask the project owner for the username and password. To check the connection, see [Use the LAN database](#use-the-lan-database).
+It serves the admin panel at [http://localhost:1337/admin](http://localhost:1337/admin), where content is edited, and the API the site reads at `http://localhost:1337/api`. The content types are:
 
-A machine outside that network can't reach the LAN database, so it needs a hosted database instead, such as MongoDB Atlas:
+| Content type | Kind | What it holds |
+| --- | --- | --- |
+| **Blog** | Collection | The posts at `/blogs`, each with a `title`, a `date` and a rich text `body` |
+| **Home Page** | Single | The home page's search title and description, hero (text, buttons and background photos), the scrolling ticker, the Commercial, Cash for Cars and FAQ sections |
+| **Blog Page** | Single | The search title and description, heading and empty-list message at `/blogs`, and the label above each post's title |
+
+Only published content appears on the site. In the Home Page, the ticker and each Cash for Cars step's points are typed one per line. A photo can be uploaded or, if nothing is uploaded, given as the address of a photo hosted elsewhere; the alt text is required either way. On a fresh database, Strapi fills the Home Page and Blog Page with the site's original copy the first time it starts (see `src/seed.ts` in the CMS).
+
+### 4. Create the `.env` file
+
+Environment files aren't committed to Git, so a fresh clone doesn't have one. Create a file named `.env` in the project root:
 
 ```env
-DATABASE_URL="mongodb+srv://USER:PASSWORD@HOST/DATABASE"
+STRAPI_URL=http://localhost:1337
 ```
 
-Posts are read from the `blog` collection. Each document has a `title` (string), a `date` (date) and a `body` (string), as defined in [prisma/schema.prisma](prisma/schema.prisma).
-
-### 4. Start the development server
+### 5. Start the development server
 
 ```bash
 npm run dev
@@ -55,7 +62,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000). Pages reload as you edit files. To open the site from a phone or another computer on the network, see [Running on a private LAN](#running-on-a-private-lan).
 
-If `DATABASE_URL` is missing or the database can't be reached, the other pages still work, but `/blogs` shows an error and the terminal logs the cause, for example `Environment variable not found: DATABASE_URL`.
+If `STRAPI_URL` is missing or Strapi isn't running, the other pages still work, but the home page and `/blogs` show an error and the terminal logs the cause, for example `STRAPI_URL is not set` or `fetch failed`. Content published in Strapi shows up on the site within an hour, because the Strapi queries are cached for that long.
 
 ## Production build
 
@@ -64,27 +71,9 @@ npm run build
 npm start
 ```
 
-`npm start` serves the build at [http://localhost:3000](http://localhost:3000). The build prints a warning that it failed to find font override values for `Saira Stencil`. It's harmless.
+Strapi has to be running while you build, because the home and blog pages are prerendered with their content in them. `npm start` serves the build at [http://localhost:3000](http://localhost:3000).
 
 ## Running on a private LAN
-
-### Use the LAN database
-
-The machine has to be on the same network as the database server (`192.168.15.x`). Check that it can reach the database port:
-
-```powershell
-# Windows (PowerShell): look for "TcpTestSucceeded : True"
-Test-NetConnection 192.168.15.46 -Port 27017
-```
-
-```bash
-# macOS / Linux: look for "succeeded"
-nc -vz 192.168.15.46 27017
-```
-
-If that fails, you're on a different network, or the server or its firewall isn't accepting connections on port 27017.
-
-The database is a single-member replica set (`rs0`) that advertises itself as `192.168.15.46:27017`, so the `replicaSet=rs0` URL from step 3 works from any machine on the LAN. If the database moves and Prisma times out even though the port test passes, the replica set is probably advertising an address that other machines can't reach, such as `localhost`. Add `&directConnection=true` to the end of `DATABASE_URL` so Prisma connects to the server directly.
 
 ### Open the site from other devices
 
@@ -125,8 +114,7 @@ On macOS, click **Allow** when asked whether `node` can accept incoming connecti
 app/              Pages and layouts: home, about, blogs, contact-us, privacy-policy
 app/components/   Navbar, footer, theme toggle and home page sections
 components/ui/    Shared UI components (buttons, accordion, animations, contact globe)
-lib/              Prisma client and blog queries
-prisma/           Database schema
+lib/              Strapi queries: blog posts (blogs.js) and home/blog page copy (pages.js)
 public/           Static files such as the logo
 ```
 
@@ -148,4 +136,4 @@ npx vercel          # preview deployment
 npx vercel --prod   # production, https://metawerx.vercel.app
 ```
 
-Vercel doesn't read your local `.env`. Set the database URL on Vercel with `npx vercel env add DATABASE_URL`. It has to be a database that Vercel can reach over the internet, because a local-network address won't work there.
+Vercel doesn't read your local `.env`. Set the Strapi URL on Vercel with `npx vercel env add STRAPI_URL`. It has to be a Strapi server that Vercel can reach over the internet, so `http://localhost:1337` won't work there: the CMS needs hosting first.

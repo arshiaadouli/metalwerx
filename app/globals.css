@@ -20,6 +20,48 @@
   --color-white:          #FFFFFF;
 }
 
+/* The page headers' entrance (Enter and CutTitle in components/ui/enter.jsx).
+   Reveal (components/ui/reveal.jsx) plays the same rise with framer-motion as
+   sections scroll into view, so keep the two in step. The fill mode is
+   backwards, not both: a filter left on after the animation would cut the
+   glass buttons' backdrop blur off from the photo behind them. */
+@theme {
+  --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --animate-reveal-rise: reveal-rise 0.6s var(--ease-smooth) backwards;
+  --animate-reveal-fade: reveal-fade 0.6s var(--ease-smooth) backwards;
+  --animate-reveal-cut: reveal-cut 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+
+  /* Blurs into focus as it rises. */
+  @keyframes reveal-rise {
+    from {
+      opacity: 0;
+      filter: blur(10px);
+      transform: translateY(20px);
+    }
+  }
+
+  /* Blurs into focus without moving. */
+  @keyframes reveal-fade {
+    from {
+      opacity: 0;
+      filter: blur(10px);
+    }
+  }
+
+  /* Drops in from above. The clip shrinks as the word moves down, so it only
+     shows inside its own box, as if cut out of the line. */
+  @keyframes reveal-cut {
+    from {
+      transform: translateY(-100%);
+      clip-path: inset(100% 0 0 0);
+    }
+    to {
+      transform: none;
+      clip-path: inset(0);
+    }
+  }
+}
+
 /* Tailwind's dark: variant, and a light: one, follow the theme on <html>
    (data-theme) rather than the OS setting, so they agree with ThemeToggle. */
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));

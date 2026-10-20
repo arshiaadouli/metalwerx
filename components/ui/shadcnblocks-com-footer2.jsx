@@ -48,9 +48,10 @@ const Footer2 = ({
           </div>
           {visibleSections.map((section) => (
             <div key={section.title}>
-              <h3 className="mb-4 font-oswald text-sm font-semibold uppercase tracking-[0.15em]">
+              {/* h2, not h3: the footer follows pages whose only heading is the h1. */}
+              <h2 className="mb-4 font-oswald text-sm font-semibold uppercase tracking-[0.15em]">
                 {section.title}
-              </h3>
+              </h2>
               <ul className="space-y-4 text-sm text-muted-foreground">
                 {section.links.map((link) => (
                   <li key={link.name} className="font-medium">

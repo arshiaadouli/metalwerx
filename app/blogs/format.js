@@ -20,8 +20,9 @@ export function excerpt(text, maxLength = 155) {
   return `${words.replace(/[\s,.;:!?–—-]+$/, "")}…`;
 }
 
-// Reading time at about 200 words a minute, never less than 1 minute.
+// Reading time at about 200 words a minute, rounded up so a post never takes
+// longer than it says (299 words is 2 minutes, not 1), and never less than 1.
 export function readingStats(text) {
   const words = text.split(/\s+/).filter(Boolean).length;
-  return { words, minutes: Math.max(1, Math.round(words / 200)) };
+  return { words, minutes: Math.max(1, Math.ceil(words / 200)) };
 }

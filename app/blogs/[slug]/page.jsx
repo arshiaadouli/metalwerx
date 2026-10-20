@@ -1,51 +1,107 @@
-import { Suspense, cache } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getBlogBySlug } from "@/lib/blogs";
+import { blogSlug, getBlogBySlug, getBlogs } from "@/lib/blogs";
+import { getBlogPage } from "@/lib/pages";
+import { CutTitle, Enter } from "@/components/ui/enter";
+import { Reveal } from "@/components/ui/reveal";
 import { excerpt, formatDate, isoDate, readingStats } from "../format";
+import BlogBody from "./blog-body";
 
-// Shared by generateMetadata and the page, so each request queries MongoDB once.
-const getBlogForRequest = cache(getBlogBySlug);
+// The whole page must be static HTML, so search engines get the full post in
+// the first response. The build fails if anything here would need a request,
+// and the first visit to a post added after the build waits for its finished
+// page rather than getting a loading skeleton.
+export const ensureStatic = "navigation";
 
-export async function generateMetadata({ params }) {
-  const { slug } = await params;
-  const blog = await getBlogForRequest(slug);
-  if (!blog) return { title: "Post not found" };
-  return { title: blog.title, description: excerpt(blog.body) };
+// Every post is prerendered at build time. A post added later is rendered on
+// its first visit and served from the cache after that.
+export async function generateStaticParams() {
+  const blogs = await getBlogs();
+  // Cache Components fails the build if this returns no params, so with no
+  // posts yet, prerender one slug that matches nothing and shows the 404.
+  if (blogs.length === 0) return [{ slug: "no-posts-yet" }];
+  return blogs.map((blog) => ({ slug: blogSlug(blog.title) }));
 }
 
-export default function BlogPage({ params }) {
+// getBlogBySlug is cached, so this and the page share one request to Strapi.
+// The cover photo is also the preview image when the post is shared.
+export async function generateMetadata({ params }) {
+  const { slug } = await params;
+  const blog = await getBlogBySlug(slug);
+  if (!blog) return { title: "Post not found" };
+  const { cover } = blog;
+  return {
+    title: blog.title,
+    description: excerpt(blog.text),
+    ...(cover && {
+      openGraph: {
+        images: [{ url: cover.src, width: cover.width, height: cover.height, alt: cover.alt }],
+      },
+    }),
+  };
+}
+
+// How many of the newest posts the sidebar lists.
+const LATEST_COUNT = 3;
+
+// No <Suspense> around the post: React can move a boundary's content into a
+// hidden element after the skeleton, which crawlers that don't run JavaScript
+// may skip.
+export default async function BlogPage({ params }) {
+  const { slug } = await params;
+  const blog = await getBlogBySlug(slug);
+  if (!blog) notFound();
+  // The label above every post's title is the Blog Page's postEyebrow in Strapi.
+  const { postEyebrow } = await getBlogPage();
+  // getBlogs is cached and newest first, so the sidebar is prerendered too. It
+  // can include this post, which is then marked as the one being read.
+  const latest = (await getBlogs()).slice(0, LATEST_COUNT);
+
+  // Large screens widen the page for a sidebar to the right of the post.
+  // Smaller ones keep the post's width and put the sidebar after it.
   return (
     <div className="flex-1 bg-surface text-ink">
-      <main className="mx-auto w-full max-w-3xl px-6 py-16 font-montserrat sm:py-24">
-        <BackLink />
-        {/* The back link is prerendered; the post is read from MongoDB on each request. */}
-        <Suspense fallback={<BlogSkeleton />}>
-          <BlogArticle params={params} />
-        </Suspense>
+      <main
+        className={`mx-auto w-full max-w-3xl px-6 py-16 font-montserrat sm:py-24 ${
+          latest.length > 0 ? "lg:max-w-6xl" : ""
+        }`}
+      >
+        {/* The header plays on load, one step after another (see
+            components/ui/enter.jsx). */}
+        <Enter step={0}>
+          <BackLink />
+        </Enter>
+        <div className="lg:flex lg:items-start lg:gap-16">
+          <div className="min-w-0 lg:flex-1">
+            <BlogArticle blog={blog} eyebrow={postEyebrow} />
+          </div>
+          {latest.length > 0 && <LatestPosts posts={latest} currentId={blog.id} />}
+        </div>
       </main>
     </div>
   );
 }
 
-async function BlogArticle({ params }) {
-  const { slug } = await params;
-  const blog = await getBlogForRequest(slug);
-  if (!blog) notFound();
-
-  const { words, minutes } = readingStats(blog.body);
-  // Blank lines in the body separate paragraphs.
-  const paragraphs = blog.body.split(/\n\s*\n/);
+function BlogArticle({ blog, eyebrow }) {
+  const { words, minutes } = readingStats(blog.text);
 
   return (
     <article className="mt-10">
       <header>
-        <p className="font-oswald text-sm uppercase tracking-[0.3em] text-cherry">Metalwerx Blog</p>
+        {eyebrow && (
+          <Enter as="p" step={1} className="font-oswald text-sm uppercase tracking-[0.3em] text-cherry">
+            {eyebrow}
+          </Enter>
+        )}
         <h1 className="mt-3 font-bebas-neue text-6xl leading-none tracking-wide sm:text-7xl">
-          {blog.title}
+          <CutTitle step={2}>{blog.title}</CutTitle>
         </h1>
-        <div className="mt-6 h-1 w-16 bg-cherry" />
-        <dl className="mt-6 flex flex-wrap gap-x-8 gap-y-3 font-oswald text-sm uppercase tracking-[0.2em]">
+        <Enter step={3} className="mt-6 h-1 w-16 bg-cherry" />
+        <Enter
+          as="dl"
+          step={3}
+          className="mt-6 flex flex-wrap gap-x-8 gap-y-3 font-oswald text-sm uppercase tracking-[0.2em]"
+        >
           <div className="flex gap-2">
             <dt className="text-ink-muted">Published</dt>
             <dd>
@@ -60,21 +116,116 @@ async function BlogArticle({ params }) {
             <dt className="text-ink-muted">Words</dt>
             <dd>{words}</dd>
           </div>
-        </dl>
+        </Enter>
       </header>
 
-      <div className="mt-10 space-y-6 border-t border-line pt-10 text-lg leading-8 text-ink-soft">
-        {paragraphs.map((paragraph, i) => (
-          <p key={i} className="whitespace-pre-line">
-            {paragraph}
-          </p>
-        ))}
-      </div>
+      {/* Usually the largest thing on the first screen, so it loads first.
+          A plain <img>, like the body's photos, so no next.config
+          remotePatterns entry is needed for the Strapi server. It blurs into
+          focus without moving, like the photo on the About page. */}
+      {blog.cover && (
+        <Enter
+          as="img"
+          fade
+          step={3}
+          src={blog.cover.src}
+          srcSet={blog.cover.srcSet}
+          sizes="(min-width: 64rem) 47rem, (min-width: 48rem) 45rem, calc(100vw - 3rem)"
+          width={blog.cover.width}
+          height={blog.cover.height}
+          alt={blog.cover.alt}
+          title={blog.title}
+          fetchPriority="high"
+          className="mt-10 h-auto w-full rounded-lg"
+        />
+      )}
+
+      <BlogBody blocks={blog.body} />
 
       <footer className="mt-16 border-t border-line pt-8">
         <BackLink />
       </footer>
     </article>
+  );
+}
+
+// The newest posts, styled like the cards on /blogs, with the one being read
+// outlined. Stays in view while the post scrolls on large screens.
+function LatestPosts({ posts, currentId }) {
+  return (
+    <aside
+      aria-labelledby="latest-posts"
+      className="mt-16 border-t border-line pt-10 lg:sticky lg:top-8 lg:mt-10 lg:w-72 lg:shrink-0 lg:border-0 lg:pt-0"
+    >
+      <Reveal>
+        <h2
+          id="latest-posts"
+          className="font-oswald text-sm uppercase tracking-[0.3em] text-cherry"
+        >
+          Latest posts
+        </h2>
+        <div className="mt-4 h-1 w-12 bg-cherry" />
+      </Reveal>
+      {/* Slides in post by post, like the Contact page's links. */}
+      <ul className="mt-6 grid gap-4">
+        {posts.map((post, i) => {
+          const current = post.id === currentId;
+          return (
+            <Reveal as="li" key={post.id} variant="slide" step={i}>
+              <article
+                className={`group relative flex gap-4 border bg-panel p-3 transition-colors hover:border-cherry focus-within:border-cherry ${
+                  current ? "border-cherry" : "border-line"
+                }`}
+              >
+                {post.cover && (
+                  <div className="relative size-20 shrink-0 overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={post.cover.src}
+                      srcSet={post.cover.srcSet}
+                      sizes="5rem"
+                      alt={post.cover.alt}
+                      title={post.title}
+                      loading="lazy"
+                      className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transition-none"
+                    />
+                  </div>
+                )}
+                <div className="min-w-0 self-center">
+                  <p className="font-oswald text-xs uppercase tracking-[0.2em] text-ink-muted">
+                    {current ? (
+                      <span className="text-ink-cherry">Reading now</span>
+                    ) : (
+                      <time dateTime={isoDate(post.date)}>{formatDate(post.date, "medium")}</time>
+                    )}
+                  </p>
+                  <h3 className="mt-1 line-clamp-2 font-bebas-neue text-2xl leading-none tracking-wide text-ink transition-colors group-hover:text-ink-cherry">
+                    {/* The ::after overlay makes the whole card clickable, photo included. */}
+                    <Link
+                      href={`/blogs/${blogSlug(post.title)}`}
+                      title={post.title}
+                      aria-current={current ? "page" : undefined}
+                      className="after:absolute after:inset-0 focus-visible:outline-none"
+                    >
+                      {post.title}
+                    </Link>
+                  </h3>
+                </div>
+              </article>
+            </Reveal>
+          );
+        })}
+      </ul>
+      <Reveal variant="slide" step={posts.length} className="mt-6">
+        <Link
+          href="/blogs"
+          title="All posts"
+          className="inline-block font-oswald text-sm uppercase tracking-[0.2em] text-ink-cherry transition-colors hover:text-ink"
+        >
+          View all posts →
+        </Link>
+      </Reveal>
+    </aside>
   );
 }
 
@@ -87,22 +238,5 @@ function BackLink() {
     >
       ← All posts
     </Link>
-  );
-}
-
-function BlogSkeleton() {
-  return (
-    <div className="mt-10 animate-pulse">
-      <p className="sr-only">Loading post…</p>
-      <div className="h-3 w-32 bg-well" />
-      <div className="mt-4 h-14 w-3/4 bg-well" />
-      <div className="mt-6 h-1 w-16 bg-well" />
-      <div className="mt-6 h-4 w-2/3 bg-well" />
-      <div className="mt-10 space-y-3 border-t border-line pt-10">
-        <div className="h-5 w-full bg-well" />
-        <div className="h-5 w-full bg-well" />
-        <div className="h-5 w-2/3 bg-well" />
-      </div>
-    </div>
   );
 }

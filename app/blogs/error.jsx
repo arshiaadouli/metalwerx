@@ -1,6 +1,6 @@
 "use client"; // Error boundaries must be Client Components
 
-// Shown when the blog list or a post fails to load, e.g. MongoDB is unreachable.
+// Shown when the blog list or a post fails to load, e.g. Strapi is unreachable.
 // The real error is logged in the server terminal.
 export default function BlogError({ retry }) {
   return (

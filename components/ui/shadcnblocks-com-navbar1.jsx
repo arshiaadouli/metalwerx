@@ -28,16 +28,26 @@ import {
 
 // Navbar1 from shadcnblocks.com, ported to JSX. Props:
 //   logo             { url, src, alt, width, height, title? }
-//   menu             [{ title, url, description?, icon?, items?: [same shape] }]
+//   menu             [{ title, url, description?, icon?, image?, columns?, items?: [same shape] }]
 //   mobileExtraLinks [{ name, url }]
 //   auth             { login: { text, url }, signup: { text, url } }
 // Items with `items` open a dropdown on desktop and an accordion on mobile.
+// `columns: 2` lays a long dropdown out in two columns on desktop; `columns: 3`
+// does too at lg, then three from xl, where the wider panel fits beside the logo.
+// A dropdown item's `image` ({ src, alt }) shows as a thumbnail in place of its icon.
+const dropdownLayout = {
+  1: "w-80",
+  2: "grid w-[40rem] grid-cols-2",
+  3: "grid w-[40rem] grid-cols-2 xl:w-[56rem] xl:grid-cols-3",
+};
+
 const Navbar1 = ({ logo, menu = [], mobileExtraLinks = [], auth }) => {
   return (
     // z-40 keeps the dropdown above page content (e.g. the hero's z-10 copy) but under portaled overlays (z-50).
     <header className="relative z-40 border-b py-4 font-montserrat">
       <div className="mx-auto max-w-7xl px-6">
-        <nav className="hidden justify-between lg:flex">
+        {/* A div, not a nav: NavigationMenu renders its own <nav aria-label="Main">. */}
+        <div className="hidden justify-between lg:flex">
           <div className="flex items-center gap-6">
             <NavbarLogo logo={logo} loading="eager" />
             <div className="flex items-center">
@@ -62,7 +72,7 @@ const Navbar1 = ({ logo, menu = [], mobileExtraLinks = [], auth }) => {
               </Button>
             </div>
           )}
-        </nav>
+        </div>
         <div className="block lg:hidden">
           <div className="flex items-center justify-between">
             <NavbarLogo logo={logo} loading="eager" />
@@ -86,7 +96,8 @@ const Navbar1 = ({ logo, menu = [], mobileExtraLinks = [], auth }) => {
                     </SheetClose>
                   </SheetTitle>
                 </SheetHeader>
-                <div className="my-6 flex flex-col gap-6">
+                {/* Below lg the desktop nav is hidden, so this is the main nav. */}
+                <nav aria-label="Main" className="my-6 flex flex-col gap-6">
                   <Accordion
                     type="single"
                     collapsible
@@ -129,7 +140,7 @@ const Navbar1 = ({ logo, menu = [], mobileExtraLinks = [], auth }) => {
                       </SheetClose>
                     </div>
                   )}
-                </div>
+                </nav>
               </SheetContent>
             </Sheet>
           </div>
@@ -160,6 +171,22 @@ const NavbarLogo = ({ logo, loading, ...props }) => (
   </Link>
 );
 
+// A plain <img> rather than next/image, as in the hero, so no next.config
+// remotePatterns entry is needed for the stock photo hosts.
+const SubItemMedia = ({ item }) =>
+  item.image ? (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={item.image.src}
+      alt={item.image.alt}
+      title={item.image.alt}
+      loading="lazy"
+      className="size-12 shrink-0 self-center rounded-md object-cover"
+    />
+  ) : (
+    item.icon
+  );
+
 const renderMenuItem = (item) => {
   if (item.items) {
     return (
@@ -168,7 +195,7 @@ const renderMenuItem = (item) => {
           {item.title}
         </NavigationMenuTrigger>
         <NavigationMenuContent>
-          <ul className="w-80 p-3">
+          <ul className={`${dropdownLayout[item.columns ?? 1]} p-3`}>
             {item.items.map((subItem) => (
               <li key={subItem.title}>
                 <NavigationMenuLink asChild>
@@ -177,7 +204,7 @@ const renderMenuItem = (item) => {
                     href={subItem.url}
                     title={subItem.title}
                   >
-                    {subItem.icon}
+                    <SubItemMedia item={subItem} />
                     <div>
                       <div className="text-sm font-semibold">
                         {subItem.title}
@@ -228,7 +255,7 @@ const renderMobileMenuItem = (item) => {
                 href={subItem.url}
                 title={subItem.title}
               >
-                {subItem.icon}
+                <SubItemMedia item={subItem} />
                 <div>
                   <div className="text-sm font-semibold">{subItem.title}</div>
                   {subItem.description && (

@@ -17,6 +17,9 @@ import {
   TriangleAlert,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { CutTitle, Enter } from "@/components/ui/enter";
+import { Reveal } from "@/components/ui/reveal";
+import { ScrollLink } from "@/components/ui/scroll-link";
 
 export const metadata = {
   title: "Privacy Policy",
@@ -25,8 +28,10 @@ export const metadata = {
 };
 
 export default function PrivacyPolicyPage() {
+  // <main> takes in the header, so the h1 is part of the main content and the
+  // header isn't read as a second site banner.
   return (
-    <div className="flex-1 bg-surface font-montserrat text-ink">
+    <main className="flex-1 bg-surface font-montserrat text-ink">
       <header className="relative overflow-hidden bg-linear-to-br from-cherry-dark via-ember to-clinker">
         <div
           aria-hidden="true"
@@ -37,23 +42,28 @@ export default function PrivacyPolicyPage() {
           strokeWidth={1.25}
           className="absolute -right-16 -bottom-24 hidden size-[28rem] rotate-12 text-white/10 sm:block"
         />
+        {/* Plays on load, one step after another (see components/ui/enter.jsx). */}
         <div className="relative mx-auto w-full max-w-6xl px-6 py-20 sm:py-28">
-          <p className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 font-oswald text-xs uppercase tracking-[0.3em] text-white ring-1 ring-white/25">
+          <Enter
+            as="p"
+            step={0}
+            className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 font-oswald text-xs uppercase tracking-[0.3em] text-white ring-1 ring-white/25"
+          >
             <Lock aria-hidden="true" className="size-3.5" />
             Legal
-          </p>
+          </Enter>
           <h1 className="mt-5 font-bebas-neue text-7xl tracking-wide text-white sm:text-8xl">
-            Privacy Policy
+            <CutTitle step={1}>Privacy Policy</CutTitle>
           </h1>
-          <div className="mt-4 h-1 w-16 bg-white" />
-          <p className="mt-8 max-w-2xl text-lg leading-8 text-chrome">
+          <Enter step={2} className="mt-4 h-1 w-16 bg-white" />
+          <Enter as="p" step={2} className="mt-8 max-w-2xl text-lg leading-8 text-chrome">
             What personal information we collect when you visit or use our website, why we collect
             it, and how we handle it.
-          </p>
+          </Enter>
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-6xl px-6 py-16 sm:py-20 lg:grid lg:grid-cols-[16rem_1fr] lg:gap-12">
+      <div className="mx-auto w-full max-w-6xl px-6 py-16 sm:py-20 lg:grid lg:grid-cols-[16rem_1fr] lg:gap-12">
         <nav
           aria-label="On this page"
           className="rounded-2xl border border-line border-t-4 border-t-cherry bg-panel p-5 lg:sticky lg:top-8 lg:self-start"
@@ -61,10 +71,12 @@ export default function PrivacyPolicyPage() {
           <p className="px-2 font-oswald text-xs uppercase tracking-[0.3em] text-ink-muted">
             On this page
           </p>
+          {/* The links slide in one by one, like the Contact page's, and ease
+              the page down to their section. */}
           <ol className="mt-4 space-y-1">
-            {sections.map(({ id, title, icon: Icon }) => (
-              <li key={id}>
-                <a
+            {sections.map(({ id, title, icon: Icon }, i) => (
+              <Reveal as="li" key={id} variant="slide" step={i}>
+                <ScrollLink
                   href={`#${id}`}
                   title={title}
                   className="group flex items-center gap-3 rounded-lg px-2 py-2 text-sm leading-5 text-ink-soft transition-colors hover:bg-oxblood hover:text-white focus-visible:bg-oxblood focus-visible:text-white focus-visible:outline-none"
@@ -73,8 +85,8 @@ export default function PrivacyPolicyPage() {
                     <Icon aria-hidden="true" className="size-4" />
                   </span>
                   {title}
-                </a>
-              </li>
+                </ScrollLink>
+              </Reveal>
             ))}
           </ol>
         </nav>
@@ -109,30 +121,32 @@ export default function PrivacyPolicyPage() {
             </section>
           ))}
         </div>
-      </main>
+      </div>
 
       <section className="bg-cherry">
         <div className="mx-auto flex w-full max-w-6xl flex-col items-start gap-6 px-6 py-14 sm:flex-row sm:items-center sm:justify-between">
-          <div>
+          <Reveal>
             <h2 className="font-bebas-neue text-4xl tracking-wide text-white sm:text-5xl">
               Questions about your data?
             </h2>
             <p className="mt-2 text-chrome">
               Get in touch about any request to see, correct or delete your personal information.
             </p>
-          </div>
-          <Button
-            asChild
-            size="lg"
-            className="bg-white font-oswald uppercase tracking-[0.15em] text-cherry hover:bg-chrome"
-          >
-            <Link href="/contact-us" title="Contact Us">
-              Contact Us
-            </Link>
-          </Button>
+          </Reveal>
+          <Reveal step={1}>
+            <Button
+              asChild
+              size="lg"
+              className="bg-white font-oswald uppercase tracking-[0.15em] text-cherry hover:bg-chrome"
+            >
+              <Link href="/contact-us" title="Contact Us">
+                Contact Us
+              </Link>
+            </Button>
+          </Reveal>
         </div>
       </section>
-    </div>
+    </main>
   );
 }
 

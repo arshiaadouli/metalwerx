@@ -1,8 +1,8 @@
 import { cacheLife } from "next/cache";
 import { Footer2 } from "@/components/ui/shadcnblocks-com-footer2";
 
-// As in the navbar, only / and /blogs exist so far; the other links are
-// placeholders for pages still to be built.
+// As in the navbar, /prices and /terms are placeholders for pages still to be
+// built, as are the #hours and #location sections of /contact-us.
 const footer = {
   logo: {
     url: "/",
@@ -20,16 +20,16 @@ const footer = {
       links: [
         { name: "Ferrous Metals", href: "/what-we-buy#ferrous" },
         { name: "Non-Ferrous Metals", href: "/what-we-buy#non-ferrous" },
-        { name: "Car Bodies", href: "/what-we-buy#cars" },
-        { name: "Batteries", href: "/what-we-buy#batteries" },
+        { name: "Car Bodies", href: "/what-we-buy/unwanted-cars" },
+        { name: "Batteries", href: "/what-we-buy/lead" },
       ],
     },
     {
       title: "Services",
       links: [
-        { name: "Bin Hire", href: "/services#bin-hire" },
-        { name: "Pickup & Collection", href: "/services#collection" },
-        { name: "Commercial Recycling", href: "/services#commercial" },
+        { name: "Bin Hire", href: "/services/bin-hire" },
+        { name: "Pickup & Collection", href: "/services/pickup-and-collection" },
+        { name: "Commercial Recycling", href: "/services/commercial-recycling" },
       ],
     },
     {
@@ -38,15 +38,15 @@ const footer = {
         { name: "About", href: "/about" },
         { name: "Blog", href: "/blogs" },
         { name: "Scrap Prices", href: "/prices" },
-        { name: "Contact", href: "/contact" },
+        { name: "Contact", href: "/contact-us" },
       ],
     },
     {
       title: "Visit Us",
       links: [
-        { name: "Opening Hours", href: "/contact#hours" },
-        { name: "Find Us", href: "/contact#location" },
-        { name: "Get a Quote", href: "/contact" },
+        { name: "Opening Hours", href: "/contact-us#hours" },
+        { name: "Find Us", href: "/contact-us#location" },
+        { name: "Get a Quote", href: "/contact-us" },
       ],
     },
   ],
