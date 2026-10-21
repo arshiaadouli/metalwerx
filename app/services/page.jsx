@@ -1,36 +1,44 @@
+import { ViewTransition } from "react";
 import Link from "next/link";
-import { ArrowRight, Check, Recycle } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Reveal } from "@/components/ui/reveal";
+import { pageMetadata } from "@/lib/seo";
 import { cn } from "@/lib/utils";
-import { CtaBand, Photo, ServiceHero } from "./sections";
+import { serviceMorph } from "./morph";
+import { Container, CtaBand, PageHeader, Photo } from "./sections";
 import { overviewImage, services } from "./services";
 
-export const metadata = {
+// The header photo is also the preview image when the page is shared.
+export const metadata = pageMetadata({
+  path: "/services",
   title: "Services",
   description:
     "Scrap metal bin hire, pickup and collection, and commercial recycling from Metal Werx in Hallam, for homes, farms and businesses across Melbourne's south-east.",
-};
+  image: { url: `${overviewImage.url}&w=1200`, alt: overviewImage.alt },
+});
 
+// The services as a catalogue: one row each on a single rail, then the band
+// that closes the page. Each row's photo is the one its page opens on, so it
+// carries across when the row is followed.
 export default function ServicesPage() {
   return (
-    <main className="flex-1 bg-surface font-montserrat text-ink">
-      <ServiceHero
-        image={overviewImage}
+    <main id="main" className="flex-1">
+      <PageHeader
         breadcrumbs={[{ name: "Home", href: "/" }, { name: "Services" }]}
-        icon={Recycle}
-        eyebrow="What we do"
-        title="Our Services"
+        title="Scrap Metal Recycling Services"
         lede="Bring your scrap to our Hallam yard, or let us come to you. We hire out scrap bins, collect bulk loads and look after businesses with metal to recycle every week."
         actions={[{ text: "Get a Quote", href: "/contact-us" }]}
+        image={overviewImage}
       />
 
-      <section aria-label="Services" className="bg-surface">
-        <div className="mx-auto w-full max-w-7xl space-y-20 px-6 py-20 sm:space-y-28 sm:py-24">
-          {services.map((service, i) => (
-            <ServiceRow key={service.slug} service={service} index={i} />
-          ))}
-        </div>
+      <section aria-label="Services">
+        <Container>
+          <div className="divide-y divide-rule border-t-2 border-ink">
+            {services.map((service, i) => (
+              <ServiceRow key={service.slug} service={service} flip={i % 2 === 1} />
+            ))}
+          </div>
+        </Container>
       </section>
 
       <CtaBand
@@ -43,60 +51,54 @@ export default function ServicesPage() {
 }
 
 // The photo and text swap sides on every other row from lg up. The id is the
-// anchor that links from before the service pages existed still point to.
-function ServiceRow({ service, index }) {
-  const { slug, anchor, title, icon: Icon, lede, image, overview } = service;
-  const href = `/services/${slug}`;
+// anchor that links from before the service pages existed (such as the home
+// page's in Strapi) still land on. The photo morphs into the service page's
+// header only on the navigation its own link starts (serviceMorph), so the
+// other rows stay put.
+function ServiceRow({ service, flip }) {
+  const { slug, anchor, title, lede, image, overview } = service;
+  const morph = serviceMorph(slug);
   return (
     <article
       id={anchor}
       aria-labelledby={`${anchor}-title`}
-      className="grid scroll-mt-8 items-center gap-10 lg:grid-cols-2 lg:gap-16"
+      className="grid scroll-mt-24 gap-8 py-12 sm:gap-10 sm:py-16 lg:grid-cols-2 lg:items-center lg:gap-16 lg:py-20"
     >
-      <Reveal variant="fade" className={cn(index % 2 === 1 && "lg:order-last")}>
+      <ViewTransition name={morph.name} share={morph.share} default="none">
         <Photo
           image={image}
-          sizes="(min-width: 80rem) 38rem, (min-width: 64rem) 46vw, calc(100vw - 3rem)"
-          className="block aspect-4/3 w-full rounded-2xl object-cover"
+          sizes="(min-width: 82.5rem) 37.25rem, (min-width: 64rem) calc(50vw - 4rem), (min-width: 40rem) calc(100vw - 4rem), calc(100vw - 2.5rem)"
+          className={cn("aspect-[4/3] w-full rounded-[2px]", flip && "lg:order-last")}
         />
-      </Reveal>
+      </ViewTransition>
 
-      <Reveal step={1}>
-        <p className="flex items-center gap-3 font-oswald text-sm uppercase tracking-[0.3em] text-ink-cherry">
-          <Icon aria-hidden="true" className="size-5" />
-          {String(index + 1).padStart(2, "0")}
-        </p>
-        <h2 id={`${anchor}-title`} className="mt-3 font-bebas-neue text-5xl tracking-wide sm:text-6xl">
+      <div>
+        <h2 id={`${anchor}-title`} className="type-heading text-ink">
           {title}
         </h2>
-        <div className="mt-4 h-1 w-16 bg-cherry" />
-        <p className="mt-6 leading-7 text-ink-soft">{lede}</p>
-        <ul className="mt-6 grid gap-3 sm:grid-cols-2">
-          {overview.features.map((feature, i) => (
-            <Reveal
-              as="li"
-              key={feature.title}
-              variant="slide"
-              step={i}
-              className="flex items-center gap-3 text-sm text-ink-soft"
+        <p className="mt-4 max-w-[52ch] type-lede text-ink-soft">{lede}</p>
+
+        {/* What comes with the service, ruled like a spec sheet. */}
+        <ul className="mt-8 grid border-t border-rule sm:grid-cols-2">
+          {overview.features.map(({ icon: Icon, title: feature }) => (
+            <li
+              key={feature}
+              className="flex items-start gap-3 border-b border-rule py-3.5 font-semibold text-ink sm:odd:pr-6 sm:even:pl-6"
             >
-              <Check aria-hidden="true" strokeWidth={2.5} className="size-5 shrink-0 text-ink-cherry" />
-              {feature.title}
-            </Reveal>
+              <Icon aria-hidden="true" strokeWidth={1.75} className="mt-[0.1875rem] size-5 shrink-0" />
+              {feature}
+            </li>
           ))}
         </ul>
-        <Button
-          asChild
-          size="lg"
-          className="mt-8 gap-2 font-oswald uppercase tracking-[0.15em] transition-all duration-300 hover:gap-4"
-        >
-          <Link href={href} title={title}>
-            Learn More
+
+        <Button asChild variant="outline" className="mt-8">
+          <Link href={`/services/${slug}`} transitionTypes={morph.types}>
+            Learn more
             <span className="sr-only"> about {title}</span>
-            <ArrowRight aria-hidden="true" className="size-5" />
+            <ArrowRight aria-hidden="true" />
           </Link>
         </Button>
-      </Reveal>
+      </div>
     </article>
   );
 }

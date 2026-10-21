@@ -49,7 +49,6 @@ function NotFoundActions({
     <div className="flex flex-wrap items-center justify-center gap-3">
       <Link
         href={homeHref}
-        title={homeLabel}
         className="inline-flex h-10 items-center justify-center rounded-full bg-foreground px-5 text-sm font-medium text-background transition-transform active:scale-[0.97]"
       >
         {homeLabel}
@@ -57,7 +56,6 @@ function NotFoundActions({
 
       <Link
         href={browseHref}
-        title={browseLabel}
         className="inline-flex h-10 items-center justify-center rounded-full border border-border bg-card px-5 text-sm font-medium text-foreground transition-transform hover:bg-muted active:scale-[0.97]"
       >
         {browseLabel}

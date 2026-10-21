@@ -1,140 +1,188 @@
-@import "tailwindcss";
+/* Tailwind only scans the site's own code for class names. By default it scans
+   every file git doesn't ignore, which takes in the agent skills and design
+   notes (.claude/, .agents/, .impeccable/) and adds hundreds of unused rules
+   to this render-blocking stylesheet. */
+@import "tailwindcss" source(none);
+@source "../app";
+@source "../components";
+@source "../lib";
 /* Animation utilities (animate-in, fade-in, accordion-down, ...) used by shadcn/ui. */
 @import "tw-animate-css";
-
-@theme {
-  --color-carbon:         #0C0C0C;
-  --color-mill-scale:     #171717;
-  --color-gunmetal:       #222222;
-  --color-graphite:       #2D2D2D;
-  --color-clinker:        #120101;
-  --color-oxblood:        #3E1010;
-  --color-ember:          #450909;
-  --color-iron-oxide:     #592B2B;
-  --color-cherry-dark:    #940202;
-  --color-cherry:         #C50000;
-  --color-cherry-bright:  #FF0000;
-  --color-chrome:         #F8F8F8;
-  --color-aluminium:      #CFCFCF;
-  --color-steel:          #7A7A7A;
-  --color-white:          #FFFFFF;
-}
-
-/* The page headers' entrance (Enter and CutTitle in components/ui/enter.jsx).
-   Reveal (components/ui/reveal.jsx) plays the same rise with framer-motion as
-   sections scroll into view, so keep the two in step. The fill mode is
-   backwards, not both: a filter left on after the animation would cut the
-   glass buttons' backdrop blur off from the photo behind them. */
-@theme {
-  --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
-  --animate-reveal-rise: reveal-rise 0.6s var(--ease-smooth) backwards;
-  --animate-reveal-fade: reveal-fade 0.6s var(--ease-smooth) backwards;
-  --animate-reveal-cut: reveal-cut 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
-
-  /* Blurs into focus as it rises. */
-  @keyframes reveal-rise {
-    from {
-      opacity: 0;
-      filter: blur(10px);
-      transform: translateY(20px);
-    }
-  }
-
-  /* Blurs into focus without moving. */
-  @keyframes reveal-fade {
-    from {
-      opacity: 0;
-      filter: blur(10px);
-    }
-  }
-
-  /* Drops in from above. The clip shrinks as the word moves down, so it only
-     shows inside its own box, as if cut out of the line. */
-  @keyframes reveal-cut {
-    from {
-      transform: translateY(-100%);
-      clip-path: inset(100% 0 0 0);
-    }
-    to {
-      transform: none;
-      clip-path: inset(0);
-    }
-  }
-}
 
 /* Tailwind's dark: variant, and a light: one, follow the theme on <html>
    (data-theme) rather than the OS setting, so they agree with ThemeToggle. */
 @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
 @custom-variant light (&:where([data-theme=light], [data-theme=light] *));
 
-/* Theme colours. The palette above stays the same in both themes, for things
-   that never change, like text over a photo or a cherry banner; these swap.
-   Dark is the default, and app/layout.jsx sets data-theme before first paint. */
-:root {
-  color-scheme: dark;
+/* The site is a stockist's rack, graded between black and red: red-black rack
+   fields lit from above, and each metal in its own code colour. These colours
+   are fixed in both themes, like the metals and the steel they stand for. */
+@theme {
+  --color-white: #FFFFFF;
+  --color-graphite: #160C0C;
 
-  --surface: #0C0C0C;     /* page background (carbon) */
-  --panel: #171717;       /* cards (mill-scale) */
-  --well: #222222;        /* fills inside cards: fields, tiles, skeletons (gunmetal) */
-  --line: #222222;        /* card borders and dividers (gunmetal) */
-  --ink: #F8F8F8;         /* headings (chrome) */
-  --ink-soft: #CFCFCF;    /* body copy (aluminium) */
-  --ink-muted: #7A7A7A;   /* dates and labels (steel) */
-  --ink-cherry: #FF0000;  /* red text (cherry-bright) */
+  /* Code colours, for type and marks set on the light tag or ground. The
+     cross-sections use their own lit gradients (components/metal/metal.jsx). */
+  --color-cu: #8E4A24;
+  --color-brass: #7A5D16;
+  --color-al: #5F686F;
+  --color-ss: #4F6474;
+  --color-pb: #48515A;
+  --color-fe: #3C454D;
 
-  /* shadcn/ui tokens, mapped onto the theme colours. */
-  --background: var(--surface);
-  --foreground: var(--ink);
-  --card: var(--panel);
-  --card-foreground: var(--ink);
-  --popover: var(--panel);
-  --popover-foreground: var(--ink);
-  --primary: #C50000;
-  --primary-foreground: #F8F8F8;
-  --secondary: #222222;
-  --secondary-foreground: var(--ink);
-  --muted: #2D2D2D;
-  --muted-foreground: var(--ink-soft);
-  --accent: #2D2D2D;
-  --accent-foreground: var(--ink);
-  --destructive: #FF0000;
-  --destructive-foreground: #F8F8F8;
-  --border: #2D2D2D;
-  --input: #2D2D2D;
-  --ring: #C50000;
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-sheet: cubic-bezier(0.32, 0.72, 0, 1);
+
+  /* The home page rack, the one orchestrated moment on the site: each bundle
+     slides onto its arm, then the grade tag swings out of the rack. */
+  --animate-rack-in: rack-in 700ms var(--ease-out-expo) backwards;
+  --animate-tag-out: tag-out 520ms var(--ease-out-expo) backwards;
+  /* Each pick on the rack swaps the tag's contents in place. */
+  --animate-tag-swap: tag-swap 220ms var(--ease-out-expo);
+
+  @keyframes rack-in {
+    from {
+      opacity: 0;
+      transform: translateX(3rem);
+    }
+  }
+
+  @keyframes tag-out {
+    from {
+      opacity: 0;
+      transform: translateX(-1.5rem);
+    }
+  }
+
+  @keyframes tag-swap {
+    from {
+      opacity: 0;
+      transform: translateX(-0.5rem);
+      filter: blur(2px);
+    }
+  }
 }
 
-[data-theme="light"] {
+/* Theme colours, graded between black and red like the glow at the top of
+   the contact page: blacks warmed toward red, red-black rack fields lit from
+   above, and a deep red for the one action. Dark is the default; app/layout.jsx
+   sets data-theme before first paint. */
+:root {
   color-scheme: light;
 
-  --surface: #FFFFFF;
-  --panel: #F8F8F8;
-  --well: #ECECEC;
-  --line: #E2E2E2;
-  --ink: #0C0C0C;
-  --ink-soft: #2D2D2D;
-  /* Steel and cherry-bright text fall short of WCAG AA contrast on white. */
-  --ink-muted: #666666;
-  --ink-cherry: #C50000;
+  --ground: #F4F3F3;      /* page background */
+  --raised: #FFFFFF;      /* plates that sit on the ground: fields, menus */
+  --sunk: #EAE5E5;        /* wells: inputs, quiet panels */
+  --rule: #D8CFCF;        /* hairline rails between things */
+  --ink: #1A1212;         /* headings and strong text: black warmed toward red */
+  --ink-soft: #4A3D3D;    /* body copy */
+  --ink-muted: #6B5B5B;   /* dates, captions, meta */
+  --glow: rgb(179 38 30 / 0.08); /* the red glow from above, on the page */
 
-  --popover: var(--surface);
-  --secondary: #ECECEC;
-  --muted: #F0F0F0;
-  --muted-foreground: #525252;
-  --accent: #F0F0F0;
-  --border: #E2E2E2;
-  --input: #CFCFCF;
+  --rack: #1C0F10;        /* the rack field: red-black steel */
+  --rack-raised: #2A1516;
+  --rack-ink: #F4EEEE;
+  --rack-ink-soft: #C9B5B5;
+  --rack-arm: #553233;
+  --rack-rule: #3D2425;
+  --rack-glow: rgb(168 26 24 / 0.42);
+
+  --tag: #E8ECEE;         /* an aluminium grade tag, light in both themes */
+  --tag-ink: #1C2024;
+  --tag-ink-soft: #454D54;
+  --tag-ink-muted: #5E666D;
+  --tag-rule: #C5CCD1;
+
+  --action: #B3261E;      /* deep red, between black and red: the one action colour */
+  --action-hover: #951F19;
+  --action-ink: #FFFFFF;
+
+  --focus: #1A1212;
+  --edge: rgb(0 0 0 / 0.16);
+
+  /* shadcn/ui tokens, mapped onto the theme colours. */
+  --background: var(--ground);
+  --foreground: var(--ink);
+  --card: var(--raised);
+  --card-foreground: var(--ink);
+  --popover: var(--raised);
+  --popover-foreground: var(--ink);
+  --primary: var(--action);
+  --primary-foreground: var(--action-ink);
+  --secondary: var(--sunk);
+  --secondary-foreground: var(--ink);
+  --muted: var(--sunk);
+  --muted-foreground: var(--ink-soft);
+  --accent: var(--sunk);
+  --accent-foreground: var(--ink);
+  --destructive: #B3261E;
+  --destructive-foreground: #FFFFFF;
+  --border: var(--rule);
+  --input: #B9AAAA;
+  --ring: var(--focus);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --ground: #120C0C;
+  --raised: #1C1414;
+  --sunk: #0D0909;
+  --rule: #3A2727;
+  --ink: #F4EEEE;
+  --ink-soft: #CDBFBF;
+  --ink-muted: #A08F8F;
+  --glow: rgb(176 24 22 / 0.3);
+
+  --rack: #1F1011;
+  --rack-raised: #2C1718;
+  --rack-arm: #5E3637;
+  --rack-rule: #422728;
+  --rack-glow: rgb(178 28 26 / 0.45);
+
+  --tag: #D9DFE3;
+  --tag-ink-soft: #3E464D;
+  --tag-ink-muted: #50585F;
+  --tag-rule: #B7C0C6;
+
+  --action: #C62D24;
+  --action-hover: #A8231B;
+  --action-ink: #FFFFFF;
+
+  --focus: #F4EEEE;
+  --edge: rgb(255 255 255 / 0.2);
+
+  --destructive: #F2867C;
+  --destructive-foreground: #120C0C;
+  --input: #5A4343;
 }
 
 @theme inline {
-  --color-surface: var(--surface);
-  --color-panel: var(--panel);
-  --color-well: var(--well);
-  --color-line: var(--line);
+  --color-ground: var(--ground);
+  --color-raised: var(--raised);
+  --color-sunk: var(--sunk);
+  --color-rule: var(--rule);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-ink-muted: var(--ink-muted);
-  --color-ink-cherry: var(--ink-cherry);
+  --color-rack: var(--rack);
+  --color-rack-raised: var(--rack-raised);
+  --color-rack-ink: var(--rack-ink);
+  --color-rack-ink-soft: var(--rack-ink-soft);
+  --color-rack-arm: var(--rack-arm);
+  --color-rack-rule: var(--rack-rule);
+  --color-tag: var(--tag);
+  --color-tag-ink: var(--tag-ink);
+  --color-tag-ink-soft: var(--tag-ink-soft);
+  --color-tag-ink-muted: var(--tag-ink-muted);
+  --color-tag-rule: var(--tag-rule);
+  --color-action: var(--action);
+  --color-action-hover: var(--action-hover);
+  --color-action-ink: var(--action-ink);
+  --color-focus: var(--focus);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -154,12 +202,58 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-montserrat: var(--montserrat);
-  --font-saira-stencil: var(--saira-stencil);
-  --font-bebas-neue: var(--bebas-neue);
-  --font-oswald: var(--oswald);
+}
+
+/* The type scale: Archivo throughout, wider and heavier for display, its
+   narrowest width for the metal codes stamped on tags. Display sizes stop at
+   5.5rem; headings balance their lines. */
+@utility type-display {
+  font-size: clamp(2.75rem, 1.55rem + 4.3vw, 5.5rem);
+  line-height: 0.94;
+  font-weight: 820;
+  font-stretch: 112%;
+  letter-spacing: -0.022em;
+  text-wrap: balance;
+}
+@utility type-title {
+  font-size: clamp(2.5rem, 1.6rem + 3.2vw, 4.5rem);
+  line-height: 0.96;
+  font-weight: 800;
+  font-stretch: 110%;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+@utility type-heading {
+  font-size: clamp(1.875rem, 1.3rem + 1.9vw, 2.75rem);
+  line-height: 1.04;
+  font-weight: 780;
+  font-stretch: 108%;
+  letter-spacing: -0.016em;
+  text-wrap: balance;
+}
+@utility type-subheading {
+  font-size: 1.375rem;
+  line-height: 1.2;
+  font-weight: 720;
+  font-stretch: 104%;
+  letter-spacing: -0.008em;
+  text-wrap: balance;
+}
+@utility type-lede {
+  font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);
+  line-height: 1.55;
+}
+@utility type-code {
+  font-weight: 800;
+  font-stretch: 75%;
+  letter-spacing: 0.005em;
+  line-height: 0.9;
+}
+@utility type-meta {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
 @layer base {
@@ -167,10 +261,142 @@
   * {
     @apply border-border;
   }
+
+  html {
+    scrollbar-color: var(--rule) var(--ground);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    background: radial-gradient(ellipse 90rem 36rem at 50% 4.5rem, var(--glow), transparent 70%) no-repeat, var(--ground);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    caret-color: var(--action);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: #B3261E;
+    color: #FFFFFF;
+  }
+
+  a {
+    text-underline-offset: 0.22em;
+    text-decoration-thickness: 1px;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  /* On the rack, focus rings and edges flip to the rack's own colours. */
+  .on-rack {
+    --focus: var(--rack-ink);
+    --edge: rgb(255 255 255 / 0.22);
+  }
+
+  /* Phone numbers, weights and dates never jitter as they change. */
+  time,
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Every rack field is lit from above with the same red glow as the page. */
+.bg-rack {
+  background-image: radial-gradient(ellipse 120% 75% at 50% 0, var(--rack-glow), transparent 70%);
+}
+
+/* The machined edge on every cross-section, and its shadow on the arm. */
+.metal-edge {
+  stroke: var(--edge);
+  stroke-width: 1;
+}
+.metal-bundle {
+  filter: drop-shadow(0 0.25rem 0.25rem rgb(0 0 0 / 0.16));
+}
+.on-rack .metal-bundle {
+  filter: drop-shadow(0 0.375rem 0.3rem rgb(0 0 0 / 0.32));
+}
+
+/* Material pages share a bundle with the cards that link to them: the bundle
+   morphs from the card into the page header (React <ViewTransition>, named
+   per material). Nothing else animates on navigation. */
+::view-transition {
+  pointer-events: none;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+::view-transition-group(.metal-morph) {
+  animation-duration: 420ms;
+  animation-timing-function: var(--ease-out-expo);
+}
+::view-transition-image-pair(.metal-morph) {
+  animation-name: metal-morph-blur;
+}
+@keyframes metal-morph-blur {
+  35% {
+    filter: blur(2px);
+  }
+}
+
+/* Visitors who ask for less motion get every state change at once. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
+
+/* In-page jumps (How it works, FAQ, the skip link) glide, unless the visitor
+   asks for less motion. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* TRANSITIONAL: the previous design's colour and font names, pointed at the
+   new palette so pages not rebuilt yet stay legible during the redesign.
+   Delete this block once nothing uses these names. */
+@theme inline {
+  --color-surface: var(--ground);
+  --color-panel: var(--raised);
+  --color-well: var(--sunk);
+  --color-line: var(--rule);
+  --color-ink-cherry: var(--action);
+  --color-carbon: var(--rack);
+  --color-mill-scale: var(--rack);
+  --color-gunmetal: var(--rack-raised);
+  --color-clinker: var(--rack);
+  --color-oxblood: var(--rack-raised);
+  --color-ember: var(--rack);
+  --color-iron-oxide: var(--rack-arm);
+  --color-cherry-dark: var(--action-hover);
+  --color-cherry: var(--action);
+  --color-cherry-bright: var(--action);
+  --color-chrome: var(--rack-ink);
+  --color-aluminium: var(--rack-ink-soft);
+  --color-steel: var(--ink-muted);
+  --font-montserrat: var(--font-sans);
+  --font-saira-stencil: var(--font-sans);
+  --font-bebas-neue: var(--font-sans);
+  --font-oswald: var(--font-sans);
 }

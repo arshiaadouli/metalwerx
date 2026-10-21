@@ -46,7 +46,7 @@ function NavigationMenuItem({ className, ...props }) {
 const navigationMenuTriggerStyle = cva(
   // focus-visible rather than focus, so a trigger clicked with the mouse doesn't
   // stay highlighted after its menu closes.
-  "group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+  "group inline-flex h-10 w-max cursor-pointer items-center justify-center rounded-[2px] px-3 text-[0.9375rem] font-semibold text-ink transition-colors duration-150 hover:bg-sunk disabled:pointer-events-none disabled:opacity-45 data-[state=open]:bg-sunk"
 )
 
 // Radix opens a menu on hover and toggles it on every click, so the click that
@@ -82,7 +82,7 @@ function NavigationMenuTrigger({ className, children, onPointerEnter, onPointerD
     >
       {children}{" "}
       <ChevronDown
-        className="relative top-[1px] ml-1 h-3 w-3 transition duration-300 group-data-[state=open]:rotate-180"
+        className="relative top-px ml-1 size-3.5 text-ink-muted transition-transform duration-200 ease-out-expo group-data-[state=open]:rotate-180"
         aria-hidden="true"
       />
     </NavigationMenuPrimitive.Trigger>
@@ -98,8 +98,9 @@ function NavigationMenuContent({ className, ...props }) {
         "group-data-[viewport=true]/navigation-menu:data-[motion^=from-]:animate-in group-data-[viewport=true]/navigation-menu:data-[motion^=to-]:animate-out group-data-[viewport=true]/navigation-menu:data-[motion^=from-]:fade-in group-data-[viewport=true]/navigation-menu:data-[motion^=to-]:fade-out group-data-[viewport=true]/navigation-menu:data-[motion=from-end]:slide-in-from-right-52 group-data-[viewport=true]/navigation-menu:data-[motion=from-start]:slide-in-from-left-52 group-data-[viewport=true]/navigation-menu:data-[motion=to-end]:slide-out-to-right-52 group-data-[viewport=true]/navigation-menu:data-[motion=to-start]:slide-out-to-left-52",
         // Without it, each item gets its own panel below its trigger. Radix closes the menu
         // 150ms after the pointer leaves trigger and content, so the ::before strip fills the
-        // mt-1.5 gap between them; otherwise a slow move down closes the menu in that gap.
-        "group-data-[viewport=false]/navigation-menu:top-full group-data-[viewport=false]/navigation-menu:mt-1.5 group-data-[viewport=false]/navigation-menu:rounded-md group-data-[viewport=false]/navigation-menu:border group-data-[viewport=false]/navigation-menu:bg-popover group-data-[viewport=false]/navigation-menu:text-popover-foreground group-data-[viewport=false]/navigation-menu:shadow group-data-[viewport=false]/navigation-menu:before:absolute group-data-[viewport=false]/navigation-menu:before:inset-x-0 group-data-[viewport=false]/navigation-menu:before:-top-2 group-data-[viewport=false]/navigation-menu:before:h-2 group-data-[viewport=false]/navigation-menu:data-[state=open]:animate-in group-data-[viewport=false]/navigation-menu:data-[state=closed]:animate-out group-data-[viewport=false]/navigation-menu:data-[state=open]:fade-in-0 group-data-[viewport=false]/navigation-menu:data-[state=closed]:fade-out-0 group-data-[viewport=false]/navigation-menu:data-[state=open]:zoom-in-95 group-data-[viewport=false]/navigation-menu:data-[state=closed]:zoom-out-95",
+        // mt-2 gap between them; otherwise a slow move down closes the menu in that gap.
+        // The panel drops 4px from its trigger and fades in; it leaves faster.
+        "group-data-[viewport=false]/navigation-menu:top-full group-data-[viewport=false]/navigation-menu:mt-2 group-data-[viewport=false]/navigation-menu:origin-top-left group-data-[viewport=false]/navigation-menu:rounded-[2px] group-data-[viewport=false]/navigation-menu:border group-data-[viewport=false]/navigation-menu:border-rule group-data-[viewport=false]/navigation-menu:bg-raised group-data-[viewport=false]/navigation-menu:text-ink group-data-[viewport=false]/navigation-menu:shadow-[0_1px_2px_rgb(0_0_0/0.06),0_16px_36px_-10px_rgb(0_0_0/0.22)] group-data-[viewport=false]/navigation-menu:before:absolute group-data-[viewport=false]/navigation-menu:before:inset-x-0 group-data-[viewport=false]/navigation-menu:before:-top-2.5 group-data-[viewport=false]/navigation-menu:before:h-2.5 group-data-[viewport=false]/navigation-menu:data-[state=open]:animate-in group-data-[viewport=false]/navigation-menu:data-[state=closed]:animate-out group-data-[viewport=false]/navigation-menu:data-[state=open]:fade-in-0 group-data-[viewport=false]/navigation-menu:data-[state=open]:slide-in-from-top-1 group-data-[viewport=false]/navigation-menu:data-[state=closed]:fade-out-0 group-data-[viewport=false]/navigation-menu:data-[state=open]:duration-150 group-data-[viewport=false]/navigation-menu:data-[state=closed]:duration-100",
         className
       )}
       {...props}

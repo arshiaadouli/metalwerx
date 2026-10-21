@@ -1,185 +1,154 @@
 import Link from "next/link";
 import {
   Building2,
-  ChartColumn,
   Clock,
-  Database,
   Globe,
-  Info,
   Link2,
-  Lock,
-  Mail,
   Monitor,
   Network,
   Scale,
   Server,
-  ShieldCheck,
   TriangleAlert,
 } from "lucide-react";
+import { Breadcrumbs, Container } from "@/app/services/sections";
 import { Button } from "@/components/ui/button";
-import { CutTitle, Enter } from "@/components/ui/enter";
-import { Reveal } from "@/components/ui/reveal";
-import { ScrollLink } from "@/components/ui/scroll-link";
+import { pageMetadata } from "@/lib/seo";
+import { YARD } from "@/lib/yard";
 
-export const metadata = {
+export const metadata = pageMetadata({
+  path: "/privacy-policy",
   title: "Privacy Policy",
   description:
     "How Metal Werx collects, uses and protects your personal data when you visit or use our website.",
-};
+});
 
+// A page to read: the site's frame (breadcrumbs, the title, the band that
+// closes the page) around one calm column of text. Each section opens on
+// a 2px ink rule. From lg the contents stay beside the text, their rule lined
+// up with the first section's; they stick at the same height a jump to a
+// section lands on (scroll-mt-24), so the two rules meet again after each jump.
 export default function PrivacyPolicyPage() {
   // <main> takes in the header, so the h1 is part of the main content and the
   // header isn't read as a second site banner.
   return (
-    <main className="flex-1 bg-surface font-montserrat text-ink">
-      <header className="relative overflow-hidden bg-linear-to-br from-cherry-dark via-ember to-clinker">
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-[repeating-linear-gradient(135deg,transparent_0_24px,rgb(255_255_255/0.04)_24px_48px)]"
-        />
-        <ShieldCheck
-          aria-hidden="true"
-          strokeWidth={1.25}
-          className="absolute -right-16 -bottom-24 hidden size-[28rem] rotate-12 text-white/10 sm:block"
-        />
-        {/* Plays on load, one step after another (see components/ui/enter.jsx). */}
-        <div className="relative mx-auto w-full max-w-6xl px-6 py-20 sm:py-28">
-          <Enter
-            as="p"
-            step={0}
-            className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 font-oswald text-xs uppercase tracking-[0.3em] text-white ring-1 ring-white/25"
-          >
-            <Lock aria-hidden="true" className="size-3.5" />
-            Legal
-          </Enter>
-          <h1 className="mt-5 font-bebas-neue text-7xl tracking-wide text-white sm:text-8xl">
-            <CutTitle step={1}>Privacy Policy</CutTitle>
-          </h1>
-          <Enter step={2} className="mt-4 h-1 w-16 bg-white" />
-          <Enter as="p" step={2} className="mt-8 max-w-2xl text-lg leading-8 text-chrome">
+    <main id="main" className="flex-1">
+      <header className="pt-8 pb-14 sm:pt-10 sm:pb-20">
+        <Container>
+          <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Privacy Policy" }]} />
+          <h1 className="mt-10 type-title text-ink sm:mt-14">Privacy Policy</h1>
+          <p className="mt-6 max-w-[58ch] type-lede text-ink-soft">
             What personal information we collect when you visit or use our website, why we collect
             it, and how we handle it.
-          </Enter>
-        </div>
+          </p>
+        </Container>
       </header>
 
-      <div className="mx-auto w-full max-w-6xl px-6 py-16 sm:py-20 lg:grid lg:grid-cols-[16rem_1fr] lg:gap-12">
-        <nav
-          aria-label="On this page"
-          className="rounded-2xl border border-line border-t-4 border-t-cherry bg-panel p-5 lg:sticky lg:top-8 lg:self-start"
-        >
-          <p className="px-2 font-oswald text-xs uppercase tracking-[0.3em] text-ink-muted">
-            On this page
-          </p>
-          {/* The links slide in one by one, like the Contact page's, and ease
-              the page down to their section. */}
-          <ol className="mt-4 space-y-1">
-            {sections.map(({ id, title, icon: Icon }, i) => (
-              <Reveal as="li" key={id} variant="slide" step={i}>
-                <ScrollLink
-                  href={`#${id}`}
-                  title={title}
-                  className="group flex items-center gap-3 rounded-lg px-2 py-2 text-sm leading-5 text-ink-soft transition-colors hover:bg-oxblood hover:text-white focus-visible:bg-oxblood focus-visible:text-white focus-visible:outline-none"
-                >
-                  <span className="grid size-8 shrink-0 place-items-center rounded-md bg-cherry/15 text-ink-cherry transition-colors group-hover:bg-cherry group-hover:text-white group-focus-visible:bg-cherry group-focus-visible:text-white">
-                    <Icon aria-hidden="true" className="size-4" />
-                  </span>
-                  {title}
-                </ScrollLink>
-              </Reveal>
-            ))}
-          </ol>
-        </nav>
+      {/* From xl the gap puts the reading column's centre on the page's
+          centre, with the contents in the margin beside it. */}
+      <Container className="pb-20 sm:pb-28 lg:grid lg:grid-cols-[14rem_minmax(0,1fr)] lg:items-start lg:gap-x-12 xl:grid-cols-[16rem_minmax(0,1fr)] xl:gap-x-24">
+        <Contents />
 
-        <div className="mt-12 space-y-12 lg:mt-0">
-          {sections.map(({ id, title, icon: Icon, Body }, i) => (
+        {/* 56ch of Archivo, whose zero is wide, sets about 70 characters to
+            the line. */}
+        <div className="mt-14 max-w-[56ch] space-y-20 text-pretty text-ink-soft sm:space-y-28 lg:mt-0">
+          {sections.map(({ id, title, Body }) => (
             <section
               key={id}
               id={id}
               aria-labelledby={`${id}-heading`}
-              className="scroll-mt-8 overflow-hidden rounded-2xl border border-line bg-panel"
+              className="scroll-mt-24 border-t-2 border-ink pt-5 sm:pt-6"
             >
-              <div className="flex items-center gap-5 border-b-2 border-cherry bg-linear-to-r from-oxblood to-panel light:from-cherry/10 px-6 py-6 sm:px-8">
-                <span className="grid size-14 shrink-0 place-items-center rounded-xl bg-cherry text-white shadow-lg shadow-cherry/30">
-                  <Icon aria-hidden="true" className="size-7" />
-                </span>
-                <div>
-                  <p className="font-oswald text-xs uppercase tracking-[0.3em] text-ink-soft">
-                    Section {String(i + 1).padStart(2, "0")}
-                  </p>
-                  <h2
-                    id={`${id}-heading`}
-                    className="mt-1 font-bebas-neue text-3xl leading-none tracking-wide text-ink sm:text-4xl"
-                  >
-                    {title}
-                  </h2>
-                </div>
-              </div>
-              <div className="space-y-12 px-6 py-8 sm:px-8 sm:py-10">
+              <h2 id={`${id}-heading`} className="type-heading text-ink">
+                {title}
+              </h2>
+              <div className="mt-8 space-y-12 sm:mt-10 sm:space-y-14">
                 <Body />
               </div>
             </section>
           ))}
         </div>
-      </div>
+      </Container>
 
-      <section className="bg-cherry">
-        <div className="mx-auto flex w-full max-w-6xl flex-col items-start gap-6 px-6 py-14 sm:flex-row sm:items-center sm:justify-between">
-          <Reveal>
-            <h2 className="font-bebas-neue text-4xl tracking-wide text-white sm:text-5xl">
+      <section aria-labelledby="data-questions" className="border-t border-rule">
+        <Container className="grid gap-10 py-16 sm:py-20 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-end">
+          <div>
+            <h2 id="data-questions" className="type-heading text-ink">
               Questions about your data?
             </h2>
-            <p className="mt-2 text-chrome">
+            <p className="mt-3 max-w-[48ch] type-lede text-ink-soft">
               Get in touch about any request to see, correct or delete your personal information.
             </p>
-          </Reveal>
-          <Reveal step={1}>
-            <Button
-              asChild
-              size="lg"
-              className="bg-white font-oswald uppercase tracking-[0.15em] text-cherry hover:bg-chrome"
-            >
-              <Link href="/contact-us" title="Contact Us">
-                Contact Us
+          </div>
+          <div className="lg:justify-self-end">
+            <Button asChild size="lg" className="max-sm:w-full">
+              <Link href="/contact-us">
+                Contact us
               </Link>
             </Button>
-          </Reveal>
-        </div>
+          </div>
+        </Container>
       </section>
     </main>
   );
 }
 
-// 20px semibold counts as large text, so ink-cherry on the panel meets WCAG
-// AA contrast here.
+// The contents: plain anchors, since the page already glides to an anchor
+// unless the visitor asks for less motion (app/globals.css). Below lg they sit
+// above the text; from lg they stay in view beside it.
+function Contents() {
+  return (
+    <nav
+      aria-labelledby="contents-label"
+      className="max-w-[56ch] border-t-2 border-ink pt-5 sm:pt-6 lg:sticky lg:top-24"
+    >
+      <p id="contents-label" className="type-meta text-ink-muted">
+        On this page
+      </p>
+      <ol className="mt-2 divide-y divide-rule">
+        {sections.map(({ id, title }) => (
+          <li key={id}>
+            <a
+              href={`#${id}`}
+              className="block py-3 text-base leading-snug font-semibold text-ink-soft transition-colors duration-150 ease-out-expo hover:text-ink hover:underline lg:text-[0.9375rem]"
+            >
+              {title}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  );
+}
+
 function Topic({ title, children }) {
   return (
     <div>
-      <h3 className="font-oswald text-xl font-semibold uppercase tracking-[0.12em] text-ink-cherry">
-        {title}
-      </h3>
-      <div className="mt-4 space-y-4 leading-7 text-ink-soft">{children}</div>
+      <h3 className="type-subheading text-ink">{title}</h3>
+      <div className="mt-4 space-y-5">{children}</div>
     </div>
   );
 }
 
+// A question and its answer, one row of a ruled list (a <dl>). A <dt>, not a
+// heading, so the page's outline stays at its sections and topics.
 function QA({ question, children }) {
   return (
-    <div className="rounded-xl border-l-4 border-cherry bg-well p-5">
-      <h4 className="font-semibold text-ink">{question}</h4>
-      <div className="mt-3 space-y-3 text-sm leading-6 text-ink-soft">{children}</div>
+    <div className="border-b border-rule py-5">
+      <dt className="text-lg leading-snug font-bold text-ink [font-stretch:104%]">{question}</dt>
+      <dd className="mt-2 space-y-4">{children}</dd>
     </div>
   );
 }
 
+// A quiet plate beside the text: a small label, then the note.
 function Callout({ icon: Icon, label, children }) {
   return (
-    <div className="rounded-xl border border-iron-oxide bg-oxblood/60 p-5 text-ink light:border-cherry/25 light:bg-cherry/5">
-      <p className="inline-flex items-center gap-2 rounded-full bg-cherry px-3 py-1 font-oswald text-xs uppercase tracking-[0.25em] text-white">
-        <Icon aria-hidden="true" className="size-3.5" />
+    <div className="rounded-[2px] bg-sunk px-5 py-4 sm:px-6 sm:py-5">
+      <p className="flex items-center gap-2 type-meta text-ink-muted">
+        <Icon aria-hidden="true" strokeWidth={1.75} className="size-4 shrink-0" />
         {label}
       </p>
-      <p className="mt-3 leading-7">{children}</p>
+      <p className="mt-2 text-base/relaxed text-ink-soft">{children}</p>
     </div>
   );
 }
@@ -214,8 +183,10 @@ function Overview() {
         </p>
       </Topic>
 
-      <Topic title="Data collection on our website">
-        <div className="grid gap-4 sm:grid-cols-2">
+      {/* Not "Data collection on our website": that's the third section's
+          heading, and SEO audits flag a heading that repeats. */}
+      <Topic title="Your data at a glance">
+        <dl className="border-t border-rule">
           <QA question="Who is responsible for the data collection on this website?">
             <p>
               The data collected on this website are processed by the website operator. The
@@ -251,7 +222,7 @@ function Overview() {
               complaint with the competent regulatory authorities.
             </p>
           </QA>
-        </div>
+        </dl>
       </Topic>
 
       <Topic title="Analytics and third-party tools">
@@ -292,9 +263,9 @@ function GeneralInformation() {
       <Topic title="Notice concerning the party responsible for this website">
         <p>The party responsible for processing data on this website is:</p>
         {/* The operator's address, phone and email still need to be added here. */}
-        <address className="flex items-center gap-4 rounded-xl bg-linear-to-r from-cherry to-cherry-dark p-5 font-semibold not-italic text-white">
-          <Building2 aria-hidden="true" className="size-6 shrink-0" />
-          Metal Werx Scrap Metal Recycling
+        <address className="flex items-center gap-3 border-y border-rule py-4 text-lg leading-snug font-bold text-ink not-italic [font-stretch:104%]">
+          <Building2 aria-hidden="true" strokeWidth={1.75} className="size-5 shrink-0 text-ink-muted" />
+          {YARD.name}
         </address>
         <p>
           The responsible party is the natural or legal person who alone or jointly with others
@@ -405,13 +376,15 @@ function DataCollection() {
           The website provider automatically collects and stores information that your browser
           automatically transmits to us in &ldquo;server log files&rdquo;. These are:
         </p>
-        <ul className="grid gap-3 sm:grid-cols-2">
+        {/* Two columns from sm, with one rule across both under each row, and
+            every row as tall as the tallest, since two labels wrap. */}
+        <ul className="grid border-t border-rule sm:auto-rows-fr sm:grid-cols-2">
           {serverLogFields.map(({ label, icon: Icon }) => (
             <li
               key={label}
-              className="flex items-center gap-3 rounded-lg bg-well px-4 py-3 text-sm text-ink"
+              className="flex items-center gap-3 border-b border-rule py-3 text-base sm:pr-6"
             >
-              <Icon aria-hidden="true" className="size-5 shrink-0 text-ink-cherry" />
+              <Icon aria-hidden="true" strokeWidth={1.75} className="size-[1.125rem] shrink-0 text-ink-muted" />
               {label}
             </li>
           ))}
@@ -555,14 +528,9 @@ function Newsletter() {
 }
 
 const sections = [
-  { id: "overview", title: "An overview of data protection", icon: ShieldCheck, Body: Overview },
-  {
-    id: "general",
-    title: "General information and mandatory information",
-    icon: Info,
-    Body: GeneralInformation,
-  },
-  { id: "data-collection", title: "Data collection on our website", icon: Database, Body: DataCollection },
-  { id: "analytics", title: "Analytics and advertising", icon: ChartColumn, Body: Analytics },
-  { id: "newsletter", title: "Newsletter", icon: Mail, Body: Newsletter },
+  { id: "overview", title: "An overview of data protection", Body: Overview },
+  { id: "general", title: "General information and mandatory information", Body: GeneralInformation },
+  { id: "data-collection", title: "Data collection on our website", Body: DataCollection },
+  { id: "analytics", title: "Analytics and advertising", Body: Analytics },
+  { id: "newsletter", title: "Newsletter", Body: Newsletter },
 ];

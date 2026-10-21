@@ -1,54 +1,76 @@
-// Renders a post body from Strapi's Rich text (Blocks) editor as HTML, on the
-// server, so the formatted post is in the prerendered page.
+import Link from "next/link";
 
-// The page title is the only <h1>, so the editor's Heading 1 becomes an <h2>,
-// Heading 2 an <h3>, and so on (Heading 5 and 6 both become <h6>).
+// Renders a post body from Strapi's Rich text (Blocks) editor as HTML, on the
+// server, so the formatted post is in the prerendered page. The column is set
+// for reading: 18px type at about 68 to 72 characters a line, with more space
+// over a heading than under it. Archivo's zero (what the ch unit measures) is
+// far wider than its average letter, so that measure is 54ch, not 68ch.
+
+// The page title is the only <h1>, so a post's headings start at <h2>, and
+// each heading level the editor used takes the next tag down, in order. A post
+// written with Heading 3 alone gets <h2>s, and none skips a level.
+function headingTags(blocks) {
+  const levels = [...new Set(blocks.filter((b) => b.type === "heading").map((b) => b.level))];
+  levels.sort((a, b) => a - b);
+  return new Map(levels.map((level, i) => [level, Math.min(i + 2, 6)]));
+}
+
+// Styles by tag, on the site's type scale.
 const HEADING_STYLES = {
-  1: "pt-4 font-bebas-neue text-5xl leading-none tracking-wide text-ink",
-  2: "pt-2 font-bebas-neue text-4xl leading-none tracking-wide text-ink",
-  3: "pt-2 font-oswald text-xl uppercase tracking-[0.15em] text-ink",
-  4: "font-oswald text-lg uppercase tracking-[0.15em] text-ink",
-  5: "font-oswald text-base uppercase tracking-[0.15em] text-ink-muted",
-  6: "font-oswald text-sm uppercase tracking-[0.15em] text-ink-muted",
+  2: "mt-12 type-subheading text-ink",
+  3: "mt-10 text-lg leading-snug font-bold text-ink [font-stretch:104%]",
+  4: "mt-8 text-base leading-snug font-bold text-ink",
+  5: "mt-8 type-meta text-ink",
+  6: "mt-8 type-meta text-ink-muted",
 };
 
+// Each block's space over it; the block straight after a heading sits closer.
+const FLOW = "mt-6 [h2+&]:mt-3 [h3+&]:mt-3 [h4+&]:mt-2 [h5+&]:mt-2 [h6+&]:mt-2";
+
 export default function BlogBody({ blocks }) {
+  const tags = headingTags(blocks);
   return (
-    <div className="mt-10 space-y-6 border-t border-line pt-10 text-lg leading-8 text-ink-soft">
+    <div className="mt-12 max-w-[54ch] text-lg leading-[1.7] text-pretty text-ink-soft sm:mt-14 [&>:first-child]:mt-0">
       {blocks.map((block, i) => (
-        <Block key={i} block={block} />
+        <Block key={i} block={block} tags={tags} />
       ))}
     </div>
   );
 }
 
-function Block({ block }) {
+function Block({ block, tags }) {
   switch (block.type) {
     case "paragraph":
       return (
-        <p>
+        <p className={FLOW}>
           <Inline nodes={block.children} />
         </p>
       );
     case "heading": {
-      const Tag = `h${Math.min(block.level + 1, 6)}`;
+      const level = tags.get(block.level) ?? 6;
+      const Tag = `h${level}`;
       return (
-        <Tag className={HEADING_STYLES[block.level]}>
+        <Tag className={HEADING_STYLES[level]}>
           <Inline nodes={block.children} />
         </Tag>
       );
     }
     case "list":
-      return <List list={block} />;
+      return <List list={block} className={FLOW} />;
     case "quote":
+      // A quiet inset: set in from the column on a hairline, a step larger.
       return (
-        <blockquote className="border-l-4 border-cherry pl-6 italic text-ink">
+        <blockquote className={`${FLOW} border-l border-ink pl-6 text-[1.1875rem] leading-[1.6] text-ink sm:pl-8`}>
           <Inline nodes={block.children} />
         </blockquote>
       );
     case "code":
+      // tabIndex, so a keyboard can scroll a long line into view.
       return (
-        <pre className="overflow-x-auto rounded-lg bg-well p-4 text-sm leading-6 text-ink">
+        <pre
+          tabIndex={0}
+          className={`${FLOW} overflow-x-auto rounded-[2px] bg-sunk px-5 py-4 font-mono text-[0.9375rem] leading-relaxed text-ink`}
+        >
           <code>{block.children.map((child) => child.text).join("")}</code>
         </pre>
       );
@@ -59,11 +81,15 @@ function Block({ block }) {
   }
 }
 
-function List({ list }) {
+function List({ list, className = "" }) {
   const ordered = list.format === "ordered";
   const Tag = ordered ? "ol" : "ul";
   return (
-    <Tag className={`space-y-2 pl-6 marker:text-cherry ${ordered ? "list-decimal" : "list-disc"}`}>
+    <Tag
+      className={`${className} space-y-2 pl-6 marker:text-ink-muted ${
+        ordered ? "list-decimal marker:font-semibold marker:tabular-nums" : "list-[square]"
+      }`}
+    >
       {list.children.map((item, i) =>
         // Indented items arrive as a list inside the list. An <li> around it
         // keeps the HTML valid; list-none hides the extra bullet.
@@ -72,7 +98,7 @@ function List({ list }) {
             <List list={item} />
           </li>
         ) : (
-          <li key={i}>
+          <li key={i} className="pl-1">
             <Inline nodes={item.children} />
           </li>
         ),
@@ -81,23 +107,25 @@ function List({ list }) {
   );
 }
 
+// A photo in the post, as a plate with its caption under it, given more room
+// than a paragraph on either side.
 function Figure({ image }) {
   return (
-    <figure>
+    <figure className="my-10">
       {/* A plain <img> rather than next/image, so no next.config remotePatterns
           entry is needed for the Strapi server. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={image.url}
         alt={image.alternativeText ?? ""}
-        title={image.caption || image.alternativeText || image.name}
+        title={image.caption || undefined}
         width={image.width}
         height={image.height}
         loading="lazy"
-        className="h-auto w-full rounded-lg"
+        className="h-auto w-full rounded-[2px] bg-sunk"
       />
       {image.caption && (
-        <figcaption className="mt-3 text-center text-sm text-ink-muted">{image.caption}</figcaption>
+        <figcaption className="mt-3 text-sm leading-snug text-ink-muted">{image.caption}</figcaption>
       )}
     </figure>
   );
@@ -108,21 +136,19 @@ function plainText(nodes) {
   return nodes.map((node) => node.text ?? plainText(node.children ?? [])).join("");
 }
 
+const LINK = "text-ink underline decoration-ink-muted decoration-1 transition-colors duration-150 ease-out-expo hover:decoration-ink";
+
 function Inline({ nodes }) {
-  return nodes.map((node, i) =>
-    node.type === "link" ? (
-      <a
-        key={i}
-        href={node.url}
-        title={plainText(node.children)}
-        className="text-ink-cherry underline underline-offset-4 transition-colors hover:text-ink"
-      >
+  return nodes.map((node, i) => {
+    if (node.type !== "link") return <Text key={i} node={node} />;
+    // Links to the site's own pages navigate without a full page load.
+    const Anchor = node.url?.startsWith("/") ? Link : "a";
+    return (
+      <Anchor key={i} href={node.url} title={plainText(node.children)} className={LINK}>
         <Inline nodes={node.children} />
-      </a>
-    ) : (
-      <Text key={i} node={node} />
-    ),
-  );
+      </Anchor>
+    );
+  });
 }
 
 function Text({ node }) {
@@ -131,7 +157,9 @@ function Text({ node }) {
     .split("\n")
     .flatMap((line, i) => (i === 0 ? [line] : [<br key={i} />, line]));
   if (node.code) {
-    content = <code className="rounded bg-well px-1.5 py-0.5 text-[0.9em] text-ink">{content}</code>;
+    content = (
+      <code className="rounded-[2px] bg-sunk px-1.5 py-0.5 font-mono text-[0.875em] text-ink">{content}</code>
+    );
   }
   if (node.bold) content = <strong className="font-semibold text-ink">{content}</strong>;
   if (node.italic) content = <em>{content}</em>;

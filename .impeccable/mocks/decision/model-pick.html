@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weighbridge Docket, first viewport sketch</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1440px; height: 900px; overflow: hidden; }
+  body { background: #D5D8DB; font-family: "Consolas", "Courier New", monospace; color: #1E1F22; }
+  nav { height: 64px; display: flex; align-items: center; padding: 0 56px; gap: 32px; font-family: Arial, sans-serif; font-size: 16px; }
+  nav .logo { font-family: Garamond, Georgia, serif; font-weight: 700; font-size: 26px; letter-spacing: 0.04em; }
+  nav .call { margin-left: auto; background: #2C4593; color: #fff; padding: 12px 20px; font-weight: 700; }
+  .ticket {
+    position: absolute; left: 400px; top: 88px; width: 640px; height: 900px;
+    background: #FAFAF7; padding: 40px 48px;
+    /* Perforated top edge. */
+    -webkit-mask: radial-gradient(circle 6px at 12px 0, transparent 98%, #000) -12px 0 / 24px 100% repeat-x;
+  }
+  .ticket .head { display: flex; justify-content: space-between; font-size: 15px; }
+  .ticket h1 { margin-top: 32px; font-size: 64px; line-height: 1.02; font-weight: 700; letter-spacing: -0.01em; }
+  .ticket .lede { margin-top: 20px; font-family: Arial, sans-serif; font-size: 18px; line-height: 1.5; }
+  table { margin-top: 32px; width: 100%; border-collapse: collapse; font-size: 17px; }
+  td { padding: 8px 0; border-bottom: 1px dashed #9A9CA0; }
+  td:last-child { text-align: right; }
+  .sample { margin-top: 12px; font-size: 13px; color: #555; }
+  .stamp {
+    position: absolute; right: 56px; top: 330px; transform: rotate(-8deg);
+    border: 4px solid #C33A3A; color: #C33A3A; padding: 10px 16px; font-family: Arial, sans-serif;
+    font-weight: 900; font-size: 26px; letter-spacing: 0.06em;
+  }
+  .foot { margin-top: 28px; display: flex; gap: 12px; }
+  .foot span { padding: 16px 24px; font-family: Arial, sans-serif; font-weight: 700; font-size: 20px; }
+  .foot .a { background: #1E1F22; color: #fff; }
+  .foot .b { background: #F2E39A; }
+  .copy { position: absolute; top: 120px; width: 620px; height: 860px; background: #F1C6CD; left: 420px; z-index: -1; transform: rotate(1.5deg); }
+</style>
+</head>
+<body>
+  <nav><span class="logo">METAL WERX</span><span>What we buy</span><span>Services</span><span>About</span><span>Contact</span><span class="call">0470 131 025</span></nav>
+  <div class="copy"></div>
+  <div class="ticket">
+    <div class="head"><span>WEIGH TICKET 000427</span><span>HALLAM YARD</span></div>
+    <h1>Turn your scrap metal into cash</h1>
+    <p class="lede">We buy ferrous and non-ferrous metals, car bodies and batteries. Bring it in, hire a bin, or book a pickup.</p>
+    <table>
+      <tr><td>Copper, clean pipe</td><td>12.4 kg</td></tr>
+      <tr><td>Brass, mixed fittings</td><td>6.8 kg</td></tr>
+      <tr><td>Aluminium, cans</td><td>3.1 kg</td></tr>
+      <tr><td>Steel, light gauge</td><td>140.0 kg</td></tr>
+      <tr><td><b>Net weight</b></td><td><b>162.3 kg</b></td></tr>
+    </table>
+    <p class="sample">Sample ticket: an example of how a load is graded, not a price.</p>
+    <div class="stamp">WEIGHED</div>
+    <div class="foot"><span class="a">Call 0470 131 025</span><span class="b">Get directions</span></div>
+  </div>
+</body>
+</html>

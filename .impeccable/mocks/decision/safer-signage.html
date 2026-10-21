@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yard Gate Signs, first viewport sketch</title>
+<style>
+  :root { --white: #FFFFFF; --black: #1C1C1C; --yellow: #F5C400; --blue: #005BAC; --green: #00843D; --ground: #E3E5E2; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1440px; height: 900px; overflow: hidden; }
+  body { background-color: var(--ground); font-family: "Segoe UI", Arial, sans-serif; color: var(--black); }
+  nav { height: 72px; background-color: var(--black); color: var(--white); display: flex; align-items: center; padding: 0 64px; gap: 36px; font-size: 16px; font-weight: 600; }
+  nav .logo { font-family: Garamond, Georgia, serif; font-weight: 700; font-size: 28px; letter-spacing: 0.04em; }
+  nav .call { margin-left: auto; background-color: var(--yellow); color: var(--black); padding: 12px 22px; font-weight: 800; }
+  .board { position: absolute; left: 64px; right: 64px; top: 104px; display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: auto auto; gap: 20px; }
+  .main { grid-row: span 2; background-color: var(--white); border-radius: 12px; padding: 56px; box-shadow: inset 0 0 0 6px var(--black); }
+  .main h1 { font-size: 88px; line-height: 0.98; font-weight: 900; letter-spacing: -0.015em; }
+  .main .lede { margin-top: 24px; font-size: 21px; line-height: 1.5; max-width: 640px; }
+  .main .call { margin-top: 36px; display: inline-flex; align-items: center; height: 80px; padding: 0 36px; background-color: var(--yellow); color: var(--black); border-radius: 8px; font-size: 30px; font-weight: 900; }
+  .sign { border-radius: 12px; padding: 32px; color: var(--white); display: flex; gap: 24px; align-items: center; min-height: 200px; }
+  .sign i { width: 96px; height: 96px; border-radius: 50%; background-color: var(--white); flex: none; }
+  .sign b { font-size: 34px; line-height: 1.05; font-weight: 900; }
+  .blue { background-color: var(--blue); }
+  .green { background-color: var(--green); }
+  .notice { position: absolute; left: 64px; right: 64px; top: 748px; height: 120px; background-color: var(--yellow); border-radius: 12px; display: flex; align-items: center; padding: 0 40px; font-size: 34px; font-weight: 900; }
+</style>
+</head>
+<body>
+  <nav><span class="logo">METAL WERX</span><span>What we buy</span><span>Services</span><span>Blog</span><span>About</span><span>Contact</span><span class="call">0470 131 025</span></nav>
+  <div class="board">
+    <div class="main">
+      <h1>Turn Your Scrap Metal Into Cash</h1>
+      <p class="lede">We buy ferrous and non-ferrous metals, car bodies and batteries. Bring your scrap to the yard, hire a bin, or book a pickup.</p>
+      <span class="call">Call 0470 131 025</span>
+    </div>
+    <div class="sign blue"><i></i><b>Photo ID required</b></div>
+    <div class="sign green"><i></i><b>131 Wedgewood Rd, Hallam</b></div>
+  </div>
+  <div class="notice">Paid by bank transfer once your load is weighed</div>
+</body>
+</html>

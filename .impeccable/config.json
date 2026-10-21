@@ -11,6 +11,42 @@
         ],
         "createdAt": "2026-10-20T04:29:24.913Z",
         "reason": "Claude: L174 is a code comment mentioning <img>, not a rendered tag; the real <img> at L179 has src, alt and title"
+      },
+      {
+        "rule": "undersized-ui-text",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-10-20T05:02:51.939Z",
+        "reason": "Claude (session 2026-10-20): decision-round sketch fixture under .impeccable/mocks, never served or shipped"
+      },
+      {
+        "rule": "overused-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/model-pick.html"
+        ],
+        "createdAt": "2026-10-20T05:02:52.047Z",
+        "reason": "Claude (session 2026-10-20): decision-round sketch fixture under .impeccable/mocks, never served or shipped"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/canon.html"
+        ],
+        "createdAt": "2026-10-20T05:02:52.186Z",
+        "reason": "Claude (session 2026-10-20): decision-round sketch fixture under .impeccable/mocks, never served or shipped"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/safer-livery.html"
+        ],
+        "createdAt": "2026-10-20T05:02:52.303Z",
+        "reason": "Claude (session 2026-10-20): decision-round sketch fixture under .impeccable/mocks, never served or shipped"
       }
     ]
   }

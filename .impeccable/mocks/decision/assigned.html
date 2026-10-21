@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shed Steel and Colour Chart, first viewport sketch</title>
+<style>
+  :root {
+    --rib: 24px;
+    --zincalume: #E4E6E1;
+    --zinc-rib: #D6D9D3;
+    --monument: #2F3133;
+    --monument-deep: #232527;
+    --cottage: #2D4A3A;
+    --cottage-light: #375745;
+    --cottage-dark: #243C2F;
+    --copper: #D98A52;
+    --shale: #C5C8C2;
+    --white: #FFFFFF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1440px; height: 900px; overflow: hidden; }
+  body {
+    background: var(--zincalume);
+    /* Wall cladding: faint vertical ribs at the rib pitch. */
+    background-image: repeating-linear-gradient(90deg, transparent 0 calc(var(--rib) * 3 - 2px), var(--zinc-rib) calc(var(--rib) * 3 - 2px) calc(var(--rib) * 3));
+    font-family: "Archivo", "Segoe UI", Arial, sans-serif;
+    color: var(--monument);
+  }
+  nav {
+    height: 76px; background: var(--monument); display: flex; align-items: center;
+    padding: 0 64px; gap: 40px; color: var(--white);
+  }
+  .logo { font-family: Garamond, "EB Garamond", Georgia, serif; font-weight: 700; font-size: 30px; letter-spacing: 0.04em; line-height: 1; }
+  .logo small { display: block; font-family: Arial, sans-serif; font-size: 9px; letter-spacing: 0.42em; margin-top: 4px; font-weight: 700; }
+  .links { display: flex; gap: 32px; font-size: 16px; font-weight: 500; }
+  .actions { margin-left: auto; display: flex; gap: 8px; }
+  .plate { height: 48px; padding: 0 24px; display: inline-flex; align-items: center; font-weight: 800; font-size: 17px; }
+  .plate.copper { background: var(--copper); color: var(--monument); }
+  .plate.shale { background: var(--shale); color: var(--monument); }
+  .opening {
+    position: absolute; left: 64px; right: 64px; top: 112px; height: 760px;
+    background: var(--monument-deep); overflow: hidden;
+  }
+  .headbox { position: absolute; left: 48px; right: 48px; top: 100px; height: 20px; background: var(--monument); }
+  .door {
+    position: absolute; left: 0; right: 0; top: 0; height: 520px;
+    background-color: var(--cottage);
+    /* Roller door corrugation: one rib every --rib, lit from above. */
+    background-image: repeating-linear-gradient(180deg, var(--cottage-light) 0 2px, var(--cottage) 2px calc(var(--rib) - 3px), var(--cottage-dark) calc(var(--rib) - 3px) var(--rib));
+    padding: 64px 72px 0;
+    color: var(--white);
+  }
+  .rail { position: absolute; left: 0; right: 0; top: 520px; height: 24px; background: var(--cottage-dark); }
+  .rail::after { content: ""; position: absolute; left: 50%; top: 8px; width: 96px; height: 8px; margin-left: -48px; background: var(--monument); }
+  .eyebrow { font-size: 18px; font-weight: 600; color: #E9EFEA; }
+  h1 {
+    margin-top: 16px; font-size: 104px; line-height: 0.94; font-weight: 900;
+    letter-spacing: 0.01em; font-stretch: 125%; max-width: 1100px;
+  }
+  .lede { margin-top: 28px; font-size: 21px; line-height: 1.5; max-width: 640px; color: #EEF2EF; }
+  .door-actions { margin-top: 32px; display: flex; gap: 12px; align-items: center; }
+  .door-actions .plate { height: 64px; font-size: 24px; padding: 0 32px; }
+  .door-actions .addr { margin-left: 24px; font-size: 17px; color: #E3EAE5; }
+  .inside { position: absolute; left: 72px; right: 72px; top: 576px; color: var(--white); background: var(--monument-deep); }
+  .inside h2 { font-size: 30px; font-weight: 800; font-stretch: 112%; }
+  .chart { margin-top: 24px; display: grid; grid-template-columns: repeat(8, 1fr); gap: 24px; }
+  .sw { display: flex; flex-direction: column; gap: 10px; }
+  .swatch { height: 96px; }
+  .sw span { font-size: 16px; font-weight: 600; color: #FFFFFF; background: var(--monument-deep); }
+  .copper-s { background: linear-gradient(180deg, #D88A55, #B4632F); }
+  .brass-s { background: linear-gradient(180deg, #D9B860, #B38A2E); }
+  .alu-s { background: linear-gradient(180deg, #D3D7DA, #A9AFB4); }
+  .ss-s { background: linear-gradient(180deg, #B8BFC4, #8E979E); }
+  .lead-s { background: linear-gradient(180deg, #7C8792, #5B6570); }
+  .steel-s { background: linear-gradient(180deg, #5E646B, #43484E); }
+  .wire-s { background: repeating-linear-gradient(90deg, #2E7D4F 0 16px, #C8342B 16px 32px, #2B5BA8 32px 48px, #E3C53A 48px 64px); }
+  .car-s { background: linear-gradient(180deg, #8C9AA6, #64717C); }
+</style>
+</head>
+<body>
+  <nav>
+    <div class="logo">METAL WERX<small>SCRAP METAL RECYCLING</small></div>
+    <div class="links"><span>What we buy</span><span>Services</span><span>Blog</span><span>About</span><span>Contact</span></div>
+    <div class="actions"><span class="plate copper">0470 131 025</span><span class="plate shale">Get a quote</span></div>
+  </nav>
+  <div class="headbox"></div>
+  <div class="opening">
+    <div class="door">
+      <p class="eyebrow">Metal Werx Scrap Metal Recycling</p>
+      <h1>Turn Your Scrap Metal Into Cash</h1>
+      <p class="lede">We buy ferrous and non-ferrous metals, car bodies and batteries. Bring your scrap to the yard, hire a bin, or book a pickup.</p>
+      <div class="door-actions">
+        <span class="plate copper">Call 0470 131 025</span>
+        <span class="plate shale">Get a quote</span>
+        <span class="addr">131 Wedgewood Rd, Hallam</span>
+      </div>
+    </div>
+    <div class="rail"></div>
+    <div class="inside">
+      <h2>What have you got?</h2>
+      <div class="chart">
+        <div class="sw"><div class="swatch copper-s"></div><span>Copper</span></div>
+        <div class="sw"><div class="swatch brass-s"></div><span>Brass</span></div>
+        <div class="sw"><div class="swatch alu-s"></div><span>Aluminium</span></div>
+        <div class="sw"><div class="swatch ss-s"></div><span>Stainless</span></div>
+        <div class="sw"><div class="swatch lead-s"></div><span>Lead and batteries</span></div>
+        <div class="sw"><div class="swatch wire-s"></div><span>PVC wire</span></div>
+        <div class="sw"><div class="swatch steel-s"></div><span>Machinery</span></div>
+        <div class="sw"><div class="swatch car-s"></div><span>Unwanted cars</span></div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

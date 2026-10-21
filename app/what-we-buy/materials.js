@@ -103,7 +103,7 @@ export const materials = [
     // https://www.pexels.com/photo/close-up-photo-of-copper-wires-5279317/
     image: {
       url: pexels(5279317),
-      alt: "Tangled scrap copper wire",
+      alt: "A tangle of bright, bare copper wire, stripped of its insulation",
       title: "Scrap copper wire",
     },
     overview: {
@@ -201,7 +201,7 @@ export const materials = [
     cta: {
       heading: "Got Copper to Sell?",
       text: "Bring it to our Hallam yard, or tell us what you've got and we'll give you a price.",
-      cta: { text: "Get a Quote", href: "/contact-us" },
+      cta: { text: "Get a Price", href: "/contact-us" },
     },
   },
   {
@@ -220,8 +220,8 @@ export const materials = [
     // https://www.pexels.com/photo/pile-of-golden-screws-14593018/
     image: {
       url: pexels(14593018),
-      alt: "A pile of brass screws and nuts",
-      title: "Brass screws and nuts",
+      alt: "A heap of small, shiny brass threaded fittings",
+      title: "Brass threaded fittings",
     },
     overview: {
       heading: "Small Pieces, Good Money",
@@ -314,7 +314,7 @@ export const materials = [
     cta: {
       heading: "Got Brass to Sell?",
       text: "Bring it to our Hallam yard, or tell us what you've got and we'll give you a price.",
-      cta: { text: "Get a Quote", href: "/contact-us" },
+      cta: { text: "Get a Price", href: "/contact-us" },
     },
   },
   {
@@ -333,7 +333,7 @@ export const materials = [
     // https://unsplash.com/photos/crushed-assorted-beverage-cans-lot-k1tUxfs8JYY
     image: {
       url: unsplash("photo-1561503412-852800622772"),
-      alt: "Crushed aluminium drink cans",
+      alt: "A bale of crushed aluminium drink cans in mixed colours",
       title: "Crushed aluminium cans",
     },
     overview: {
@@ -421,7 +421,7 @@ export const materials = [
     cta: {
       heading: "Got Aluminium to Sell?",
       text: "Bring it to our Hallam yard, or tell us what you've got and we'll give you a price.",
-      cta: { text: "Get a Quote", href: "/contact-us" },
+      cta: { text: "Get a Price", href: "/contact-us" },
     },
   },
   {
@@ -440,7 +440,7 @@ export const materials = [
     // https://www.pexels.com/photo/wheel-mags-on-a-stand-5661682/
     image: {
       url: pexels(5661682),
-      alt: "Alloy wheels stacked on shelves",
+      alt: "Rows of used alloy wheels in different spoke designs on yellow steel shelving",
       title: "Stacked alloy wheels",
     },
     overview: {
@@ -476,7 +476,7 @@ export const materials = [
         // https://www.pexels.com/photo/aluminum-rim-on-a-pile-of-tires-6602921/
         {
           url: pexels(6602921),
-          alt: "A polished alloy wheel leaning on a stack of used car tyres",
+          alt: "A polished multi-spoke alloy wheel leaning on a stack of car tyres",
           title: "Alloy rim on old tyres",
         },
         // https://www.pexels.com/photo/wheels-stacked-near-wall-16938867/
@@ -538,7 +538,7 @@ export const materials = [
     cta: {
       heading: "Got Old Wheels?",
       text: "Bring them to our Hallam yard, or tell us how many you've got and we'll give you a price.",
-      cta: { text: "Get a Quote", href: "/contact-us" },
+      cta: { text: "Get a Price", href: "/contact-us" },
     },
   },
   {
@@ -557,7 +557,7 @@ export const materials = [
     // https://www.pexels.com/photo/container-of-short-stainless-steel-pipes-with-milled-ends-12951634/
     image: {
       url: pexels(12951634),
-      alt: "Stainless steel pipe offcuts",
+      alt: "A blue bin heaped with short stainless steel pipe offcuts",
       title: "Stainless steel offcuts",
     },
     overview: {
@@ -593,7 +593,7 @@ export const materials = [
         // https://unsplash.com/photos/a-stainless-steel-kitchen-with-a-sink-and-oven-Kyqu9GSsV9Q
         {
           url: unsplash("photo-1671656200343-d2a322492223"),
-          alt: "Stainless steel commercial kitchen sinks, splashback and benches",
+          alt: "A stainless steel sink and hand basin under stainless steel cupboards in a commercial kitchen",
           title: "Stainless steel commercial sinks",
         },
       ],
@@ -645,7 +645,7 @@ export const materials = [
     cta: {
       heading: "Got Stainless to Sell?",
       text: "Bring it to our Hallam yard, or tell us what you've got and we'll give you a price.",
-      cta: { text: "Get a Quote", href: "/contact-us" },
+      cta: { text: "Get a Price", href: "/contact-us" },
     },
   },
   {
@@ -664,8 +664,8 @@ export const materials = [
     // https://unsplash.com/photos/rows-of-batteries-with-red-and-blue-terminals-CH7kRmyBQ4I
     image: {
       url: unsplash("photo-1742899273038-67ff67477663"),
-      alt: "Rows of lead-acid batteries",
-      title: "Lead-acid batteries",
+      alt: "Close-up of rows of industrial battery cells with red and blue terminal caps",
+      title: "Industrial battery cells",
     },
     overview: {
       heading: "Don't Bin Your Battery",
@@ -765,7 +765,7 @@ export const materials = [
     cta: {
       heading: "Got Old Batteries?",
       text: "Bring them to our Hallam yard, whole and upright, and we'll pay you for the lead.",
-      cta: { text: "Get a Quote", href: "/contact-us" },
+      cta: { text: "Get a Price", href: "/contact-us" },
     },
   },
   {
@@ -784,7 +784,7 @@ export const materials = [
     // https://unsplash.com/photos/a-colorful-bundle-of-electrical-wires-on-a-light-background-Sbxf5Dbyerk
     image: {
       url: unsplash("photo-1761507320645-b11a00bfcc34"),
-      alt: "Colourful insulated electrical wires",
+      alt: "Loose lengths of thin insulated wire in many colours on a white background",
       title: "Insulated electrical wire",
     },
     overview: {
@@ -826,7 +826,7 @@ export const materials = [
         // https://www.pexels.com/photo/green-red-and-yellow-coated-wires-5090637/
         {
           url: pexels(5090637),
-          alt: "Loose coils of red, yellow, grey and black insulated wire on a bench",
+          alt: "Coils of red, yellow, black, brown and pale blue electrical cable on a bench, one with its plug still on",
           title: "Coloured insulated wire",
         },
       ],
@@ -878,7 +878,7 @@ export const materials = [
     cta: {
       heading: "Got Wire to Sell?",
       text: "Bring it to our Hallam yard, or tell us what you've got and we'll give you a price.",
-      cta: { text: "Get a Quote", href: "/contact-us" },
+      cta: { text: "Get a Price", href: "/contact-us" },
     },
   },
   {
@@ -897,7 +897,7 @@ export const materials = [
     // https://unsplash.com/photos/gray-ac-motor-2MLhOfRL_hI
     image: {
       url: unsplash("photo-1563456020111-f02d832ae94c"),
-      alt: "An old grey electric motor",
+      alt: "A rusty grey electric motor bolted to green machinery in an old factory",
       title: "Old electric motor",
     },
     overview: {
@@ -939,8 +939,8 @@ export const materials = [
         // https://www.pexels.com/photo/man-fixing-a-car-alternator-16048266/
         {
           url: pexels(16048266),
-          alt: "A mechanic at a workshop bench working on a car alternator",
-          title: "Alternator on the workbench",
+          alt: "A tradesman at a workshop bench holding an open electric motor casing, its copper windings exposed",
+          title: "Rewinding an electric motor",
         },
       ],
       lists: [
@@ -990,7 +990,7 @@ export const materials = [
     cta: {
       heading: "Got Old Motors?",
       text: "Bring them to our Hallam yard, or tell us what you've got and we'll give you a price.",
-      cta: { text: "Get a Quote", href: "/contact-us" },
+      cta: { text: "Get a Price", href: "/contact-us" },
     },
   },
   {
@@ -1009,7 +1009,7 @@ export const materials = [
     // https://unsplash.com/photos/pile-of-old-car-engines-and-parts-G-Fno_v4alo
     image: {
       url: unsplash("photo-1767340078189-4258fbb7bd7c"),
-      alt: "A pile of old car engines and parts",
+      alt: "Used car engines piled together, still fitted with their hoses and wiring",
       title: "Old car engines and parts",
     },
     overview: {
@@ -1046,7 +1046,7 @@ export const materials = [
         // https://www.pexels.com/photo/storage-of-used-machinery-16135855/
         {
           url: pexels(16135855),
-          alt: "Several dirty used car engines on a workshop floor",
+          alt: "Old, grimy engines lined up on wooden pallets on a shed floor",
           title: "Used car engines",
         },
         // https://www.pexels.com/photo/top-view-of-a-pile-of-junk-21470313/
@@ -1105,7 +1105,7 @@ export const materials = [
     cta: {
       heading: "Got Parts to Sell?",
       text: "Bring them to our Hallam yard, or tell us what you've got and we'll give you a price.",
-      cta: { text: "Get a Quote", href: "/contact-us" },
+      cta: { text: "Get a Price", href: "/contact-us" },
     },
   },
   {
@@ -1124,7 +1124,7 @@ export const materials = [
     // https://unsplash.com/photos/old-industrial-machinery-with-rust-and-debris-BpBT7i3JnoM
     image: {
       url: unsplash("photo-1776254575132-fbc8f3d50210"),
-      alt: "Old rusty industrial machinery",
+      alt: "A rusting, disused industrial plant with steel stairs and railings against a wooded hill",
       title: "Old rusty machinery",
     },
     overview: {
@@ -1188,7 +1188,7 @@ export const materials = [
         // https://unsplash.com/photos/an-old-bulldozer-sitting-on-the-side-of-a-dirt-road-9TmqJ0m_sSE
         {
           url: unsplash("photo-1697534444242-ddc344579636"),
-          alt: "A rusty yellow crawler bulldozer left on a grassy hilltop",
+          alt: "A rusty yellow crawler bulldozer with a glass cab, left on a grassy clifftop above the sea",
           title: "Abandoned rusty bulldozer",
         },
       ],
@@ -1264,7 +1264,7 @@ export const materials = [
     // https://unsplash.com/photos/a-bunch-of-cars-that-are-sitting-in-the-dirt-GcBoM7B40Ck
     image: {
       url: unsplash("photo-1719242513425-f5eed99b282f"),
-      alt: "Old cars in a junkyard",
+      alt: "An overgrown wrecking yard with old cars behind a wire fence and a green sedan out front",
       title: "Old cars in a junkyard",
     },
     overview: {

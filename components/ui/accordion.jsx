@@ -1,7 +1,7 @@
 "use client"
 
 import * as AccordionPrimitive from "@radix-ui/react-accordion"
-import { ChevronDown } from "lucide-react"
+import { Plus } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
@@ -9,22 +9,27 @@ const Accordion = AccordionPrimitive.Root
 
 function AccordionItem({ className, ...props }) {
   return (
-    <AccordionPrimitive.Item className={cn("border-b", className)} {...props} />
+    <AccordionPrimitive.Item className={cn("border-b border-rule", className)} {...props} />
   )
 }
 
+// The plus turns into a cross as its answer opens.
 function AccordionTrigger({ className, children, ...props }) {
   return (
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
         className={cn(
-          "flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180",
+          "group/trigger flex flex-1 cursor-pointer items-start justify-between gap-6 py-4 text-left leading-snug font-bold text-ink [font-stretch:104%] transition-colors duration-150 hover:text-ink-soft",
           className,
         )}
         {...props}
       >
         {children}
-        <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
+        <Plus
+          aria-hidden="true"
+          strokeWidth={2}
+          className="mt-[0.2em] size-5 shrink-0 text-ink-muted transition-transform duration-200 ease-out-expo group-data-[state=open]/trigger:rotate-45 group-data-[state=open]/trigger:text-ink"
+        />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   )
@@ -33,10 +38,10 @@ function AccordionTrigger({ className, children, ...props }) {
 function AccordionContent({ className, children, ...props }) {
   return (
     <AccordionPrimitive.Content
-      className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+      className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
       {...props}
     >
-      <div className={cn("pb-4 pt-0", className)}>{children}</div>
+      <div className={cn("pt-0 pb-4", className)}>{children}</div>
     </AccordionPrimitive.Content>
   )
 }

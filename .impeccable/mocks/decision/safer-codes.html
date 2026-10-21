@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Metal Grade Colour Codes, first viewport sketch</title>
+<style>
+  :root { --ground: #F6F7F7; --ink: #1F2326; --copper: #C46A2D; --brass: #D4A72C; --alu: #9AA4AC; --ss: #5F7A8C; --lead: #4B5563; --steel: #2F3B45; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1440px; height: 900px; overflow: hidden; }
+  body { background-color: var(--ground); font-family: "Segoe UI", Arial, sans-serif; color: var(--ink); }
+  nav { height: 72px; display: flex; align-items: center; padding: 0 64px; gap: 36px; font-size: 16px; font-weight: 600; }
+  nav .logo { font-family: Garamond, Georgia, serif; font-weight: 700; font-size: 28px; letter-spacing: 0.04em; }
+  nav .call { margin-left: auto; background-color: var(--ink); color: #FFFFFF; padding: 12px 22px; font-weight: 800; }
+  header { padding: 40px 64px 0; display: flex; align-items: flex-end; gap: 48px; }
+  h1 { font-size: 84px; line-height: 0.96; font-weight: 900; letter-spacing: -0.02em; max-width: 820px; }
+  .side { padding-bottom: 8px; }
+  .side p { font-size: 20px; line-height: 1.5; max-width: 440px; }
+  .side span { margin-top: 20px; display: inline-flex; height: 60px; align-items: center; padding: 0 28px; background-color: var(--copper); color: #FFFFFF; font-size: 22px; font-weight: 800; }
+  .rack { position: absolute; left: 0; right: 0; top: 400px; bottom: 0; background-color: #2A2E31; padding: 28px 64px; display: grid; gap: 14px; }
+  .row { display: grid; grid-template-columns: 200px 1fr; align-items: center; }
+  .row b { color: #FFFFFF; font-size: 24px; font-weight: 800; background-color: #2A2E31; }
+  .ends { display: flex; gap: 10px; }
+  .ends i { width: 52px; height: 52px; border-radius: 50%; display: block; }
+  .c i { background-color: var(--copper); } .b i { background-color: var(--brass); } .a i { background-color: var(--alu); }
+  .s i { background-color: var(--ss); } .l i { background-color: var(--lead); box-shadow: inset 0 0 0 3px #6B7280; } .st i { background-color: var(--steel); box-shadow: inset 0 0 0 3px #4B5563; }
+</style>
+</head>
+<body>
+  <nav><span class="logo">METAL WERX</span><span>What we buy</span><span>Services</span><span>Blog</span><span>About</span><span>Contact</span><span class="call">0470 131 025</span></nav>
+  <header>
+    <h1>Turn Your Scrap Metal Into Cash</h1>
+    <div class="side"><p>We buy ferrous and non-ferrous metals, car bodies and batteries. Bring your scrap to the yard, hire a bin, or book a pickup.</p><span>Call 0470 131 025</span></div>
+  </header>
+  <div class="rack">
+    <div class="row c"><b>Copper</b><div class="ends"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div class="row b"><b>Brass</b><div class="ends"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div class="row a"><b>Aluminium</b><div class="ends"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div class="row s"><b>Stainless</b><div class="ends"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div class="row l"><b>Lead</b><div class="ends"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div class="row st"><b>Steel</b><div class="ends"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+  </div>
+</body>
+</html>

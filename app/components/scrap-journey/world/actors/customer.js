@@ -14,9 +14,17 @@
 
 import * as THREE from "three";
 import { CUSTOMER_LEGS, CUSTOMER_ROUTE, ROUTE_STOPS } from "../layout.js";
+import { BRAND, CODE_INK } from "../palette.js";
 import { easeInOut, span } from "../timeline.js";
 
 export const CRATES = ["copper", "aluminium", "steel"];
+// Each crate's grade tag: the metal's code, stamped in its code ink on an
+// aluminium tag, as on the rack.
+const CRATE_TAGS = {
+  copper: { code: "Cu", ink: CODE_INK.cu },
+  aluminium: { code: "Al", ink: CODE_INK.al },
+  steel: { code: "Fe", ink: CODE_INK.fe },
+};
 // tau windows: crate i fills over FILL[i], empties over EMPTY[i].
 export const FILL = [
   [2.12, 2.5],
@@ -106,13 +114,15 @@ export function buildCustomer(ctx) {
     kit.box(0.86, 0.5, 0.05, "tub", { z: -0.69, parent: crate, r: 0.02 });
     kit.box(0.05, 0.5, 1.42, "tub", { x: 0.41, parent: crate, r: 0.02 });
     kit.box(0.05, 0.5, 1.42, "tub", { x: -0.41, parent: crate, r: 0.02 });
-    // a label plate on the outer side
+    // its grade tag on the outer side
     const tag = kit.sign(0.5, 0.24, {
-      text: grade === "copper" ? "CU" : grade === "aluminium" ? "AL" : "FE",
+      text: CRATE_TAGS[grade].code,
       font: "display",
-      bg: "#151515",
-      color: grade === "copper" ? "#e39a63" : grade === "aluminium" ? "#e6e8eb" : "#b8bcc0",
-      size: 0.8,
+      weight: "800",
+      stretch: "condensed",
+      bg: BRAND.tag,
+      color: CRATE_TAGS[grade].ink,
+      size: 0.78,
     });
     tag.position.set(0, 0.3, 0.72);
     crate.add(tag);

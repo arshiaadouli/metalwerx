@@ -3,26 +3,26 @@ import { cva } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+// Flat, square-cornered plates, like cut sheet. One action colour (copper) for
+// the thing the page most wants done; everything else is an ink outline or a
+// plain text button. The on-rack variants sit on the dark rack field.
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex cursor-pointer select-none items-center justify-center gap-2.5 whitespace-nowrap rounded-[2px] font-bold [font-stretch:104%] transition-[background-color,color,box-shadow,transform] duration-150 ease-out-expo active:scale-[0.98] disabled:pointer-events-none disabled:opacity-45 [&_svg]:size-[1.125em] [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:bg-primary/90",
-        destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        outline:
-          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+        default: "bg-action text-action-ink hover:bg-action-hover",
+        outline: "bg-transparent text-ink shadow-[inset_0_0_0_1.5px_var(--ink)] hover:bg-ink hover:text-ground",
+        quiet: "bg-transparent text-ink underline-offset-[0.22em] hover:underline",
+        rack: "bg-rack-ink text-rack hover:bg-white",
+        "rack-outline": "bg-transparent text-rack-ink shadow-[inset_0_0_0_1.5px_var(--rack-ink)] hover:bg-rack-ink hover:text-rack",
+        destructive: "bg-destructive text-destructive-foreground hover:opacity-90",
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
-        icon: "h-10 w-10",
+        sm: "h-10 px-4 text-[0.9375rem]",
+        default: "h-12 px-5 text-base",
+        lg: "h-14 px-7 text-[1.0625rem]",
+        icon: "size-11",
       },
     },
     defaultVariants: {

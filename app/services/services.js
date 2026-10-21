@@ -33,7 +33,7 @@ const pexels = (id) =>
 // https://unsplash.com/photos/an-excavator-working-on-a-pile-of-scrap-metal-lp6CBQSr1Ek
 export const overviewImage = {
   url: unsplash("photo-1722695694560-f452b0919d3a"),
-  alt: "An excavator sorting a pile of scrap metal",
+  alt: "An excavator's grapple lifting a bundle of scrap metal in a scrap yard",
   title: "Excavator sorting scrap metal",
 };
 

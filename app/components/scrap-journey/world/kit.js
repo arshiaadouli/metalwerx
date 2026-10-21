@@ -19,7 +19,7 @@
 import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
-import { SURFACES, BRAND } from "./palette.js";
+import { SURFACES, BRAND, LIGHTS } from "./palette.js";
 
 const TAU = Math.PI * 2;
 
@@ -37,16 +37,17 @@ export function rng(seed = 1) {
 
 function resolveFonts() {
   const css = typeof document !== "undefined" ? getComputedStyle(document.documentElement) : null;
-  // next/font puts the generated family names in these CSS variables (see app/layout.jsx).
-  const family = (variable, fallback) => {
-    const value = css ? css.getPropertyValue(variable).trim() : "";
-    return value ? `${value}, ${fallback}` : fallback;
-  };
+  // next/font puts Archivo's generated family name in --font-archivo (see
+  // app/layout.jsx). The site sets everything in it, as signs in the world do:
+  // heavy and narrow for stamped codes (stretch: "condensed"), plainer for
+  // labels and body. Readouts whose figures change keep a monospace.
+  const value = css ? css.getPropertyValue("--font-archivo").trim() : "";
+  const archivo = value ? `${value}, ui-sans-serif, system-ui, sans-serif` : "ui-sans-serif, system-ui, sans-serif";
   return {
-    display: family("--bebas-neue", '"Bebas Neue", Impact, "Arial Narrow", sans-serif'),
-    label: family("--oswald", 'Oswald, "Arial Narrow", Arial, sans-serif'),
-    body: family("--montserrat", "Montserrat, Arial, sans-serif"),
-    mono: family("--font-geist-mono", 'ui-monospace, Menlo, Consolas, "Courier New", monospace'),
+    display: archivo,
+    label: archivo,
+    body: archivo,
+    mono: 'ui-monospace, Menlo, Consolas, "Courier New", monospace',
   };
 }
 
@@ -259,7 +260,7 @@ export function createKit({ quality = {} } = {}) {
   function person({ role = "worker", pose = "stand", skin = "skin", seed = 1 } = {}) {
     const g = group();
     const r = rng(seed);
-    const shirt = role === "customer" ? (r() > 0.5 ? "navy" : "#5b6f4e") : role === "staff" ? "hivis" : "navy";
+    const shirt = role === "customer" ? (r() > 0.5 ? "navy" : "charcoal") : role === "staff" ? "hivis" : "navy";
     const pants = role === "customer" ? (r() > 0.4 ? "denim" : "khaki") : "navy";
     // legs
     box(0.2, 0.82, 0.24, pants, { x: -0.12, parent: g, r: 0.06 });
@@ -270,7 +271,7 @@ export function createKit({ quality = {} } = {}) {
     box(0.56, 0.66, 0.32, shirt, { y: 0.8, parent: g, r: 0.12 });
     if (role === "worker") {
       box(0.6, 0.48, 0.36, "hivis", { y: 0.92, parent: g, r: 0.1 });
-      box(0.61, 0.05, 0.37, "#d9d9d9", { y: 1.12, parent: g, r: 0.02 }); // reflective stripe
+      box(0.61, 0.05, 0.37, BRAND.rackInk, { y: 1.12, parent: g, r: 0.02 }); // reflective stripe
     }
     // arms on shoulder pivots, so poses can swing them
     const arm = (side) => {
@@ -290,7 +291,7 @@ export function createKit({ quality = {} } = {}) {
       g.add(hat);
       cyl(0.25, 0.25, 0.03, "hivis", { y: 1.69, parent: g, seg: 16 });
     } else if (role === "customer") {
-      const capColor = r() > 0.5 ? "red" : "charcoal";
+      const capColor = r() > 0.5 ? "steelBlue" : "charcoal";
       const cap = new THREE.Mesh(new THREE.SphereGeometry(0.2, 14, 8, 0, TAU, 0, Math.PI / 2), resolve(capColor));
       cap.position.y = 1.71;
       cap.castShadow = true;
@@ -334,10 +335,10 @@ export function createKit({ quality = {} } = {}) {
     box(0.06, 0.32, 1.92, "aluminium", { x: -2.5, y: 1.12, parent: g, r: 0.02 });
     box(0.08, 0.7, 1.92, "steelDark", { x: -0.02, y: 1.1, parent: g, r: 0.02 }); // headboard
     // lights
-    box(0.06, 0.16, 0.36, glow("#fff1cc", { dark: 1.8, light: 0.3 }), { x: 2.66, y: 0.82, z: 0.62, parent: g, r: 0.02 });
-    box(0.06, 0.16, 0.36, glow("#fff1cc", { dark: 1.8, light: 0.3 }), { x: 2.66, y: 0.82, z: -0.62, parent: g, r: 0.02 });
-    box(0.06, 0.18, 0.2, glow("#ff2a1a", { dark: 1.6, light: 0.25 }), { x: -2.53, y: 0.9, z: 0.78, parent: g, r: 0.02 });
-    box(0.06, 0.18, 0.2, glow("#ff2a1a", { dark: 1.6, light: 0.25 }), { x: -2.53, y: 0.9, z: -0.78, parent: g, r: 0.02 });
+    box(0.06, 0.16, 0.36, glow(LIGHTS.headlamp, { dark: 1.8, light: 0.3 }), { x: 2.66, y: 0.82, z: 0.62, parent: g, r: 0.02 });
+    box(0.06, 0.16, 0.36, glow(LIGHTS.headlamp, { dark: 1.8, light: 0.3 }), { x: 2.66, y: 0.82, z: -0.62, parent: g, r: 0.02 });
+    box(0.06, 0.18, 0.2, glow(LIGHTS.tail, { dark: 1.6, light: 0, base: LIGHTS.lens }), { x: -2.53, y: 0.9, z: 0.78, parent: g, r: 0.02 });
+    box(0.06, 0.18, 0.2, glow(LIGHTS.tail, { dark: 1.6, light: 0, base: LIGHTS.lens }), { x: -2.53, y: 0.9, z: -0.78, parent: g, r: 0.02 });
     // wheels
     for (const [x, z] of [[1.65, 0.86], [1.65, -0.86], [-1.55, 0.86], [-1.55, -0.86]]) {
       const w = wheel(0.4, 0.3, { x, y: 0.4, z, parent: g });
@@ -369,26 +370,26 @@ export function createKit({ quality = {} } = {}) {
     box(0.8, 0.06, 0.24, "steelDark", { y: 0.74, z: 0.95, parent: g, r: 0.02 });
     box(0.8, 0.06, 0.24, "steelDark", { y: 0.74, z: -0.95, parent: g, r: 0.02 });
     const wheels = [wheel(0.32, 0.22, { y: 0.32, z: 0.95, parent: g }), wheel(0.32, 0.22, { y: 0.32, z: -0.95, parent: g })];
-    box(0.06, 0.12, 0.18, glow("#ff2a1a", { dark: 1.4, light: 0.2 }), { x: -1.43, y: 0.62, z: 0.62, parent: g, r: 0.02 });
-    box(0.06, 0.12, 0.18, glow("#ff2a1a", { dark: 1.4, light: 0.2 }), { x: -1.43, y: 0.62, z: -0.62, parent: g, r: 0.02 });
+    box(0.06, 0.12, 0.18, glow(LIGHTS.tail, { dark: 1.4, light: 0, base: LIGHTS.lens }), { x: -1.43, y: 0.62, z: 0.62, parent: g, r: 0.02 });
+    box(0.06, 0.12, 0.18, glow(LIGHTS.tail, { dark: 1.4, light: 0, base: LIGHTS.lens }), { x: -1.43, y: 0.62, z: -0.62, parent: g, r: 0.02 });
     g.userData.wheels = wheels;
     g.userData.bedY = 0.57;
     g.userData.hitch = 2.55; // distance from origin to the coupling, along +x
     return g;
   }
 
-  // A truck cab, about 2.6 m long, facing +x, for the yard's red trucks.
-  // Put it at the front of a chassis you build yourself.
-  function truckCab({ color = "red" } = {}) {
+  // A truck cab, about 2.6 m long, facing +x, for the yard's trucks (graphite,
+  // "fleet"). Put it at the front of a chassis you build yourself.
+  function truckCab({ color = "fleet" } = {}) {
     const g = group();
     box(2.4, 1.9, 2.4, color, { y: 0.9, parent: g, r: 0.18 });
     box(0.1, 0.8, 2.1, "glass", { x: 1.2, y: 1.85, parent: g, r: 0.03 }); // windscreen
     box(1.6, 0.6, 2.44, "glass", { x: 0.1, y: 1.95, parent: g, r: 0.06 }); // side windows
     box(0.12, 0.7, 1.6, "charcoal", { x: 1.22, y: 0.95, parent: g, r: 0.04 }); // grille
     box(0.3, 0.2, 2.5, "charcoal", { x: 1.15, y: 0.5, parent: g, r: 0.05 }); // bumper
-    box(0.06, 0.18, 0.4, glow("#fff1cc", { dark: 1.8, light: 0.3 }), { x: 1.26, y: 0.75, z: 0.9, parent: g, r: 0.02 });
-    box(0.06, 0.18, 0.4, glow("#fff1cc", { dark: 1.8, light: 0.3 }), { x: 1.26, y: 0.75, z: -0.9, parent: g, r: 0.02 });
-    box(0.5, 0.12, 0.9, glow("#ffa21a", { dark: 2.2, light: 0.6 }), { x: 0, y: 2.84, parent: g, r: 0.05 }); // roof beacon
+    box(0.06, 0.18, 0.4, glow(LIGHTS.headlamp, { dark: 1.8, light: 0.3 }), { x: 1.26, y: 0.75, z: 0.9, parent: g, r: 0.02 });
+    box(0.06, 0.18, 0.4, glow(LIGHTS.headlamp, { dark: 1.8, light: 0.3 }), { x: 1.26, y: 0.75, z: -0.9, parent: g, r: 0.02 });
+    box(0.5, 0.12, 0.9, glow(LIGHTS.beacon, { dark: 2.2, light: 0.6 }), { x: 0, y: 2.84, parent: g, r: 0.05 }); // roof beacon
     return g;
   }
 
@@ -492,16 +493,18 @@ export function createKit({ quality = {} } = {}) {
 
   // Draws text (or anything) onto a canvas texture.
   //   draw(ctx, w, h) for custom drawing, or text/lines with font options.
-  //   font: "display" (Bebas Neue), "label" (Oswald), "body", "mono"
+  //   font: "display", "label", "body" (all Archivo), "mono"
+  //   stretch: Archivo's width, "condensed" for a stamped code like Cu
   function canvasTexture({
     width = 512,
     height = 128,
-    bg = BRAND.carbon,
-    color = BRAND.chrome,
+    bg = BRAND.rack,
+    color = BRAND.rackInk,
     text = "",
     lines = null,
     font = "display",
-    weight = "400",
+    weight = "700",
+    stretch = "normal",
     size = 0.62, // of the canvas height, per line
     align = "center",
     letterSpacing = 0,
@@ -541,14 +544,18 @@ export function createKit({ quality = {} } = {}) {
       ctx.textAlign = align;
       if ("letterSpacing" in ctx) ctx.letterSpacing = `${letterSpacing}px`;
       const x = align === "left" ? width * padding : align === "right" ? width * (1 - padding) : width / 2;
+      const setFont = (px) => {
+        ctx.font = `${weight} ${px}px ${fonts[font] ?? font}`;
+        if ("fontStretch" in ctx) ctx.fontStretch = stretch;
+      };
       rows.forEach((row, i) => {
         let px = lineH * size;
-        ctx.font = `${weight} ${px}px ${fonts[font] ?? font}`;
+        setFont(px);
         // shrink to fit
         const max = width * (1 - padding * 2);
         while (ctx.measureText(row).width > max && px > 8) {
           px -= 2;
-          ctx.font = `${weight} ${px}px ${fonts[font] ?? font}`;
+          setFont(px);
         }
         ctx.fillText(row, x, lineH * (i + 0.54));
       });
@@ -609,12 +616,16 @@ export function createKit({ quality = {} } = {}) {
 
   // A floating label that always faces the camera (a Sprite), anchored at its
   // bottom centre. Fade it with sprite.material.opacity. width in metres.
-  //   style: "chip" (carbon with a cherry edge), "cherry" (solid red), "light"
-  function callout(text, { width = 3, style = "chip", icon = null, font = "label", weight = "600", depthTest = false } = {}) {
+  // A flat, square-cornered plate, like the site's:
+  //   style: "tag" (the aluminium grade tag), "rack" (the graphite rack field)
+  //          or "action" (deep copper). The old names still work: "chip" draws
+  //          the rack plate, "cherry" the copper one and "light" the tag.
+  function callout(text, { width = 3, style = "rack", icon = null, font = "label", weight = "700", depthTest = false } = {}) {
     const h = 128;
     const w = Math.round(h * 4);
-    const bg = style === "cherry" ? BRAND.cherry : style === "light" ? BRAND.chrome : BRAND.carbon;
-    const fg = style === "light" ? BRAND.carbon : BRAND.chrome;
+    const look = { cherry: "action", light: "tag", chip: "rack" }[style] ?? style;
+    const bg = look === "action" ? BRAND.action : look === "tag" ? BRAND.tag : BRAND.rack;
+    const fg = look === "action" ? BRAND.actionInk : look === "tag" ? BRAND.tagInk : BRAND.rackInk;
     const tex = canvasTexture({
       width: w,
       height: h,
@@ -622,16 +633,11 @@ export function createKit({ quality = {} } = {}) {
       draw(ctx, cw, ch, f) {
         ctx.fillStyle = bg;
         ctx.beginPath();
-        ctx.roundRect(4, 4, cw - 8, ch - 8, 22);
+        ctx.roundRect(4, 4, cw - 8, ch - 8, 6);
         ctx.fill();
-        if (style === "chip") {
-          ctx.fillStyle = BRAND.cherry;
-          ctx.fillRect(4, 4, 16, ch - 8);
-        }
         ctx.fillStyle = fg;
         ctx.textBaseline = "middle";
         ctx.textAlign = "center";
-        if ("letterSpacing" in ctx) ctx.letterSpacing = "3px";
         let px = 58;
         ctx.font = `${weight} ${px}px ${f[font] ?? font}`;
         const label = icon ? `${icon}  ${text}` : text;
@@ -639,7 +645,7 @@ export function createKit({ quality = {} } = {}) {
           px -= 2;
           ctx.font = `${weight} ${px}px ${f[font] ?? font}`;
         }
-        ctx.fillText(label, cw / 2 + (style === "chip" ? 6 : 0), ch / 2 + 2);
+        ctx.fillText(label, cw / 2, ch / 2 + 2);
       },
     });
     const material = new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest, depthWrite: false });
@@ -693,7 +699,7 @@ export function createKit({ quality = {} } = {}) {
   // A point light whose intensity follows the theme. priority decides which
   // lights survive when the world trims them to the device's budget (higher
   // wins). Returns the light; add it to your group yourself.
-  function pointLight(hex = "#ffb661", { dark = 60, light = 0, distance = 20, priority = 1 } = {}) {
+  function pointLight(hex = LIGHTS.lamp, { dark = 60, light = 0, distance = 20, priority = 1 } = {}) {
     const l = new THREE.PointLight(hex, theme === "dark" ? dark : light, distance, 2);
     l.castShadow = false;
     const entry = { kind: "light", l, dark, light, priority, level: 1 };
@@ -704,7 +710,7 @@ export function createKit({ quality = {} } = {}) {
 
   // A yard floodlight or street light: pole, arm and a glowing head, with a
   // halo and (if the budget allows) a real point light under the head.
-  function lamp({ height = 6.5, arm = 1.4, color = "#ffc27a", light = { dark: 70, light: 0, distance: 22 }, priority = 1, double = false } = {}) {
+  function lamp({ height = 6.5, arm = 1.4, color = LIGHTS.lamp, light = { dark: 70, light: 0, distance: 22 }, priority = 1, double = false } = {}) {
     const g = group();
     cyl(0.09, 0.12, height, "steelDark", { parent: g, seg: 8 });
     const heads = double ? [1, -1] : [1];
@@ -732,7 +738,7 @@ export function createKit({ quality = {} } = {}) {
     const g = group();
     const r = rng(seed);
     const lean = (r() - 0.5) * 0.18;
-    const trunkMat = kind === "gum" ? "#cfc6b4" : "trunk";
+    const trunkMat = kind === "gum" ? "trunkPale" : "trunk";
     cyl(0.16, 0.26, height * 0.55, trunkMat, { parent: g, seg: 7, rz: lean });
     const blobs = kind === "gum" ? 3 : 2;
     for (let i = 0; i < blobs; i++) {
@@ -776,7 +782,7 @@ export function createKit({ quality = {} } = {}) {
         ? "colorbond"
         : style === "paling"
           ? "timber"
-          : new THREE.MeshStandardMaterial({ color: "#8a8f94", roughness: 0.6, metalness: 0.4, transparent: true, opacity: 0.35 });
+          : new THREE.MeshStandardMaterial({ ...SURFACES.fenceMesh, transparent: true, opacity: 0.35 });
     for (let i = 0; i < points.length - 1; i++) {
       const [x0, z0] = points[i];
       const [x1, z1] = points[i + 1];
@@ -896,10 +902,10 @@ export function createKit({ quality = {} } = {}) {
     for (const e of themed.lights) applyEntry(e);
   }
 
-  // Waits (briefly) for the brand fonts, so signs don't draw in a fallback.
+  // Waits (briefly) for Archivo, so signs don't draw in a fallback.
   async function ready() {
     if (typeof document === "undefined" || !document.fonts) return;
-    const wanted = [`400 64px ${fonts.display}`, `600 48px ${fonts.label}`, `700 48px ${fonts.mono}`];
+    const wanted = [`800 64px ${fonts.display}`, `700 48px ${fonts.label}`];
     const timeout = new Promise((resolve) => setTimeout(resolve, 1500));
     await Promise.race([Promise.all(wanted.map((f) => document.fonts.load(f).catch(() => null))), timeout]);
   }

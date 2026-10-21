@@ -1,6 +1,17 @@
 import Link from "next/link";
-import { Car, Container, Factory, FilePenLine, Handshake, Phone, Recycle, Truck } from "lucide-react";
-import { Reveal } from "@/components/ui/reveal";
+import {
+  Car,
+  ChevronRight,
+  Container as ContainerIcon,
+  Factory,
+  FilePenLine,
+  Handshake,
+  Phone,
+  Recycle,
+  Truck,
+} from "lucide-react";
+
+import { Container, SectionHeading } from "@/app/services/sections";
 
 // The icon choices in Strapi's Service component, by the value Strapi stores.
 const icons = {
@@ -10,49 +21,47 @@ const icons = {
   recycle: Recycle,
   car: Car,
   factory: Factory,
-  container: Container,
+  container: ContainerIcon,
   phone: Phone,
 };
 
-// The copy and links come from the Home Page in Strapi (see lib/pages.js).
+// The ways in for businesses, as a band on the sunk ground, ruled off above and
+// below so it holds in the dark theme too, where sunk and ground sit close: the
+// heading on the left, and each service a full-width row with its icon on a
+// small rack plate. The copy and links come from the Home Page in Strapi (see
+// lib/pages.js).
 export default function IndexCommercial({ heading, intro, services }) {
   return (
-    <section id="commercial" className="bg-surface font-montserrat text-ink">
-      <div className="mx-auto w-full max-w-7xl px-6 pt-20 sm:pt-24">
-        <Reveal as="header" className="text-center">
-          <h2 className="font-oswald text-2xl font-semibold uppercase tracking-[0.2em] text-ink-cherry sm:text-3xl">
-            {heading}
-          </h2>
-          {intro && (
-            <p className="mx-auto mt-4 max-w-2xl text-sm tracking-wide text-ink-soft sm:text-base">
-              {intro}
-            </p>
-          )}
-        </Reveal>
-        <ul className="mt-14 grid gap-12 sm:grid-cols-3">
-          {services.map(({ title, href, icon }, i) => {
+    <section
+      id="commercial"
+      aria-labelledby="commercial-heading"
+      className="scroll-mt-24 border-y border-rule bg-sunk py-20 sm:py-28"
+    >
+      <Container className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
+        <SectionHeading id="commercial-heading" title={heading} intro={intro} className="max-w-[34rem]" />
+        <ul className="border-t-2 border-ink">
+          {services.map(({ title, href, icon }) => {
             const Icon = icons[icon] ?? Recycle;
             return (
-              <Reveal as="li" key={title} step={i % 3}>
-                <Link
-                  href={href}
-                  title={title}
-                  className="group flex flex-col items-center gap-5 text-center focus-visible:outline-none"
-                >
-                  <Icon
-                    aria-hidden="true"
-                    strokeWidth={1.75}
-                    className="size-16 text-ink-cherry transition-transform group-hover:-translate-y-1 group-focus-visible:-translate-y-1"
-                  />
-                  <span className="font-oswald text-lg uppercase tracking-[0.3em] text-ink transition-colors group-hover:text-ink-cherry group-focus-visible:text-ink-cherry group-focus-visible:underline">
+              <li key={title} className="border-b border-rule">
+                <Link href={href} className="group flex items-center gap-5 py-5 sm:gap-7 sm:py-7">
+                  <span className="grid size-12 shrink-0 place-items-center rounded-[2px] bg-rack text-rack-ink sm:size-14">
+                    <Icon aria-hidden="true" strokeWidth={1.75} className="size-6 sm:size-7" />
+                  </span>
+                  <span className="min-w-0 flex-1 type-subheading text-ink underline decoration-transparent decoration-1 underline-offset-[0.18em] transition-[text-decoration-color] duration-150 ease-out-expo group-hover:decoration-current group-focus-visible:decoration-current sm:text-[1.625rem]">
                     {title}
                   </span>
+                  <ChevronRight
+                    aria-hidden="true"
+                    strokeWidth={2}
+                    className="size-6 shrink-0 text-ink-muted transition-[color,translate] duration-150 ease-out-expo group-hover:translate-x-1 group-hover:text-ink group-focus-visible:text-ink"
+                  />
                 </Link>
-              </Reveal>
+              </li>
             );
           })}
         </ul>
-      </div>
+      </Container>
     </section>
   );
 }

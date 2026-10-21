@@ -5,8 +5,8 @@ import { Moon, Sun } from "lucide-react";
 
 const STORAGE_KEY = "theme";
 
-// The visitor's last pick, else their OS setting. The inline script in
-// app/layout.jsx applies the same rule before the first paint.
+// The visitor's last pick, else their OS setting, else dark. The inline script
+// in app/layout.jsx applies the same rule before the first paint.
 function preferredTheme() {
   let stored;
   try {
@@ -30,7 +30,7 @@ function applyTheme(theme) {
   setTimeout(() => style.remove(), 1);
 }
 
-// A round button fixed to the bottom-right corner that flips between the dark
+// A square button fixed to the bottom-right corner that flips between the dark
 // and light themes and remembers the choice. Its icon and label follow
 // data-theme through CSS, so the server render never has to know the theme.
 export default function ThemeToggle() {
@@ -41,7 +41,7 @@ export default function ThemeToggle() {
   }, []);
 
   function toggle() {
-    const next = document.documentElement.dataset.theme === "light" ? "dark" : "light";
+    const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
     try {
       localStorage.setItem(STORAGE_KEY, next);
     } catch {
@@ -54,13 +54,13 @@ export default function ThemeToggle() {
     <button
       type="button"
       onClick={toggle}
-      className="fixed right-5 bottom-5 z-40 grid size-12 cursor-pointer place-items-center rounded-full border border-input bg-panel text-ink shadow-lg shadow-black/20 transition-colors hover:border-cherry hover:text-ink-cherry focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background print:hidden"
+      className="fixed right-4 bottom-4 z-40 grid size-11 cursor-pointer place-items-center rounded-[2px] bg-raised text-ink shadow-[0_0_0_1px_var(--rule),0_8px_20px_-8px_rgb(0_0_0/0.3)] transition-[background-color,transform] duration-150 hover:bg-sunk active:scale-95 print:hidden"
     >
       {/* Shows the theme a click switches to. */}
-      <Sun aria-hidden="true" className="size-5 light:hidden" />
-      <Moon aria-hidden="true" className="hidden size-5 light:block" />
-      <span className="sr-only light:hidden">Switch to light theme</span>
-      <span className="sr-only hidden light:inline">Switch to dark theme</span>
+      <Moon aria-hidden="true" className="size-5 dark:hidden" />
+      <Sun aria-hidden="true" className="hidden size-5 dark:block" />
+      <span className="sr-only dark:hidden">Switch to dark theme</span>
+      <span className="sr-only hidden dark:inline">Switch to light theme</span>
     </button>
   );
 }

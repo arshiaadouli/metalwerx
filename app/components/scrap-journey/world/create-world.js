@@ -80,7 +80,7 @@ export async function createWorld(host, options = {}) {
 
   // ---- scene, camera, light rig
   const scene = new THREE.Scene();
-  scene.fog = new THREE.Fog("#0C0C0C", 120, 600);
+  scene.fog = new THREE.Fog(THEMES.light.background, 120, 600);
   const camera = new THREE.PerspectiveCamera(34, width / height, 0.5, 1400);
 
   const pmrem = new THREE.PMREMGenerator(renderer);
@@ -285,15 +285,16 @@ export async function createWorld(host, options = {}) {
   };
 }
 
-// The two islands the world sits on, like a model on a plinth: a dark base, a
-// band of soil, then the ground. Stations and scenery build on y = 0.
+// The two islands the world sits on, like a model on a plinth: a graphite
+// steel base, a rail in the rack's arm grey, then the galvanised deck.
+// Stations and scenery build on y = 0.
 function buildPlinths(kit) {
   const g = kit.group();
   const slab = (island, top = 0) => {
     const { x, z, width, depth, thickness } = island;
     kit.box(width, thickness - 0.9, depth, "plinth", { x, y: top - thickness, z, r: 0.6, parent: g });
-    kit.box(width - 0.2, 0.7, depth - 0.2, "soil", { x, y: top - 0.9, z, r: 0.25, parent: g });
-    kit.box(width - 0.3, 0.2, depth - 0.3, "grassDark", { x, y: top - 0.2, z, r: 0.08, parent: g, cast: false });
+    kit.box(width - 0.2, 0.7, depth - 0.2, "plinthRail", { x, y: top - 0.9, z, r: 0.25, parent: g });
+    kit.box(width - 0.3, 0.2, depth - 0.3, "deck", { x, y: top - 0.2, z, r: 0.08, parent: g, cast: false });
   };
   slab(layout.ISLAND);
   slab(layout.SMELTER_ISLAND, layout.SMELTER_ISLAND.y);

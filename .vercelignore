@@ -2,3 +2,8 @@
 .env*
 # Old output of the previous "prisma-client" generator, no longer used.
 /app/generated/prisma
+# Agent skills and design-tool files: not part of the site.
+/.claude
+/.agents
+/.codex
+/.impeccable

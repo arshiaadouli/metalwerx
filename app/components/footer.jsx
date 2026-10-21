@@ -1,14 +1,17 @@
 import { cacheLife } from "next/cache";
-import { Footer2 } from "@/components/ui/shadcnblocks-com-footer2";
+import { SiteFooter } from "@/components/site/site-footer";
 
-// As in the navbar, /prices and /terms are placeholders for pages still to be
-// built, as are the #hours and #location sections of /contact-us.
+// Only pages that exist: no links to /prices or /terms until they're built,
+// since a link that redirects is flagged by SEO audits. Every page carries the
+// header too, so no link here repeats a header link's text or the page's own
+// CTAs ("Get a quote"): each link's text is unique on the page, as SEO audits
+// check.
 const footer = {
   logo: {
-    url: "/",
-    src: "/logo.png",
+    src: "/logo.webp",
     alt: "Metal Werx Scrap Metal Recycling",
-    // Display size; logo.png is 4726×985, the same 4.8:1 ratio.
+    // Display size; logo.webp is 576×120 (3× this), the same 4.8:1 ratio,
+    // served as is (see the header's logo in navbar.jsx).
     width: 192,
     height: 40,
   },
@@ -16,44 +19,40 @@ const footer = {
     "Scrap metal recycling for homes, farms and businesses. We buy ferrous and non-ferrous metals, car bodies and batteries.",
   sections: [
     {
-      title: "What We Buy",
+      title: "What we buy",
       links: [
-        { name: "Ferrous Metals", href: "/what-we-buy#ferrous" },
-        { name: "Non-Ferrous Metals", href: "/what-we-buy#non-ferrous" },
-        { name: "Car Bodies", href: "/what-we-buy/unwanted-cars" },
+        { name: "Ferrous metals", href: "/what-we-buy#ferrous" },
+        { name: "Non-ferrous metals", href: "/what-we-buy#non-ferrous" },
+        { name: "Car bodies", href: "/what-we-buy/unwanted-cars" },
         { name: "Batteries", href: "/what-we-buy/lead" },
       ],
     },
     {
       title: "Services",
       links: [
-        { name: "Bin Hire", href: "/services/bin-hire" },
-        { name: "Pickup & Collection", href: "/services/pickup-and-collection" },
-        { name: "Commercial Recycling", href: "/services/commercial-recycling" },
+        { name: "Scrap bin hire", href: "/services/bin-hire" },
+        { name: "Scrap collection", href: "/services/pickup-and-collection" },
+        { name: "Business recycling", href: "/services/commercial-recycling" },
       ],
     },
     {
       title: "Company",
       links: [
-        { name: "About", href: "/about" },
-        { name: "Blog", href: "/blogs" },
-        { name: "Scrap Prices", href: "/prices" },
-        { name: "Contact", href: "/contact-us" },
+        { name: "About Metal Werx", href: "/about" },
+        { name: "Our blog", href: "/blogs" },
+        { name: "Contact the yard", href: "/contact-us" },
       ],
     },
     {
-      title: "Visit Us",
+      title: "Visit us",
       links: [
-        { name: "Opening Hours", href: "/contact-us#hours" },
-        { name: "Find Us", href: "/contact-us#location" },
-        { name: "Get a Quote", href: "/contact-us" },
+        { name: "Opening hours", href: "/contact-us#hours" },
+        { name: "Find us", href: "/contact-us#location" },
+        { name: "Request a quote", href: "/contact-us" },
       ],
     },
   ],
-  legalLinks: [
-    { name: "Terms & Conditions", href: "/terms" },
-    { name: "Privacy Policy", href: "/privacy-policy" },
-  ],
+  legalLinks: [{ name: "Privacy Policy", href: "/privacy-policy" }],
 };
 
 // Cache Components fails the prerender on a bare new Date(), so the year is
@@ -66,7 +65,7 @@ async function CurrentYear() {
 
 export default function Footer() {
   return (
-    <Footer2
+    <SiteFooter
       {...footer}
       copyright={
         <>

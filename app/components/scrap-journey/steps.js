@@ -1,15 +1,22 @@
-// The six stops of the scrap journey above the home page hero, in the order the
-// camera visits them. The copy follows how selling scrap at the yard works (see
-// PRODUCT.md): call ahead, sort the load, drop off and grade, weigh, show ID
-// and get paid by bank transfer, then the metal goes back into the loop.
+import { YARD } from "@/lib/yard";
+
+// The six stops of the scrap journey under the home page rack, in the order
+// the camera visits them. The copy follows how selling scrap at the yard works
+// (see PRODUCT.md): call ahead, sort the load, drop off and grade, weigh, show
+// ID and get paid by bank transfer, then the metal goes back into the loop.
 //   label    the short name on the route rail
-//   eyebrow  the small line above the title
+//   eyebrow  the step and its name, "Step 1 · Call ahead", shown as a line
+//            under the title
 //   title    the stop's heading
 //   body     one or two short sentences
 //   tags?    up to three proof chips
-//   actions? [{ text, href }], links under the body
+//   actions? [{ text, href }], links under the body; a tel: link is the Call
 // The last stop shows the hero's two CTAs, passed in from the page.
-export const phone = { text: "0470 131 025", href: "tel:+61470131025" };
+//
+// For the yard to confirm: "verified scales", the weighbridge that loads cross
+// full and empty, "an indicative price per kilo" and the degassing and rego
+// advice are not in PRODUCT.md yet.
+export const phone = { text: YARD.phone, href: YARD.phoneHref };
 
 export const steps = [
   {

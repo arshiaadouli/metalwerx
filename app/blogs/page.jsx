@@ -1,10 +1,12 @@
+import { ViewTransition } from "react";
 import Link from "next/link";
-import { CutTitle, Enter } from "@/components/ui/enter";
-import { Reveal } from "@/components/ui/reveal";
+import { ArrowRight } from "lucide-react";
+import { Breadcrumbs, Container } from "@/app/services/sections";
 import { blogSlug, getBlogs } from "@/lib/blogs";
 import { getBlogPage } from "@/lib/pages";
+import { pageMetadata } from "@/lib/seo";
 import BlogViews from "./blog-views";
-import { formatDate, isoDate, readingStats } from "./format";
+import { excerpt, formatDate, isoDate, readingStats } from "./format";
 
 // The whole page must be static HTML, so search engines get every post in the
 // first response. The build fails if anything here would need a request.
@@ -14,34 +16,29 @@ export const ensureStatic = "navigation";
 // getBlogPage is cached, so this and the page share one request.
 export async function generateMetadata() {
   const { seo } = await getBlogPage();
-  return { title: seo.title, description: seo.description };
+  return pageMetadata({ path: "/blogs", title: seo.title, description: seo.description });
 }
 
+// The blog is a catalogue of posts: a masthead, then every post on one rail,
+// newest first. The Blog Page's eyebrow names the site in the breadcrumbs
+// rather than sitting over the heading.
 export default async function BlogsPage() {
   const { eyebrow, heading, emptyMessage } = await getBlogPage();
 
   return (
-    <div className="flex-1 bg-surface text-ink">
-      <main className="mx-auto w-full max-w-6xl px-6 py-16 font-montserrat sm:py-24">
-        {/* Plays on load, one step after another (see components/ui/enter.jsx). */}
-        <header>
-          {eyebrow && (
-            <Enter as="p" step={0} className="font-oswald text-sm uppercase tracking-[0.3em] text-cherry">
-              {eyebrow}
-            </Enter>
-          )}
-          <h1 className="mt-2 font-bebas-neue text-7xl tracking-wide">
-            <CutTitle step={1}>{heading}</CutTitle>
-          </h1>
-          <Enter step={2} className="mt-4 h-1 w-16 bg-cherry" />
+    <main id="main" className="flex-1 pb-20 sm:pb-28">
+      <Container>
+        <header className="pt-8 sm:pt-10">
+          <Breadcrumbs items={[{ name: eyebrow || "Home", href: "/" }, { name: heading }]} />
+          <h1 className="mt-10 type-title text-ink sm:mt-14">{heading}</h1>
         </header>
         {/* getBlogs is cached, so the posts are prerendered with the header. No
             <Suspense> here: React can move a boundary's content into a hidden
             element after the skeleton, which crawlers that don't run JavaScript
             may skip. */}
         <BlogList emptyMessage={emptyMessage} />
-      </main>
-    </div>
+      </Container>
+    </main>
   );
 }
 
@@ -49,69 +46,91 @@ async function BlogList({ emptyMessage }) {
   const blogs = await getBlogs();
 
   if (blogs.length === 0) {
-    return emptyMessage && <p className="mt-12 text-ink-soft">{emptyMessage}</p>;
+    return (
+      emptyMessage && (
+        <p className="mt-12 border-t-2 border-ink pt-6 type-lede text-ink-soft sm:mt-16">{emptyMessage}</p>
+      )
+    );
   }
 
   // BlogViews switches between a grid (two columns from sm, three from lg) and
-  // a list of wide cards, by setting data-view on the wrapper it puts around
+  // a list of ruled rows, by setting data-view on the wrapper it puts around
   // the list. The group-data-[view=...]/blogs classes below follow it.
   return (
-    <BlogViews summary={`${blogs.length} ${blogs.length === 1 ? "post" : "posts"}`}>
-      <ul className="mt-6 grid gap-6 group-data-[view=grid]/blogs:sm:grid-cols-2 group-data-[view=grid]/blogs:lg:grid-cols-3">
-        {/* Each row of the grid plays left to right. */}
+    <BlogViews
+      summary={`${blogs.length} ${blogs.length === 1 ? "post" : "posts"}`}
+      className="mt-12 sm:mt-16"
+    >
+      <ul className="grid gap-y-12 border-t-2 border-ink pt-8 group-data-[view=grid]/blogs:sm:grid-cols-2 group-data-[view=grid]/blogs:sm:gap-x-8 group-data-[view=grid]/blogs:sm:gap-y-14 group-data-[view=grid]/blogs:lg:grid-cols-3 group-data-[view=list]/blogs:sm:gap-y-0 group-data-[view=list]/blogs:sm:pt-0">
         {blogs.map((blog, i) => (
-          <Reveal as="li" key={blog.id} step={i % 3}>
-            <article className="group relative flex h-full flex-col overflow-hidden border border-line bg-panel transition-colors hover:border-cherry focus-within:border-cherry group-data-[view=list]/blogs:sm:flex-row">
-              {/* Above the text in the grid and on phones; in the list, a
-                  column on the left that's as tall as the text. Only the first
-                  row of the grid can be on the first screen, so the rest load
-                  as they're scrolled to. sizes covers the larger of the two
-                  views: a third of the page or 24rem in the list from lg, half
-                  the page from sm. */}
-              {blog.cover && (
-                <div className="relative aspect-video shrink-0 overflow-hidden group-data-[view=list]/blogs:sm:aspect-auto group-data-[view=list]/blogs:sm:w-72 group-data-[view=list]/blogs:lg:w-96">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={blog.cover.src}
-                    srcSet={blog.cover.srcSet}
-                    sizes="(min-width: 64rem) 24rem, (min-width: 40rem) calc(50vw - 2.25rem), calc(100vw - 3rem)"
-                    alt={blog.cover.alt}
-                    title={blog.title}
-                    loading={i < 3 ? "eager" : "lazy"}
-                    className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-105 motion-reduce:transition-none"
-                  />
-                </div>
-              )}
-              {/* A column, so "Read post" lines up along the bottom of a row
-                  of grid cards whose titles wrap differently. */}
-              <div className="flex flex-1 flex-col p-6 group-data-[view=list]/blogs:sm:p-8">
-                <p className="font-oswald text-xs uppercase tracking-[0.2em] text-ink-muted">
-                  <time dateTime={isoDate(blog.date)}>{formatDate(blog.date)}</time>
-                  {" · "}
-                  {readingStats(blog.text).minutes} min read
-                </p>
-                <h2 className="mt-3 font-bebas-neue text-4xl tracking-wide text-ink transition-colors group-hover:text-ink-cherry group-data-[view=grid]/blogs:sm:text-3xl">
-                  {/* The ::after overlay makes the whole card clickable, photo included. */}
-                  <Link
-                    href={`/blogs/${blogSlug(blog.title)}`}
-                    title={blog.title}
-                    className="after:absolute after:inset-0 focus-visible:outline-none"
-                  >
-                    {blog.title}
-                  </Link>
-                </h2>
-                <p className="mt-3 line-clamp-3 leading-7 text-ink-soft">{blog.text}</p>
-                <p
-                  aria-hidden="true"
-                  className="mt-auto pt-5 font-oswald text-sm uppercase tracking-[0.2em] text-cherry"
-                >
-                  Read post →
-                </p>
-              </div>
-            </article>
-          </Reveal>
+          <BlogEntry key={blog.id} blog={blog} index={i} />
         ))}
       </ul>
     </BlogViews>
+  );
+}
+
+// One post in the catalogue, the whole entry a single link named by its
+// title. In the grid the cover sits over the text; in the list it is a column
+// on the left, on a row ruled off from the next.
+function BlogEntry({ blog, index }) {
+  const titleId = `post-${blog.id}-title`;
+  const { minutes } = readingStats(blog.text);
+
+  return (
+    <li className="group-data-[view=list]/blogs:sm:border-b group-data-[view=list]/blogs:sm:border-rule">
+      <Link
+        href={`/blogs/${blogSlug(blog.title)}`}
+        aria-labelledby={titleId}
+        className="group flex h-full flex-col gap-5 rounded-[2px] focus-visible:outline-offset-[6px] group-data-[view=list]/blogs:sm:grid group-data-[view=list]/blogs:sm:grid-cols-[15rem_minmax(0,1fr)] group-data-[view=list]/blogs:sm:gap-8 group-data-[view=list]/blogs:sm:py-8 group-data-[view=list]/blogs:lg:grid-cols-[22rem_minmax(0,1fr)] group-data-[view=list]/blogs:lg:gap-12"
+      >
+        {/* The cover carries across to the post's own page (see the post's
+            cover in [slug]/page.jsx). Only the first row of the grid can be on
+            the first screen, so the rest load as they're scrolled to. sizes
+            covers the larger of the two views: a third of the page or 22rem in
+            the list from lg, half the page from sm. */}
+        {blog.cover && (
+          <ViewTransition name={`post-${blog.id}`} share="metal-morph" default="none">
+            <div className="aspect-video overflow-hidden rounded-[2px] bg-sunk">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={blog.cover.src}
+                srcSet={blog.cover.srcSet}
+                sizes="(min-width: 64rem) 25rem, (min-width: 40rem) calc(50vw - 3rem), calc(100vw - 2.5rem)"
+                width={blog.cover.width}
+                height={blog.cover.height}
+                alt={blog.cover.alt}
+                loading={index < 3 ? "eager" : "lazy"}
+                fetchPriority={index === 0 ? "high" : undefined}
+                className="size-full object-cover"
+              />
+            </div>
+          </ViewTransition>
+        )}
+        {/* A column, so "Read post" lines up along the foot of a row of grid
+            entries whose titles wrap differently. */}
+        <div className="flex flex-1 flex-col group-data-[view=list]/blogs:sm:max-w-[62ch]">
+          <p className="flex flex-wrap items-center gap-x-3 gap-y-1 type-meta text-ink-muted">
+            <time dateTime={isoDate(blog.date)}>{formatDate(blog.date)}</time>
+            <span aria-hidden="true" className="h-3.5 w-px bg-rule" />
+            <span>{minutes} min read</span>
+          </p>
+          <h2
+            id={titleId}
+            className="mt-2.5 type-subheading text-ink underline decoration-transparent decoration-[0.09em] underline-offset-[0.16em] transition-colors duration-150 ease-out-expo group-hover:decoration-ink"
+          >
+            {blog.title}
+          </h2>
+          <p className="mt-3 line-clamp-3 text-base text-pretty text-ink-soft">{excerpt(blog.text, 220)}</p>
+          <p
+            aria-hidden="true"
+            className="mt-auto inline-flex items-center gap-2 pt-5 text-[0.9375rem] font-semibold text-ink-soft transition-colors duration-150 ease-out-expo group-hover:text-ink"
+          >
+            Read post
+            <ArrowRight strokeWidth={2.25} className="size-4" />
+          </p>
+        </div>
+      </Link>
+    </li>
   );
 }

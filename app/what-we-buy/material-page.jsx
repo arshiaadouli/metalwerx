@@ -1,8 +1,11 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import IndexFaq from "@/app/components/index-faq";
-import { NotchedProjectCard } from "@/components/ui/notched-project-card";
-import { Reveal } from "@/components/ui/reveal";
-import { CtaBand, Details, ServiceHero, Steps } from "@/app/services/sections";
+import { metalCode } from "@/lib/metals";
+import { pageMetadata } from "@/lib/seo";
+import { cn } from "@/lib/utils";
+import { Container, CtaBand, Details, PageHeader, RackBay, Steps } from "@/app/services/sections";
+import { MaterialBay } from "./material-bay";
 import { getMaterial, sellingSteps } from "./materials";
 
 // The page for one material in materials.js. As with the service pages (see
@@ -13,11 +16,12 @@ import { getMaterial, sellingSteps } from "./materials";
 // The header photo is also the preview image when the page is shared.
 export function materialMetadata(slug) {
   const { seo, image } = getMaterial(slug);
-  return {
+  return pageMetadata({
+    path: `/what-we-buy/${slug}`,
     title: seo.title,
     description: seo.description,
-    openGraph: { images: [{ url: `${image.url}&w=1200`, alt: image.alt }] },
-  };
+    image: { url: `${image.url}&w=1200`, alt: image.alt },
+  });
 }
 
 export function MaterialPage({ slug }) {
@@ -25,121 +29,136 @@ export function MaterialPage({ slug }) {
   const related = material.related.map(getMaterial);
 
   return (
-    <main className="flex-1 bg-surface font-montserrat text-ink">
-      <ServiceHero
-        image={material.image}
+    <main id="main" className="flex-1 bg-ground text-ink">
+      <PageHeader
         breadcrumbs={[
           { name: "Home", href: "/" },
           { name: "What We Buy", href: "/what-we-buy" },
           { name: material.title },
         ]}
-        icon={material.icon}
-        eyebrow="What We Buy"
         title={material.heading}
         lede={material.lede}
         actions={[
-          { text: "Get a Quote", href: "/contact-us" },
-          { text: "How It Works", href: "#how-it-works", outline: true },
+          { text: "Get a quote", href: "/contact-us" },
+          { text: "How it works", href: "#how-it-works" },
         ]}
+        aside={<RackBay slug={slug} code={metalCode(slug)} name={material.title} size="lg" />}
+        image={material.image}
       />
-      <Overview {...material.overview} />
+      <Overview code={metalCode(slug)} {...material.overview} />
       <Steps {...(material.steps ?? sellingSteps)} />
       <Details {...material.details} />
-      {/* The home page's FAQ section, which has no top padding of its own. */}
-      <div className="border-t border-line bg-surface pt-20 sm:pt-24">
-        <IndexFaq heading="Frequently Asked Questions" {...material.faq} />
-      </div>
+      <IndexFaq {...material.faq} className="border-t border-rule" />
       <Related materials={related} />
       <CtaBand {...material.cta} />
     </main>
   );
 }
 
-// The overview beside the grades the yard sorts the material into.
-function Overview({ heading, paragraphs, gradesTitle = "Grades We Buy", grades }) {
+// The overview beside the grades the yard sorts the material into, each on
+// its own punched aluminium tag stamped with the material's code.
+function Overview({ code, heading, paragraphs, gradesTitle = "Grades We Buy", grades }) {
   return (
-    <section aria-labelledby="overview" className="bg-surface">
-      <div className="mx-auto grid w-full max-w-7xl gap-12 px-6 py-20 sm:py-24 lg:grid-cols-[2fr_3fr] lg:gap-16">
-        <Reveal>
-          <p className="font-oswald text-sm uppercase tracking-[0.3em] text-ink-cherry">Overview</p>
-          <h2 id="overview" className="mt-2 font-bebas-neue text-5xl tracking-wide sm:text-6xl">
+    <section aria-labelledby="overview" className="border-b border-rule pt-6 pb-20 sm:pt-8 sm:pb-28">
+      <Container className="grid gap-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
+        <div>
+          <h2 id="overview" className="type-heading max-w-[18ch] text-ink">
             {heading}
           </h2>
-          <div className="mt-4 h-1 w-16 bg-cherry" />
-          <div className="mt-8 space-y-5 leading-7 text-ink-soft">
+          <div className="mt-6 max-w-[62ch] space-y-5 text-ink-soft">
             {paragraphs.map((paragraph) => (
               <p key={paragraph}>{paragraph}</p>
             ))}
           </div>
-        </Reveal>
+        </div>
 
-        <div>
-          <Reveal
-            as="h3"
-            id="grades"
-            step={1}
-            className="font-oswald text-sm uppercase tracking-[0.3em] text-ink-cherry"
-          >
+        <div className="border-t-2 border-ink pt-6">
+          <h3 id="grades" className="scroll-mt-24 type-subheading text-ink">
             {gradesTitle}
-          </Reveal>
-          <ul className="mt-6 grid gap-6 sm:grid-cols-2">
-            {grades.map(({ title, text }, i) => (
-              <Reveal
-                as="li"
-                key={title}
-                step={1 + (i % 2)}
-                className="rounded-2xl border border-line bg-panel p-6 sm:p-8"
-              >
-                <div aria-hidden="true" className="h-1 w-10 bg-cherry" />
-                <h4 className="mt-5 font-oswald text-lg uppercase tracking-[0.15em]">{title}</h4>
-                <p className="mt-3 text-sm leading-6 text-ink-soft">{text}</p>
-              </Reveal>
+          </h3>
+          <ul className="mt-6 grid gap-4 sm:grid-cols-2">
+            {grades.map(({ title, text }) => (
+              <GradeTag key={title} code={code} title={title} text={text} />
             ))}
           </ul>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }
 
+// The ink each metal's code is stamped in, the darkest tone of the metal,
+// which reads at 4.5:1 or better on the tag in both themes. A code of two
+// metals ("Cu Fe" for motors) stamps each in its own ink.
+const CODE_INK = {
+  Cu: "text-cu",
+  CuZn: "text-brass",
+  Al: "text-al",
+  SS: "text-ss",
+  Pb: "text-pb",
+  Fe: "text-fe",
+};
+
+// A hang tag's outline: square at the foot, its top corners cut off. The face
+// is cut 2 - √2 px smaller than the edge it sits in, so the 1px aluminium edge
+// runs evenly round the cut corners too.
+function tagOutline(cut) {
+  return `polygon(${cut}px 0, calc(100% - ${cut}px) 0, 100% ${cut}px, 100% 100%, 0 100%, 0 ${cut}px)`;
+}
+const TAG_EDGE = { clipPath: tagOutline(12) };
+const TAG_FACE = { clipPath: tagOutline(12 - (2 - Math.SQRT2)) };
+
+// A grade on its own hang tag: the eyelet punched at the top, showing the page
+// through it, then the code stamped in its metal's ink, the grade and what
+// goes in it.
+function GradeTag({ code, title, text }) {
+  return (
+    <li style={TAG_EDGE} className="bg-tag-rule p-px">
+      <div style={TAG_FACE} className="relative flex h-full flex-col bg-tag px-5 pt-8 pb-6 text-tag-ink sm:px-6">
+        <span
+          aria-hidden="true"
+          className="absolute top-2.5 left-1/2 size-[1.125rem] -translate-x-1/2 rounded-full border-4 border-tag-rule bg-ground shadow-[inset_0_1px_2px_rgb(0_0_0/0.3)]"
+        />
+        <p aria-hidden="true" className="flex gap-x-1.5 type-code text-3xl">
+          {code.split(" ").map((symbol) => (
+            <span key={symbol} className={cn(CODE_INK[symbol] ?? "text-tag-ink")}>
+              {symbol}
+            </span>
+          ))}
+        </p>
+        <h4 className="mt-4 text-lg leading-snug font-bold [font-stretch:104%] text-tag-ink">{title}</h4>
+        <p className="mt-1.5 text-[0.9375rem] leading-relaxed text-tag-ink-soft">{text}</p>
+      </div>
+    </li>
+  );
+}
+
+// Three more materials, in their bays on the rack field, each carrying its
+// bundle across to its own page.
 function Related({ materials }) {
   return (
-    <section aria-labelledby="related" className="bg-panel">
-      <div className="mx-auto w-full max-w-7xl px-6 py-20 sm:py-24">
-        <Reveal as="header" className="text-center">
-          <h2
-            id="related"
-            className="font-oswald text-2xl font-semibold uppercase tracking-[0.2em] text-ink-cherry sm:text-3xl"
-          >
-            We Also Buy
+    <section aria-labelledby="related" className="on-rack bg-rack text-rack-ink">
+      <Container className="grid gap-10 py-16 sm:gap-12 sm:py-20 lg:grid-cols-[minmax(0,4fr)_minmax(0,8fr)] lg:py-24">
+        <div>
+          <h2 id="related" className="type-heading text-rack-ink">
+            We also buy
           </h2>
-        </Reveal>
-        <ul className="mt-14 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-          {materials.map(({ slug, title, summary, image }, i) => (
-            <Reveal as="li" key={slug} step={i % 3}>
-              {/* The notch is painted in the section's background colour. */}
-              <NotchedProjectCard
-                href={`/what-we-buy/${slug}`}
-                title={title}
-                description={summary}
-                image={`${image.url}&w=960`}
-                imageAlt={image.alt}
-                monochrome
-                surface="var(--panel)"
-              />
-            </Reveal>
+          <p className="mt-4">
+            <Link
+              href="/what-we-buy"
+              className="inline-flex min-h-11 items-center gap-2 font-bold text-rack-ink underline hover:no-underline"
+            >
+              Everything we buy
+              <ArrowRight aria-hidden="true" className="size-4" />
+            </Link>
+          </p>
+        </div>
+        <ul className="grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 sm:gap-x-7">
+          {materials.map(({ slug, title, summary }) => (
+            <MaterialBay key={slug} slug={slug} title={title} summary={summary} />
           ))}
         </ul>
-        <p className="mt-14 text-center">
-          <Link
-            href="/what-we-buy"
-            title="Everything we buy"
-            className="font-oswald text-sm uppercase tracking-[0.2em] text-ink-cherry underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
-          >
-            Everything we buy
-          </Link>
-        </p>
-      </div>
+      </Container>
     </section>
   );
 }

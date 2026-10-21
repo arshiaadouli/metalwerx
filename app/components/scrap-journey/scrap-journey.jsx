@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, Phone } from "lucide-react";
 
+import { Container } from "@/app/services/sections";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { steps } from "./steps";
@@ -20,23 +21,28 @@ import {
   tauToProgress,
 } from "./world/timeline";
 
-// The scrap journey above the home page hero: a pinned stage where scrolling
-// flies a camera through a miniature 3D yard (./world), following one load of
-// scrap from the customer's driveway to new metal, with each step's copy beside
-// it. The copy is server-rendered for search engines and screen readers; the 3D
-// world loads in the browser only. Without WebGL the steps show as a plain
-// list, and without JavaScript the same markup falls back to one via
-// NOSCRIPT_CSS. With reduced motion the camera cuts between the stops instead
-// of flying.
+// The scrap journey under the home page rack: a pinned stage where scrolling
+// flies a camera over a galvanised model of the yard (./world), following one
+// load of scrap from the customer's driveway to new metal, with each step's
+// copy beside it. The copy is server-rendered for search engines and screen
+// readers; the 3D world loads in the browser only. Without WebGL the steps
+// show as a plain list, and without JavaScript the same markup falls back to
+// one via NOSCRIPT_CSS. With reduced motion the camera cuts between the stops
+// instead of flying.
 //
 // The page passes the hero's two CTAs, so the last step offers the same ones.
 
 // Scroll length of the journey, in svh (stable while a phone's URL bar moves).
 const TRACK_SVH = Math.round(TOTAL_WEIGHT * 100);
 const SECTION_ID = "how-it-works";
-const pad = (n) => String(n).padStart(2, "0");
 
-const buttonClassName = "font-oswald uppercase tracking-[0.15em]";
+// The site header is sticky (components/site/site-header.jsx): 64px tall on
+// phones and 72px from lg, over its 1px rule. The stage pins just under it, so
+// nothing on the stage sits behind the header.
+const UNDER_HEADER = "[--journey-top:calc(4rem_+_1px)] lg:[--journey-top:calc(4.5rem_+_1px)]";
+
+// The copy column and the controls line up with the page width (Container).
+const PAGE = "mx-auto w-full max-w-[82.5rem] px-5 sm:px-8";
 
 export default function ScrapJourney({ primaryCta, secondaryCta }) {
   const sectionRef = useRef(null);
@@ -71,18 +77,20 @@ export default function ScrapJourney({ primaryCta, secondaryCta }) {
     let slowStreak = 0;
     let sampleCount = 0;
     let sampleSum = 0;
+    // Where the stage pins, under the header; read again on resize.
+    let pinTop = stickyTop(stage);
 
     const viewMode = (w) => (w >= 1024 ? "side" : "bottom");
 
     function readScroll() {
       const scrollable = section.offsetHeight - stage.offsetHeight;
-      const top = section.getBoundingClientRect().top;
+      const top = section.getBoundingClientRect().top - pinTop;
       tauTarget = scrollable > 0 ? progressToTau(clamp(-top / scrollable)) : 0;
     }
 
     function jumpTo(i, behavior) {
       const scrollable = section.offsetHeight - stage.offsetHeight;
-      const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+      const sectionTop = section.getBoundingClientRect().top + window.scrollY - pinTop;
       window.scrollTo({
         top: sectionTop + tauToProgress(stopMid(i)) * scrollable,
         behavior: behavior ?? (reduce ? "auto" : "smooth"),
@@ -131,7 +139,7 @@ export default function ScrapJourney({ primaryCta, secondaryCta }) {
           if (stop !== shownStop) {
             shownStop = stop;
             world.frame({ tau: stopMid(stop), time: 0, dt: 0 });
-            host.animate?.([{ opacity: 0.25 }, { opacity: 1 }], { duration: 260, easing: "ease-out" });
+            host.animate?.([{ opacity: 0.25 }, { opacity: 1 }], { duration: 260, easing: "cubic-bezier(0.16, 1, 0.3, 1)" });
           }
         } else if (moving || idleFor < 1.5 || ++skip % 3 === 0) {
           // Once settled, the lamps and machines tick over at a third of the
@@ -178,6 +186,7 @@ export default function ScrapJourney({ primaryCta, secondaryCta }) {
     const ro = new ResizeObserver(() => {
       cancelAnimationFrame(resizeFrame);
       resizeFrame = requestAnimationFrame(() => {
+        pinTop = stickyTop(stage);
         readScroll();
         world?.resize(stage.clientWidth, stage.clientHeight, viewMode(stage.clientWidth));
         wake();
@@ -256,19 +265,19 @@ export default function ScrapJourney({ primaryCta, secondaryCta }) {
 
   if (mode === "static") {
     return (
-      <section id={SECTION_ID} aria-labelledby="journey-title" className="bg-surface font-montserrat text-ink">
-        <div className="mx-auto max-w-7xl px-6 py-20">
-          <h2 id="journey-title" className="font-bebas-neue text-5xl tracking-wide text-ink sm:text-6xl">
-            How It Works
+      <section id={SECTION_ID} aria-labelledby="journey-title" className="scroll-mt-24 bg-ground py-20 text-ink sm:py-28">
+        <Container>
+          <h2 id="journey-title" className="type-heading text-ink">
+            How it works
           </h2>
-          <ol className="mt-12 grid gap-12 md:grid-cols-2 lg:grid-cols-3">
+          <ol className="mt-12 grid gap-x-8 gap-y-12 border-t-2 border-ink sm:grid-cols-2 lg:grid-cols-3">
             {steps.map((step, i) => (
-              <li key={step.id} id={`journey-${step.id}`}>
-                <StepCopy step={step} index={i} primaryCta={primaryCta} secondaryCta={secondaryCta} />
+              <li key={step.id} id={`journey-${step.id}`} className="pt-6">
+                <StepCopy step={step} index={i} primaryCta={primaryCta} secondaryCta={secondaryCta} compact />
               </li>
             ))}
           </ol>
-        </div>
+        </Container>
       </section>
     );
   }
@@ -280,39 +289,40 @@ export default function ScrapJourney({ primaryCta, secondaryCta }) {
         id={SECTION_ID}
         aria-labelledby="journey-title"
         data-mode={mode}
-        className="group/journey relative bg-surface font-montserrat text-ink"
-        style={{ height: `calc(${TRACK_SVH}svh + 100dvh)` }}
+        className={cn("group/journey relative scroll-mt-(--journey-top) bg-ground text-ink", UNDER_HEADER)}
+        style={{ height: `calc(${TRACK_SVH}svh + 100dvh - var(--journey-top))` }}
       >
         <noscript>
           <style>{NOSCRIPT_CSS}</style>
         </noscript>
 
-        <div ref={stageRef} data-stage className="sticky top-0 h-dvh overflow-hidden">
-          {/* What shows until the 3D world has drawn its first frame. */}
-          <div
-            aria-hidden="true"
-            data-backdrop
-            className="absolute inset-0 bg-[radial-gradient(ellipse_at_68%_42%,var(--well),var(--surface)_72%)]"
-          />
+        <div
+          ref={stageRef}
+          data-stage
+          className="sticky top-(--journey-top) h-[calc(100dvh_-_var(--journey-top))] overflow-hidden"
+        >
+          {/* What shows until the 3D world has drawn its first frame: the
+              page ground, which the world's own background matches. */}
+          <div aria-hidden="true" data-backdrop className="absolute inset-0 bg-ground" />
           <div
             ref={hostRef}
             aria-hidden="true"
             data-canvas
-            className="absolute inset-0 opacity-0 transition-opacity duration-700 group-data-[mode=live]/journey:opacity-100"
+            className="absolute inset-0 opacity-0 transition-opacity duration-700 ease-out-expo group-data-[mode=live]/journey:opacity-100"
           />
-          {/* Scrims keep the copy readable over the scene: along the bottom on
-              narrow screens, on the left on wide ones. */}
+          {/* Scrims fade the model into the page ground under the copy: along
+              the bottom on narrow screens, on the left on wide ones. */}
           <div
             aria-hidden="true"
             data-scrim
-            className="pointer-events-none absolute inset-0 bg-linear-to-t from-surface from-25% via-surface/70 via-45% to-transparent to-70% lg:bg-linear-to-r lg:from-surface/95 lg:from-0% lg:via-surface/60 lg:via-30% lg:to-transparent lg:to-55%"
+            className="pointer-events-none absolute inset-0 bg-linear-to-t from-ground from-40% via-ground/85 via-55% to-transparent to-75% lg:bg-linear-to-r lg:from-ground lg:from-0% lg:via-ground/85 lg:via-35% lg:to-transparent lg:to-58%"
           />
 
-          <h2 id="journey-title" className="sr-only">
+          <h2 id="journey-title" className="sr-only type-heading text-ink">
             How selling your scrap to Metal Werx works
           </h2>
 
-          <ol data-steps className="absolute inset-0 mx-auto max-w-7xl">
+          <ol data-steps className="absolute inset-0 mx-auto max-w-[82.5rem]">
             {steps.map((step, i) => (
               <li
                 key={step.id}
@@ -326,8 +336,8 @@ export default function ScrapJourney({ primaryCta, secondaryCta }) {
                   if (Number(event.currentTarget.style.opacity || 1) < 0.5) jumpRef.current(i, "auto");
                 }}
                 className={cn(
-                  "absolute inset-x-0 bottom-0 px-6 pb-[calc(4.5rem+env(safe-area-inset-bottom))] will-change-[opacity,transform]",
-                  "lg:inset-x-auto lg:top-1/2 lg:bottom-auto lg:left-0 lg:w-[min(36rem,44vw)] lg:-translate-y-1/2 lg:pb-0",
+                  "absolute inset-x-0 bottom-0 px-5 pb-[calc(4.5rem_+_env(safe-area-inset-bottom))] will-change-[opacity,transform] sm:px-8",
+                  "lg:inset-x-auto lg:top-1/2 lg:bottom-auto lg:left-0 lg:w-[min(38rem,46vw)] lg:-translate-y-1/2 lg:pb-0",
                   i > 0 && "opacity-0"
                 )}
               >
@@ -336,110 +346,119 @@ export default function ScrapJourney({ primaryCta, secondaryCta }) {
             ))}
           </ol>
 
-          {/* The route rail: one dot per step; a click takes the journey there. */}
-          <nav
-            aria-label="Journey steps"
-            className="absolute top-1/2 right-4 z-10 hidden -translate-y-1/2 flex-col gap-1 md:flex lg:right-6"
-          >
-            {steps.map((step, i) => (
-              <button
-                key={step.id}
-                type="button"
-                ref={(el) => {
-                  dotRefs.current[i] = el;
-                }}
-                onClick={() => jumpRef.current(i)}
-                aria-label={`Step ${i + 1}: ${step.label}`}
-                aria-current={i === 0 ? "step" : undefined}
-                className="group/dot flex cursor-pointer items-center justify-end gap-3 rounded-full py-2 pl-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                <span className="pointer-events-none translate-x-1 font-oswald text-xs uppercase tracking-[0.15em] text-ink-soft opacity-0 transition duration-300 group-hover/dot:translate-x-0 group-hover/dot:opacity-100 group-aria-[current=step]/dot:translate-x-0 group-aria-[current=step]/dot:text-ink group-aria-[current=step]/dot:opacity-100">
-                  {step.label}
-                </span>
-                <span className="size-2.5 rounded-full bg-ink-muted/60 ring-cherry/25 transition duration-300 group-hover/dot:bg-ink group-aria-[current=step]/dot:scale-125 group-aria-[current=step]/dot:bg-cherry group-aria-[current=step]/dot:ring-4" />
-              </button>
-            ))}
-          </nav>
-
-          {/* Progress along the journey. */}
-          <div aria-hidden="true" className="absolute inset-x-0 top-0 h-[3px] bg-cherry/15">
-            <div ref={barRef} className="h-full origin-left scale-x-0 bg-cherry" />
+          {/* The route rail: one stop per step; a click takes the journey there. */}
+          <div data-rail className={cn("pointer-events-none absolute inset-0", PAGE)}>
+            <nav
+              aria-label="Journey steps"
+              className="pointer-events-auto absolute top-1/2 right-5 hidden -translate-y-1/2 flex-col md:flex sm:right-8"
+            >
+              <span aria-hidden="true" className="absolute inset-y-[1.375rem] right-[0.3125rem] w-px bg-rule" />
+              {steps.map((step, i) => (
+                <button
+                  key={step.id}
+                  type="button"
+                  ref={(el) => {
+                    dotRefs.current[i] = el;
+                  }}
+                  onClick={() => jumpRef.current(i)}
+                  aria-label={`Step ${i + 1}: ${step.label}`}
+                  aria-current={i === 0 ? "step" : undefined}
+                  className="group/dot relative flex h-11 cursor-pointer items-center justify-end gap-3 pl-3"
+                >
+                  <span className="pointer-events-none translate-x-1 rounded-[2px] bg-ground px-2 py-0.5 type-meta text-ink opacity-0 transition-[opacity,translate] duration-150 ease-out-expo group-hover/dot:translate-x-0 group-hover/dot:opacity-100 group-focus-visible/dot:translate-x-0 group-focus-visible/dot:opacity-100 group-aria-[current=step]/dot:translate-x-0 group-aria-[current=step]/dot:opacity-100">
+                    {step.label}
+                  </span>
+                  <span className="size-2.5 rounded-[1px] bg-ground shadow-[inset_0_0_0_1.5px_var(--ink)] transition-[background-color,box-shadow,scale] duration-150 ease-out-expo group-hover/dot:bg-ink group-aria-[current=step]/dot:scale-125 group-aria-[current=step]/dot:bg-action group-aria-[current=step]/dot:shadow-none" />
+                </button>
+              ))}
+            </nav>
           </div>
 
-          <a
-            href="#after-journey"
-            data-skip
-            className="absolute top-4 right-4 z-10 inline-flex items-center gap-2 rounded-full border border-input bg-surface/80 px-4 py-2 font-oswald text-xs uppercase tracking-[0.15em] text-ink-soft backdrop-blur-sm transition-colors hover:border-cherry hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:right-6"
-          >
-            Skip the tour
-            <ArrowDown aria-hidden="true" className="size-3.5" />
-          </a>
+          {/* Progress along the journey, under the header's rule. */}
+          <div aria-hidden="true" className="absolute inset-x-0 top-0 h-0.5">
+            <div ref={barRef} className="h-full origin-left bg-action" style={{ transform: "scaleX(0)" }} />
+          </div>
 
-          <div
-            ref={hintRef}
-            aria-hidden="true"
-            className="pointer-events-none absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 font-oswald text-xs uppercase tracking-[0.25em] text-ink-muted lg:flex"
-          >
-            Scroll to follow your scrap
-            <span className="relative h-8 w-5 rounded-full border-2 border-ink-muted/60">
-              <span className="absolute top-1.5 left-1/2 h-2 w-1 -translate-x-1/2 animate-bounce rounded-full bg-cherry motion-reduce:animate-none" />
-            </span>
+          <div data-skip className={cn("pointer-events-none absolute inset-x-0 top-0 z-10", PAGE)}>
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              className="pointer-events-auto absolute top-4 right-5 h-11 bg-ground sm:top-5 sm:right-8"
+            >
+              <a href="#after-journey">
+                Skip the tour
+                <ArrowDown aria-hidden="true" />
+              </a>
+            </Button>
+          </div>
+
+          <div ref={hintRef} aria-hidden="true" className={cn("pointer-events-none absolute inset-x-0 bottom-8 hidden lg:block", PAGE)}>
+            <p className="flex items-center gap-2 type-meta text-ink-muted">
+              <ArrowDown className="size-4" />
+              Scroll to follow your scrap
+            </p>
           </div>
         </div>
       </section>
-      <div id="after-journey" />
+      <div id="after-journey" className={cn("scroll-mt-(--journey-top)", UNDER_HEADER)} />
     </>
   );
 }
 
-function StepCopy({ step, index, primaryCta, secondaryCta }) {
+// A step's copy. Its eyebrow ("Step 1 · Call ahead") reads as a line under
+// the title: the step, then its name. compact is for the plain list.
+function StepCopy({ step, index, primaryCta, secondaryCta, compact = false }) {
   const last = index === steps.length - 1;
+  const [number, name] = step.eyebrow?.split(" · ") ?? [`Step ${index + 1}`, step.label];
   return (
     <article>
-      <p className="font-mono text-xs tracking-[0.2em] text-ink-muted">
-        {pad(index + 1)} / {pad(steps.length)}
+      <h3 className={cn("text-ink", compact ? "type-subheading" : "type-heading max-w-[18ch]")}>{step.title}</h3>
+      <p className="mt-2 flex flex-wrap items-baseline gap-x-2.5 type-meta">
+        <span className="text-ink">
+          {number}
+          <span className="sr-only">:</span>
+        </span>
+        {name && <span className="text-ink-muted">{name}</span>}
       </p>
-      <p className="mt-3 font-oswald text-sm uppercase tracking-[0.3em] text-ink-cherry">{step.eyebrow}</p>
-      {/* Bebas Neue only ships weight 400, so no font-bold (it would be faux bold). */}
-      <h3 className="mt-2 font-bebas-neue text-5xl leading-[0.95] tracking-wide text-ink sm:text-6xl xl:text-7xl">
-        {step.title}
-      </h3>
-      <p className="mt-4 max-w-[46ch] text-base leading-7 text-ink-soft sm:text-lg sm:leading-8">{step.body}</p>
+      <p className={cn("mt-4 max-w-[46ch] text-ink-soft", compact ? "text-base" : "type-lede")}>{step.body}</p>
       {step.tags?.length > 0 && (
-        <ul className="mt-5 flex flex-wrap gap-2">
+        <ul className="mt-5 flex flex-wrap gap-1.5">
           {step.tags.map((tag) => (
-            <li
-              key={tag}
-              className="rounded-full border border-cherry/45 bg-surface/70 px-3 py-1 font-oswald text-xs uppercase tracking-[0.15em] text-ink backdrop-blur-sm"
-            >
+            <li key={tag} className="rounded-[2px] bg-sunk px-2.5 py-1 type-meta text-ink-soft">
               {tag}
             </li>
           ))}
         </ul>
       )}
       {step.actions?.length > 0 && (
-        <div className="mt-6 flex flex-wrap items-center gap-3">
-          {step.actions.map((action, k) => (
-            <Button key={action.href} asChild size="lg" variant={k === 0 ? "default" : "outline"} className={buttonClassName}>
-              <a href={action.href} title={action.text}>
-                {action.text}
-              </a>
-            </Button>
-          ))}
+        <div className="mt-6 flex flex-wrap items-center gap-2.5">
+          {step.actions.map((action) => {
+            const call = action.href.startsWith("tel:");
+            const Anchor = action.href.startsWith("/") ? Link : "a";
+            return (
+              <Button key={action.href} asChild variant={call ? "default" : "outline"} className="max-sm:w-full">
+                <Anchor href={action.href} title={action.text} className={call ? "tabular" : undefined}>
+                  {call && <Phone aria-hidden="true" />}
+                  {action.text}
+                </Anchor>
+              </Button>
+            );
+          })}
         </div>
       )}
       {last && (primaryCta || secondaryCta) && (
-        <div className="mt-7 flex flex-wrap items-center gap-3">
+        <div className="mt-6 flex flex-wrap items-center gap-2.5">
           {primaryCta && (
-            <Button asChild size="lg" className={buttonClassName}>
-              <Link href={primaryCta.href} title={primaryCta.text}>
+            <Button asChild variant="outline" className="max-sm:w-full">
+              <Link href={primaryCta.href}>
                 {primaryCta.text}
               </Link>
             </Button>
           )}
           {secondaryCta && (
-            <Button asChild size="lg" variant="outline" className={buttonClassName}>
-              <Link href={secondaryCta.href} title={secondaryCta.text}>
+            <Button asChild variant="quiet" className="max-sm:w-full">
+              <Link href={secondaryCta.href}>
                 {secondaryCta.text}
               </Link>
             </Button>
@@ -452,6 +471,11 @@ function StepCopy({ step, index, primaryCta, secondaryCta }) {
 
 function currentTheme() {
   return document.documentElement.dataset.theme === "light" ? "light" : "dark";
+}
+
+// How far below the top of the viewport the stage pins (its sticky top).
+function stickyTop(stage) {
+  return parseFloat(getComputedStyle(stage).top) || 0;
 }
 
 function hasWebGL() {
@@ -483,15 +507,20 @@ function pickQuality() {
 // For QA in development: the window.scrollY that shows tau.
 function scrollForTau(section, stage, tau) {
   const scrollable = section.offsetHeight - stage.offsetHeight;
-  const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+  const sectionTop = section.getBoundingClientRect().top + window.scrollY - stickyTop(stage);
   return sectionTop + tauToProgress(tau) * scrollable;
 }
 
-// Without JavaScript nothing moves, so the pinned stage becomes a plain list.
+// Without JavaScript nothing moves, so the pinned stage becomes a plain list
+// on the page ground, laid out like the static one: the heading, a 2px ink
+// rail, then the steps.
 const NOSCRIPT_CSS = `
-#${SECTION_ID}{height:auto!important}
-#${SECTION_ID} [data-stage]{position:static;height:auto;overflow:visible}
-#${SECTION_ID} [data-backdrop],#${SECTION_ID} [data-canvas],#${SECTION_ID} [data-scrim],#${SECTION_ID} nav,#${SECTION_ID} [data-skip],#${SECTION_ID} [aria-hidden="true"]{display:none}
-#${SECTION_ID} [data-steps]{position:static;display:grid;gap:3rem;padding:5rem 1.5rem}
+#${SECTION_ID}{height:auto!important;padding:5rem 0}
+#${SECTION_ID} [data-stage]{position:static;height:auto;overflow:visible;max-width:82.5rem;margin:0 auto;padding:0 1.25rem}
+#${SECTION_ID} [data-backdrop],#${SECTION_ID} [data-canvas],#${SECTION_ID} [data-scrim],#${SECTION_ID} [data-rail],#${SECTION_ID} [data-skip],#${SECTION_ID} [aria-hidden="true"]{display:none}
+#${SECTION_ID} h2{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto;clip-path:none;white-space:normal}
+#${SECTION_ID} [data-steps]{position:static;display:grid;gap:3rem;max-width:none;margin-top:3rem;padding-top:1.5rem;border-top:2px solid var(--ink)}
 #${SECTION_ID} [data-copy]{position:static;opacity:1;translate:none;width:auto;padding:0}
+@media (min-width:40rem){#${SECTION_ID} [data-stage]{padding:0 2rem}}
+@media (min-width:64rem){#${SECTION_ID} [data-steps]{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:2rem}}
 `;

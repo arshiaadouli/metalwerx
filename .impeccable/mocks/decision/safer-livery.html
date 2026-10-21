@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fleet Livery, first viewport sketch</title>
+<style>
+  :root { --red: #C8231E; --red-deep: #A51B17; --white: #FFFFFF; --charcoal: #24272B; --galv: #E9EBEC; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1440px; height: 900px; overflow: hidden; }
+  body { background-color: var(--galv); font-family: "Segoe UI", Arial, sans-serif; color: var(--charcoal); }
+  nav { height: 72px; background-color: var(--charcoal); color: var(--white); display: flex; align-items: center; padding: 0 64px; gap: 36px; font-size: 16px; font-weight: 600; }
+  nav .logo { font-family: Garamond, Georgia, serif; font-weight: 700; font-size: 28px; letter-spacing: 0.04em; }
+  nav .call { margin-left: auto; background-color: var(--red); padding: 12px 22px; font-weight: 800; }
+  .body { height: 640px; background-color: var(--red); color: var(--white); position: relative; padding: 72px 64px 0; }
+  .body h1 { font-size: 92px; line-height: 0.95; font-weight: 900; letter-spacing: -0.01em; max-width: 1000px; }
+  .body .lede { margin-top: 24px; font-size: 21px; line-height: 1.5; max-width: 620px; color: #FFFFFF; }
+  .phone { margin-top: 28px; font-size: 128px; line-height: 1; font-weight: 900; letter-spacing: -0.02em; }
+  .plates { position: absolute; right: 64px; top: 72px; display: flex; flex-direction: column; gap: 12px; width: 300px; }
+  .plates span { height: 72px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 800; }
+  .plates .a { background-color: var(--white); color: var(--red-deep); }
+  .plates .b { background-color: var(--charcoal); color: var(--white); }
+  .chevrons { position: absolute; left: 0; right: 0; bottom: 0; height: 48px; background-color: var(--red-deep);
+    background-image: repeating-linear-gradient(135deg, var(--white) 0 28px, var(--red-deep) 28px 56px); }
+  .services { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding: 40px 64px; }
+  .services div { height: 120px; background-color: var(--white); padding: 24px; font-size: 26px; font-weight: 800; }
+</style>
+</head>
+<body>
+  <nav><span class="logo">METAL WERX</span><span>What we buy</span><span>Services</span><span>Blog</span><span>About</span><span>Contact</span><span class="call">0470 131 025</span></nav>
+  <div class="body">
+    <h1>Turn Your Scrap Metal Into Cash</h1>
+    <p class="lede">We buy ferrous and non-ferrous metals, car bodies and batteries. Bring your scrap to the yard, hire a bin, or book a pickup.</p>
+    <p class="phone">0470 131 025</p>
+    <div class="plates"><span class="a">Call now</span><span class="b">Get a quote</span></div>
+    <div class="chevrons"></div>
+  </div>
+  <div class="services"><div>Bin hire</div><div>Pickup &amp; collection</div><div>Commercial recycling</div></div>
+</body>
+</html>
