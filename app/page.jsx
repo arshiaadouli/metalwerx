@@ -27,7 +27,7 @@ export default async function Home() {
     <main className="flex flex-1 flex-col">
       {/* The scroll-driven 3D tour of selling scrap at the yard, ending on
           the hero's CTAs. */}
-      <ScrapJourney primaryCta={hero.primaryCta} secondaryCta={hero.secondaryCta} />
+      {/* <ScrapJourney primaryCta={hero.primaryCta} secondaryCta={hero.secondaryCta} /> */}
       <IndexHero {...hero} />
       <IndexMarquee items={ticker} />
       <IndexWhyUs {...whyUs} />
