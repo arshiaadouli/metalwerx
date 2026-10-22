@@ -2,6 +2,8 @@
 
 Website for Metal Werx, a scrap metal recycling and cash-for-cars business. It's built with Next.js 16 (App Router), React 19 and Tailwind CSS 4. Blog posts and the copy on the home and blog pages are managed in a Strapi 5 CMS, a separate project in `../metalwerx-cms`, and read through its REST API.
 
+**Website:** [metalwerx.com.au](https://metalwerx.com.au) (coming soon). Until the domain points at Vercel, the site is live at [metawerx.vercel.app](https://metawerx.vercel.app).
+
 ## Requirements
 
 - [Git](https://git-scm.com/)
@@ -135,5 +137,18 @@ Then deploy:
 npx vercel          # preview deployment
 npx vercel --prod   # production, https://metawerx.vercel.app
 ```
+
+### Domain
+
+The site's own address will be [metalwerx.com.au](https://metalwerx.com.au). Both `www.metalwerx.com.au` (the main address) and `metalwerx.com.au` (which redirects to it) are already added to the Vercel project. They go live once the domain's DNS, managed at burstxservers, has these two records:
+
+| Name | Type | Value |
+| --- | --- | --- |
+| `metalwerx.com.au` | A | `216.198.79.1` and `64.29.17.1` |
+| `www` | CNAME | `76e8eca01842befc.vercel-dns-017.com.` |
+
+Leave the MX and TXT records alone: they carry the `info@metalwerx.com.au` email. Once the domain works, set `SITE_URL` on Vercel to `https://www.metalwerx.com.au` and redeploy, so canonical links, the sitemap and share previews use the new address. Until then `SITE_URL` stays `https://metawerx.vercel.app`.
+
+### Environment variables
 
 Vercel doesn't read your local `.env`. Set the Strapi URL on Vercel with `npx vercel env add STRAPI_URL`. It has to be a Strapi server that Vercel can reach over the internet, so `http://localhost:1337` won't work there: the CMS needs hosting first.
