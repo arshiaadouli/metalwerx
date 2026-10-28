@@ -2,9 +2,9 @@ import Marquee from "react-fast-marquee";
 import { Recycle } from "lucide-react";
 
 // A scrolling band of what the yard buys and does, between the hero and the
-// commercial section. The items are the Home Page's ticker in Strapi. Cherry
-// and chrome are fixed palette colours, so the band looks the same in both
-// themes.
+// commercial section. The items are the ticker in the CMS (see lib/cms.js).
+// Cherry and chrome are fixed palette colours, so the band looks the same in
+// both themes.
 export default function IndexMarquee({ items }) {
   return (
     <div id="ticker" className="bg-cherry font-oswald text-chrome">

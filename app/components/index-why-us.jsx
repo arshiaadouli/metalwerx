@@ -2,9 +2,9 @@ import { NotchedProjectCard } from "@/components/ui/notched-project-card";
 import { Reveal } from "@/components/ui/reveal";
 
 // The photo cards between the ticker and the commercial section. The copy,
-// photos and links come from the Home Page in Strapi (see lib/pages.js). The
-// photos sit in black and white until a card is hovered or focused, so photos
-// from different sources still look like one set.
+// photos and links are in the CMS (see lib/cms.js). The photos sit in black
+// and white until a card is hovered or focused, so photos from different
+// sources still look like one set.
 export default function IndexWhyUs({ heading, intro, reasons }) {
   return (
     <section id="why-us" className="bg-surface font-montserrat text-ink">

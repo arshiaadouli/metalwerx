@@ -4,26 +4,20 @@ import { Button } from "@/components/ui/button";
 import { CutTitle, Enter } from "@/components/ui/enter";
 import { Reveal } from "@/components/ui/reveal";
 import { ScrollLink } from "@/components/ui/scroll-link";
+import { photoProps } from "@/lib/photo";
 import { cn } from "@/lib/utils";
 
 // The pieces /services, the service pages, /what-we-buy and the material pages
 // share.
 
-// The widths the browser can pick from. Every photo url in services.js and
-// what-we-buy/materials.js takes a width on the end.
-const WIDTHS = [640, 960, 1280, 1920, 2560];
-
-// A stock photo with a srcset. `sizes` is how wide it shows, as in the <img>
-// attribute. A plain <img> rather than next/image, as elsewhere on the site,
-// so no next.config remotePatterns entry is needed for the photo hosts.
-// `priority` is for a photo on the first screen.
+// A stock photo with a srcset (see lib/photo.js). `sizes` is how wide it
+// shows, as in the <img> attribute. `priority` is for a photo on the first
+// screen.
 export function Photo({ image, sizes, className, priority = false }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={`${image.url}&w=1280`}
-      srcSet={WIDTHS.map((width) => `${image.url}&w=${width} ${width}w`).join(", ")}
-      sizes={sizes}
+      {...photoProps(image.url, sizes)}
       alt={image.alt}
       title={image.title}
       loading={priority ? "eager" : "lazy"}

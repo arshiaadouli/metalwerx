@@ -1,12 +1,11 @@
 # Metal Werx
 
-Website for Metal Werx, a scrap metal recycling and cash-for-cars business. It's built with Next.js 16 (App Router), React 19 and Tailwind CSS 4. Blog posts and the copy on the home and blog pages are managed in a Strapi 5 CMS, a separate project in `../metalwerx-cms`, and read through its REST API.
+Website for Metal Werx, a scrap metal recycling and cash-for-cars business. It's built with Next.js 16 (App Router), React 19 and Tailwind CSS 4. The home page, the blog posts, the privacy policy and the services come from the Payload CMS in [metalwerx-payload](../metalwerx-payload), at http://192.168.15.240:3001, and their photos from its object storage. The rest of the copy lives in JavaScript files next to the pages.
 
 ## Requirements
 
 - [Git](https://git-scm.com/)
 - [Node.js](https://nodejs.org/) 20.9 or newer, which includes npm. The project is developed on Node 24.
-- The Strapi CMS in `../metalwerx-cms`, running. The home page and the blog pages need it; the rest of the site runs without it. The CMS is its own Git repository and isn't on GitHub yet, so for now it only exists on the development machine.
 
 ## Install on a new machine
 
@@ -23,46 +22,26 @@ cd metalwerx
 npm ci
 ```
 
-`npm ci` installs the exact versions pinned in `package-lock.json`. Its `postinstall` step runs `prisma generate` to build the database client, so you don't need to install anything else.
+`npm ci` installs the exact versions pinned in `package-lock.json`.
 
-Newer versions of npm may warn that some packages' install scripts are "not yet covered by allowScripts". You can ignore this warning: the install still finishes and the Prisma client is still generated.
+### 3. Connect to the CMS
 
-### 3. Start the Strapi CMS
-
-In a second terminal, start Strapi from its folder next to this one:
+Add the CMS to `.env.local`:
 
 ```bash
-cd ../metalwerx-cms
-npm run develop
+CMS_URL=http://192.168.15.240:3001
+REVALIDATE_SECRET=<the same value as REVALIDATE_SECRET in the CMS's .env>
 ```
 
-It serves the admin panel at [http://localhost:1337/admin](http://localhost:1337/admin), where content is edited, and the API the site reads at `http://localhost:1337/api`. The content types are:
+The home page, blog posts, privacy policy and services are edited in the CMS admin at http://192.168.15.240:3001/admin. The site reads them at build time and keeps them in its cache: after a change, the CMS calls the site's `/api/revalidate`, so the change shows on the next visit, and the cache also refreshes by itself every 15 minutes. A post's URL is `/blogs/<slug>`, and a service's `/services/<slug>`. The CMS must be running for `npm run build`.
 
-| Content type | Kind | What it holds |
-| --- | --- | --- |
-| **Blog** | Collection | The posts at `/blogs`, each with a `title`, a `date` and a rich text `body` |
-| **Home Page** | Single | The home page's search title and description, hero (text, buttons and background photos), the scrolling ticker, the Commercial, Cash for Cars and FAQ sections |
-| **Blog Page** | Single | The search title and description, heading and empty-list message at `/blogs`, and the label above each post's title |
-
-Only published content appears on the site. In the Home Page, the ticker and each Cash for Cars step's points are typed one per line. A photo can be uploaded or, if nothing is uploaded, given as the address of a photo hosted elsewhere; the alt text is required either way. On a fresh database, Strapi fills the Home Page and Blog Page with the site's original copy the first time it starts (see `src/seed.ts` in the CMS).
-
-### 4. Create the `.env` file
-
-Environment files aren't committed to Git, so a fresh clone doesn't have one. Create a file named `.env` in the project root:
-
-```env
-STRAPI_URL=http://localhost:1337
-```
-
-### 5. Start the development server
+### 4. Start the development server
 
 ```bash
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000). Pages reload as you edit files. To open the site from a phone or another computer on the network, see [Running on a private LAN](#running-on-a-private-lan).
-
-If `STRAPI_URL` is missing or Strapi isn't running, the other pages still work, but the home page and `/blogs` show an error and the terminal logs the cause, for example `STRAPI_URL is not set` or `fetch failed`. Content published in Strapi shows up on the site within an hour, because the Strapi queries are cached for that long.
 
 ## Production build
 
@@ -71,7 +50,7 @@ npm run build
 npm start
 ```
 
-Strapi has to be running while you build, because the home and blog pages are prerendered with their content in them. `npm start` serves the build at [http://localhost:3000](http://localhost:3000).
+`npm start` serves the build at [http://localhost:3000](http://localhost:3000).
 
 ## Running on a private LAN
 
@@ -112,10 +91,11 @@ On macOS, click **Allow** when asked whether `node` can accept incoming connecti
 
 ```
 app/              Pages and layouts: home, about, blogs, contact-us, privacy-policy
+app/api/revalidate/  Called by the CMS after a change
 app/components/   Navbar, footer, theme toggle and home page sections
 components/ui/    Shared UI components (buttons, accordion, animations, contact globe)
-lib/              Strapi queries: blog posts (blogs.js) and home/blog page copy (pages.js)
-public/           Static files such as the logo
+lib/              CMS reads (cms.js), blog post lookups (blogs.js) and the photo helper (photo.js)
+public/           Static files: the logo and the site's photos (images/)
 ```
 
 ## Deploying
@@ -136,4 +116,4 @@ npx vercel          # preview deployment
 npx vercel --prod   # production, https://metawerx.vercel.app
 ```
 
-Vercel doesn't read your local `.env`. Set the Strapi URL on Vercel with `npx vercel env add STRAPI_URL`. It has to be a Strapi server that Vercel can reach over the internet, so `http://localhost:1337` won't work there: the CMS needs hosting first.
+The build reads its content from the CMS at `CMS_URL`, which is only on the LAN (192.168.15.240), so a Vercel build can't reach it. To deploy to Vercel, the CMS and its object storage need public addresses, set as `CMS_URL` and `REVALIDATE_SECRET` on Vercel, and the image host in `next.config.mjs` changed to match.

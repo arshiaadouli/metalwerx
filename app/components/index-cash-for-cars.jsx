@@ -12,8 +12,9 @@ import {
 import { Button } from "@/components/ui/button";
 import { HowItWorks } from "@/components/ui/how-it-works";
 import { Reveal } from "@/components/ui/reveal";
+import { photoProps } from "@/lib/photo";
 
-// The icon choices in Strapi's Step component, by the value Strapi stores.
+// The icons a step can name (see the CMS (see lib/cms.js)).
 const icons = {
   phone: PhoneCall,
   message: MessageSquareText,
@@ -25,19 +26,18 @@ const icons = {
   check: CircleCheck,
 };
 
-// The copy, photo and steps come from the Home Page in Strapi (see lib/pages.js).
+// The copy, photo and steps are in the CMS (see lib/cms.js).
 export default function IndexCashForCars({ heading, subheading, body, image, steps, cta }) {
   return (
     <section id="cash-for-cars" className="bg-surface font-montserrat text-ink">
       <div className="mx-auto w-full max-w-7xl px-6 py-20 sm:py-24">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          {/* A plain <img> rather than next/image, as in the hero, so no next.config
-              remotePatterns entry is needed for Strapi uploads or pasted addresses. */}
+          {/* Half the page beside the text from lg. */}
           {image && (
             <Reveal variant="fade">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={image.src}
+                {...photoProps(image.src, "(min-width: 64rem) 50vw, 100vw")}
                 alt={image.alt}
                 title={image.title}
                 loading="lazy"

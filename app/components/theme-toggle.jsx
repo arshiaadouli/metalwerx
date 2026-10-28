@@ -6,7 +6,7 @@ import { Moon, Sun } from "lucide-react";
 const STORAGE_KEY = "theme";
 
 // The visitor's last pick, else their OS setting. The inline script in
-// app/layout.jsx applies the same rule before the first paint.
+// app/components/theme-script.jsx applies the same rule before the first paint.
 function preferredTheme() {
   let stored;
   try {

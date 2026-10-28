@@ -8,6 +8,7 @@ import {
 } from "next/font/google";
 import Footer from "./components/footer";
 import Navbar from "./components/navbar";
+import ThemeScript from "./components/theme-script";
 import ThemeToggle from "./components/theme-toggle";
 import "./globals.css";
 
@@ -58,12 +59,6 @@ export const metadata = {
     "Scrap metal recycling for homes, farms and businesses. Metal Werx buys ferrous and non-ferrous metals, car bodies and batteries.",
 };
 
-// Sets data-theme as the page is parsed, so it never paints in the wrong theme:
-// the visitor's last pick in ThemeToggle, else their OS setting. With scripts
-// off, the page stays on the dark default. suppressHydrationWarning on <html>
-// lets React accept the attribute the script changed.
-const themeScript = `(function(){var t;try{t=localStorage.getItem("theme")}catch(e){}if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: light)").matches?"light":"dark";document.documentElement.setAttribute("data-theme",t)})()`;
-
 export default function RootLayout({ children }) {
   return (
     <html
@@ -73,7 +68,7 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} ${sairaStencil.variable} ${bebasNeue.variable} ${oswald.variable} h-full antialiased`}
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <ThemeScript />
       </head>
       <body className="min-h-full flex flex-col">
         <Navbar />

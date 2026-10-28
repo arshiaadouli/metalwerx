@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { blogSlug, getBlogBySlug, getBlogs } from "@/lib/blogs";
-import { getBlogPage } from "@/lib/pages";
+import { getBlogBySlug, getBlogs } from "@/lib/blogs";
+import { photoProps } from "@/lib/photo";
 import { CutTitle, Enter } from "@/components/ui/enter";
 import { Reveal } from "@/components/ui/reveal";
 import { excerpt, formatDate, isoDate, readingStats } from "../format";
@@ -13,17 +13,13 @@ import BlogBody from "./blog-body";
 // page rather than getting a loading skeleton.
 export const ensureStatic = "navigation";
 
-// Every post is prerendered at build time. A post added later is rendered on
-// its first visit and served from the cache after that.
+// Every post is prerendered at build time, and one added in the CMS later on
+// its first visit. Any other slug is a 404.
 export async function generateStaticParams() {
   const blogs = await getBlogs();
-  // Cache Components fails the build if this returns no params, so with no
-  // posts yet, prerender one slug that matches nothing and shows the 404.
-  if (blogs.length === 0) return [{ slug: "no-posts-yet" }];
-  return blogs.map((blog) => ({ slug: blogSlug(blog.title) }));
+  return blogs.map((blog) => ({ slug: blog.id }));
 }
 
-// getBlogBySlug is cached, so this and the page share one request to Strapi.
 // The cover photo is also the preview image when the post is shared.
 export async function generateMetadata({ params }) {
   const { slug } = await params;
@@ -32,10 +28,10 @@ export async function generateMetadata({ params }) {
   const { cover } = blog;
   return {
     title: blog.title,
-    description: excerpt(blog.text),
+    description: excerpt(blog.description),
     ...(cover && {
       openGraph: {
-        images: [{ url: cover.src, width: cover.width, height: cover.height, alt: cover.alt }],
+        images: [{ url: cover.src, alt: cover.alt }],
       },
     }),
   };
@@ -44,17 +40,12 @@ export async function generateMetadata({ params }) {
 // How many of the newest posts the sidebar lists.
 const LATEST_COUNT = 3;
 
-// No <Suspense> around the post: React can move a boundary's content into a
-// hidden element after the skeleton, which crawlers that don't run JavaScript
-// may skip.
 export default async function BlogPage({ params }) {
   const { slug } = await params;
   const blog = await getBlogBySlug(slug);
   if (!blog) notFound();
-  // The label above every post's title is the Blog Page's postEyebrow in Strapi.
-  const { postEyebrow } = await getBlogPage();
-  // getBlogs is cached and newest first, so the sidebar is prerendered too. It
-  // can include this post, which is then marked as the one being read.
+  // Newest first. It can include this post, which is then marked as the one
+  // being read.
   const latest = (await getBlogs()).slice(0, LATEST_COUNT);
 
   // Large screens widen the page for a sidebar to the right of the post.
@@ -73,7 +64,7 @@ export default async function BlogPage({ params }) {
         </Enter>
         <div className="lg:flex lg:items-start lg:gap-16">
           <div className="min-w-0 lg:flex-1">
-            <BlogArticle blog={blog} eyebrow={postEyebrow} />
+            <BlogArticle blog={blog} />
           </div>
           {latest.length > 0 && <LatestPosts posts={latest} currentId={blog.id} />}
         </div>
@@ -82,17 +73,15 @@ export default async function BlogPage({ params }) {
   );
 }
 
-function BlogArticle({ blog, eyebrow }) {
+function BlogArticle({ blog }) {
   const { words, minutes } = readingStats(blog.text);
 
   return (
     <article className="mt-10">
       <header>
-        {eyebrow && (
-          <Enter as="p" step={1} className="font-oswald text-sm uppercase tracking-[0.3em] text-cherry">
-            {eyebrow}
-          </Enter>
-        )}
+        <Enter as="p" step={1} className="font-oswald text-sm uppercase tracking-[0.3em] text-cherry">
+          Metal Werx Blog
+        </Enter>
         <h1 className="mt-3 font-bebas-neue text-6xl leading-none tracking-wide sm:text-7xl">
           <CutTitle step={2}>{blog.title}</CutTitle>
         </h1>
@@ -120,19 +109,17 @@ function BlogArticle({ blog, eyebrow }) {
       </header>
 
       {/* Usually the largest thing on the first screen, so it loads first.
-          A plain <img>, like the body's photos, so no next.config
-          remotePatterns entry is needed for the Strapi server. It blurs into
-          focus without moving, like the photo on the About page. */}
+          It blurs into focus without moving, like the photo on the About
+          page. */}
       {blog.cover && (
         <Enter
           as="img"
           fade
           step={3}
-          src={blog.cover.src}
-          srcSet={blog.cover.srcSet}
-          sizes="(min-width: 64rem) 47rem, (min-width: 48rem) 45rem, calc(100vw - 3rem)"
-          width={blog.cover.width}
-          height={blog.cover.height}
+          {...photoProps(
+            blog.cover.src,
+            "(min-width: 64rem) 47rem, (min-width: 48rem) 45rem, calc(100vw - 3rem)",
+          )}
           alt={blog.cover.alt}
           title={blog.title}
           fetchPriority="high"
@@ -140,7 +127,7 @@ function BlogArticle({ blog, eyebrow }) {
         />
       )}
 
-      <BlogBody blocks={blog.body} />
+      <BlogBody paragraphs={blog.paragraphs} />
 
       <footer className="mt-16 border-t border-line pt-8">
         <BackLink />
@@ -181,9 +168,7 @@ function LatestPosts({ posts, currentId }) {
                   <div className="relative size-20 shrink-0 overflow-hidden">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={post.cover.src}
-                      srcSet={post.cover.srcSet}
-                      sizes="5rem"
+                      {...photoProps(post.cover.src, "5rem")}
                       alt={post.cover.alt}
                       title={post.title}
                       loading="lazy"
@@ -202,7 +187,7 @@ function LatestPosts({ posts, currentId }) {
                   <h3 className="mt-1 line-clamp-2 font-bebas-neue text-2xl leading-none tracking-wide text-ink transition-colors group-hover:text-ink-cherry">
                     {/* The ::after overlay makes the whole card clickable, photo included. */}
                     <Link
-                      href={`/blogs/${blogSlug(post.title)}`}
+                      href={`/blogs/${post.id}`}
                       title={post.title}
                       aria-current={current ? "page" : undefined}
                       className="after:absolute after:inset-0 focus-visible:outline-none"

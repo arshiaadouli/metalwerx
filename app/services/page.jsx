@@ -4,25 +4,27 @@ import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
 import { cn } from "@/lib/utils";
 import { CtaBand, Photo, ServiceHero } from "./sections";
-import { overviewImage, services } from "./services";
+import { getServices, getServicesPage } from "./services";
 
-export const metadata = {
-  title: "Services",
-  description:
-    "Scrap metal bin hire, pickup and collection, and commercial recycling from Metal Werx in Hallam, for homes, farms and businesses across Melbourne's south-east.",
-};
+// The copy and photos come from the CMS (see services.js).
+export async function generateMetadata() {
+  const { seo } = await getServicesPage();
+  return { title: seo.title, description: seo.description };
+}
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const [{ hero, cta }, services] = await Promise.all([getServicesPage(), getServices()]);
+
   return (
     <main className="flex-1 bg-surface font-montserrat text-ink">
       <ServiceHero
-        image={overviewImage}
+        image={hero.image}
         breadcrumbs={[{ name: "Home", href: "/" }, { name: "Services" }]}
         icon={Recycle}
-        eyebrow="What we do"
-        title="Our Services"
-        lede="Bring your scrap to our Hallam yard, or let us come to you. We hire out scrap bins, collect bulk loads and look after businesses with metal to recycle every week."
-        actions={[{ text: "Get a Quote", href: "/contact-us" }]}
+        eyebrow={hero.eyebrow}
+        title={hero.title}
+        lede={hero.lede}
+        actions={[hero.cta]}
       />
 
       <section aria-label="Services" className="bg-surface">
@@ -33,11 +35,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <CtaBand
-        heading="Not Sure Which You Need?"
-        text="Tell us what you've got and we'll point you to the right service."
-        cta={{ text: "Get in Touch", href: "/contact-us" }}
-      />
+      <CtaBand {...cta} />
     </main>
   );
 }

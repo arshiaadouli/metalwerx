@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { photoProps } from "@/lib/photo";
 import { cn } from "@/lib/utils";
 
 /**
@@ -23,7 +24,9 @@ import { cn } from "@/lib/utils";
  *
  * Props:
  * - href, title, description
- * - image: cover photograph; imageAlt
+ * - image: cover photograph, a path in public/ (see lib/photo.js); imageAlt
+ * - sizes: how wide the card shows, as in the <img> attribute; defaults to a
+ *   third of the page from lg, half from sm
  * - badge: a pill at the top of the cover, e.g. the year
  * - tags: string[]
  * - screen: { src, alt, className } over the photo (transparent PNG/WebP works best)
@@ -44,6 +47,7 @@ export function NotchedProjectCard({
   description,
   image,
   imageAlt = "",
+  sizes = "(min-width: 64rem) 33vw, (min-width: 40rem) 50vw, 100vw",
   badge,
   tags = [],
   screen,
@@ -70,11 +74,10 @@ export function NotchedProjectCard({
       <div className="relative">
         {/* the cover */}
         <div className="relative aspect-[4/3] overflow-hidden rounded-[28px] bg-muted">
-          {/* A plain <img>, so no next.config remotePatterns entry is needed. */}
           {image && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={image}
+              {...photoProps(image, sizes)}
               alt={screen ? "" : imageAlt}
               title={imageAlt || title}
               loading="lazy"

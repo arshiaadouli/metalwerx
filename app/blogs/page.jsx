@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { CutTitle, Enter } from "@/components/ui/enter";
 import { Reveal } from "@/components/ui/reveal";
-import { blogSlug, getBlogs } from "@/lib/blogs";
-import { getBlogPage } from "@/lib/pages";
+import { getBlogs } from "@/lib/blogs";
+import { photoProps } from "@/lib/photo";
 import BlogViews from "./blog-views";
 import { formatDate, isoDate, readingStats } from "./format";
 
@@ -10,46 +10,38 @@ import { formatDate, isoDate, readingStats } from "./format";
 // first response. The build fails if anything here would need a request.
 export const ensureStatic = "navigation";
 
-// The title, description and headings are the Blog Page in Strapi.
-// getBlogPage is cached, so this and the page share one request.
-export async function generateMetadata() {
-  const { seo } = await getBlogPage();
-  return { title: seo.title, description: seo.description };
-}
+export const metadata = {
+  title: "Scrap Metal Recycling Blog",
+  description:
+    "News, recycling tips and scrap metal updates from the team at Metal Werx Scrap Metal Recycling.",
+};
 
-export default async function BlogsPage() {
-  const { eyebrow, heading, emptyMessage } = await getBlogPage();
-
+export default function BlogsPage() {
   return (
     <div className="flex-1 bg-surface text-ink">
       <main className="mx-auto w-full max-w-6xl px-6 py-16 font-montserrat sm:py-24">
         {/* Plays on load, one step after another (see components/ui/enter.jsx). */}
         <header>
-          {eyebrow && (
-            <Enter as="p" step={0} className="font-oswald text-sm uppercase tracking-[0.3em] text-cherry">
-              {eyebrow}
-            </Enter>
-          )}
+          <Enter as="p" step={0} className="font-oswald text-sm uppercase tracking-[0.3em] text-cherry">
+            Metal Werx
+          </Enter>
           <h1 className="mt-2 font-bebas-neue text-7xl tracking-wide">
-            <CutTitle step={1}>{heading}</CutTitle>
+            <CutTitle step={1}>Blog</CutTitle>
           </h1>
           <Enter step={2} className="mt-4 h-1 w-16 bg-cherry" />
         </header>
-        {/* getBlogs is cached, so the posts are prerendered with the header. No
-            <Suspense> here: React can move a boundary's content into a hidden
-            element after the skeleton, which crawlers that don't run JavaScript
-            may skip. */}
-        <BlogList emptyMessage={emptyMessage} />
+        {/* The posts are prerendered with the header. */}
+        <BlogList />
       </main>
     </div>
   );
 }
 
-async function BlogList({ emptyMessage }) {
+async function BlogList() {
   const blogs = await getBlogs();
 
   if (blogs.length === 0) {
-    return emptyMessage && <p className="mt-12 text-ink-soft">{emptyMessage}</p>;
+    return <p className="mt-12 text-ink-soft">No posts yet.</p>;
   }
 
   // BlogViews switches between a grid (two columns from sm, three from lg) and
@@ -72,9 +64,10 @@ async function BlogList({ emptyMessage }) {
                 <div className="relative aspect-video shrink-0 overflow-hidden group-data-[view=list]/blogs:sm:aspect-auto group-data-[view=list]/blogs:sm:w-72 group-data-[view=list]/blogs:lg:w-96">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={blog.cover.src}
-                    srcSet={blog.cover.srcSet}
-                    sizes="(min-width: 64rem) 24rem, (min-width: 40rem) calc(50vw - 2.25rem), calc(100vw - 3rem)"
+                    {...photoProps(
+                      blog.cover.src,
+                      "(min-width: 64rem) 24rem, (min-width: 40rem) calc(50vw - 2.25rem), calc(100vw - 3rem)",
+                    )}
                     alt={blog.cover.alt}
                     title={blog.title}
                     loading={i < 3 ? "eager" : "lazy"}
@@ -93,14 +86,14 @@ async function BlogList({ emptyMessage }) {
                 <h2 className="mt-3 font-bebas-neue text-4xl tracking-wide text-ink transition-colors group-hover:text-ink-cherry group-data-[view=grid]/blogs:sm:text-3xl">
                   {/* The ::after overlay makes the whole card clickable, photo included. */}
                   <Link
-                    href={`/blogs/${blogSlug(blog.title)}`}
+                    href={`/blogs/${blog.id}`}
                     title={blog.title}
                     className="after:absolute after:inset-0 focus-visible:outline-none"
                   >
                     {blog.title}
                   </Link>
                 </h2>
-                <p className="mt-3 line-clamp-3 leading-7 text-ink-soft">{blog.text}</p>
+                <p className="mt-3 line-clamp-3 leading-7 text-ink-soft">{blog.description}</p>
                 <p
                   aria-hidden="true"
                   className="mt-auto pt-5 font-oswald text-sm uppercase tracking-[0.2em] text-cherry"

@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/accordion";
 import { Reveal } from "@/components/ui/reveal";
 
-// The questions and answers come from the Home Page in Strapi (see lib/pages.js).
+// The questions and answers are in the CMS (see lib/cms.js).
 export default function IndexFaq({ heading, intro, questions }) {
   return (
     <section id="faq" className="bg-surface font-montserrat text-ink">

@@ -11,7 +11,7 @@ export const metadata = {
 // free under the Unsplash License:
 // https://unsplash.com/photos/an-excavator-working-on-a-pile-of-scrap-metal-lp6CBQSr1Ek
 const image = {
-  src: "https://images.unsplash.com/photo-1722695694560-f452b0919d3a?auto=format&fit=crop&w=2000&q=70",
+  src: "/images/unsplash/photo-1722695694560-f452b0919d3a.jpg",
   alt: "An excavator sorting a pile of scrap metal",
   title: "Excavator sorting scrap metal",
 };
@@ -30,10 +30,9 @@ const paragraphs = [
   "Bring your scrap to the yard, hire a bin, or have us pick it up. Whether it's a ute-load of offcuts or an old car, we'll give you a fair price and keep the metal out of landfill.",
 ];
 
-// Free stock photos (Unsplash License, no credit required), also used in the
-// navbar's What We Buy menu, cropped to a portrait for each card's background.
-const unsplash = (id) =>
-  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=800&h=1000&q=70`;
+// Free stock photos saved in public/images (see lib/photo.js), also used in the
+// navbar's What We Buy menu, cropped by each card to fill its background.
+const unsplash = (id) => `/images/unsplash/${id}.jpg`;
 
 const highlights = [
   {

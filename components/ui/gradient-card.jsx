@@ -5,6 +5,7 @@ import { cva } from "class-variance-authority";
 import { MotionConfig, motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
+import { photoProps } from "@/lib/photo";
 import { cn } from "@/lib/utils";
 
 // GradientCard from 21st.dev (gradient-card), ported to JSX and the Metal Werx
@@ -13,8 +14,8 @@ import { cn } from "@/lib/utils";
 //                   tint of the shade over the photo
 //   title, description
 //   ctaText, ctaHref  the link at the bottom
-//   imageUrl        the card's background photo; it's decorative, so it has
-//                   no alt text
+//   imageUrl        the card's background photo, a path in public/ (see
+//                   lib/photo.js); it's decorative, so it has no alt text
 //   className?, ref?, and any other <div> props
 // The original tucks a cut-out graphic into one corner of a pastel card. Here
 // the photo covers the whole card instead, and the gradient becomes a shade
@@ -79,9 +80,9 @@ function GradientCard({
           {...props}
         >
           {imageUrl && (
-            // A plain <img>, so no next.config remotePatterns entry is needed.
+            // Three to a row from lg, otherwise the full width.
             <motion.img
-              src={imageUrl}
+              {...photoProps(imageUrl, "(min-width: 64rem) 33vw, 100vw")}
               alt=""
               title={title}
               loading="lazy"

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Car, Container, Factory, FilePenLine, Handshake, Phone, Recycle, Truck } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
 
-// The icon choices in Strapi's Service component, by the value Strapi stores.
+// The icons a service can name (see the CMS (see lib/cms.js)).
 const icons = {
   handshake: Handshake,
   truck: Truck,
@@ -14,7 +14,7 @@ const icons = {
   phone: Phone,
 };
 
-// The copy and links come from the Home Page in Strapi (see lib/pages.js).
+// The copy and links are in the CMS (see lib/cms.js).
 export default function IndexCommercial({ heading, intro, services }) {
   return (
     <section id="commercial" className="bg-surface font-montserrat text-ink">

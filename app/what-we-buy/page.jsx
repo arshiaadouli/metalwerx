@@ -3,48 +3,52 @@ import { NotchedProjectCard } from "@/components/ui/notched-project-card";
 import { Reveal } from "@/components/ui/reveal";
 import { cn } from "@/lib/utils";
 import { CtaBand, ServiceHero, Steps } from "@/app/services/sections";
-import { getMaterial, groups, overviewImage, sellingSteps } from "./materials";
+import { getMaterials, getWhatWeBuyPage } from "./materials";
 
-export const metadata = {
-  title: "What We Buy",
-  description:
-    "Metal Werx in Hallam buys copper, brass, aluminium, stainless steel, lead and batteries, wire, motors, alloy wheels, car parts, old machinery and unwanted cars. Weighed and paid by bank transfer.",
-};
+// The copy and photos come from the CMS (see materials.js).
+export async function generateMetadata() {
+  const { seo } = await getWhatWeBuyPage();
+  return { title: seo.title, description: seo.description };
+}
 
-export default function WhatWeBuyPage() {
+export default async function WhatWeBuyPage() {
+  const [{ hero, groups, sellingSteps, cta }, materials] = await Promise.all([
+    getWhatWeBuyPage(),
+    getMaterials(),
+  ]);
+  const bySlug = new Map(materials.map((material) => [material.slug, material]));
+
   return (
     <main className="flex-1 bg-surface font-montserrat text-ink">
       <ServiceHero
-        image={overviewImage}
+        image={hero.image}
         breadcrumbs={[{ name: "Home", href: "/" }, { name: "What We Buy" }]}
         icon={Recycle}
-        eyebrow="What we buy"
-        title="What We Buy"
-        lede="Copper, brass, aluminium, stainless steel, lead, old cars and machinery. If it's metal, chances are we'll buy it. Bring it to our Hallam yard, or we'll come to you."
-        actions={[
-          { text: "Get a Quote", href: "/contact-us" },
-          { text: "How It Works", href: "#how-it-works", outline: true },
-        ]}
+        eyebrow={hero.eyebrow}
+        title={hero.title}
+        lede={hero.lede}
+        actions={[hero.cta, { text: "How It Works", href: "#how-it-works", outline: true }]}
       />
 
-      {groups.map((group, i) => (
-        <Group key={group.id} {...group} className={cn(i > 0 && "border-t border-line")} />
+      {groups.map(({ slugs, ...group }, i) => (
+        <Group
+          key={group.id}
+          {...group}
+          materials={slugs.map((slug) => bySlug.get(slug)).filter(Boolean)}
+          className={cn(i > 0 && "border-t border-line")}
+        />
       ))}
 
       <Steps {...sellingSteps} />
 
-      <CtaBand
-        heading="Not Sure What It's Worth?"
-        text="Tell us what you've got and we'll give you a price."
-        cta={{ text: "Get a Quote", href: "/contact-us" }}
-      />
+      <CtaBand {...cta} />
     </main>
   );
 }
 
 // The section's id and each card's are the anchors that links from before the
 // material pages existed still point to.
-function Group({ id, title, intro, slugs, className }) {
+function Group({ id, title, intro, materials, className }) {
   return (
     <section
       id={id}
@@ -62,14 +66,14 @@ function Group({ id, title, intro, slugs, className }) {
 
         {/* Each row of cards plays left to right. */}
         <ul className="mt-14 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
-          {slugs.map(getMaterial).map(({ slug, anchor, title, summary, image }, i) => (
+          {materials.map(({ slug, anchor, title, summary, image }, i) => (
             <Reveal as="li" key={slug} id={anchor} step={i % 3} className="scroll-mt-8">
               {/* The notch is painted in the section's background colour. */}
               <NotchedProjectCard
                 href={`/what-we-buy/${slug}`}
                 title={title}
                 description={summary}
-                image={`${image.url}&w=960`}
+                image={image.url}
                 imageAlt={image.alt}
                 monochrome
                 surface="var(--surface)"

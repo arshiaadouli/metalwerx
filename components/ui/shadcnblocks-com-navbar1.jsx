@@ -9,6 +9,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
+import { photoProps } from "@/lib/photo";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -171,13 +172,12 @@ const NavbarLogo = ({ logo, loading, ...props }) => (
   </Link>
 );
 
-// A plain <img> rather than next/image, as in the hero, so no next.config
-// remotePatterns entry is needed for the stock photo hosts.
+// A 48px thumbnail, resized by Next's image optimizer (see lib/photo.js).
 const SubItemMedia = ({ item }) =>
   item.image ? (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={item.image.src}
+      {...photoProps(item.image.src, "48px")}
       alt={item.image.alt}
       title={item.image.alt}
       loading="lazy"

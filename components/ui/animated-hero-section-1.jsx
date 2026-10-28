@@ -5,6 +5,7 @@ import Link from "next/link";
 import { MotionConfig, motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
+import { photoProps } from "@/lib/photo";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { CutTitle, Enter } from "@/components/ui/enter";
@@ -73,13 +74,12 @@ export const AnimatedHero = ({
       >
         <div className="absolute inset-0 z-0">
           {/* Every photo stays mounted so the next one is already loaded when it fades in.
-              Plain <img>s rather than next/image, so no next.config remotePatterns entry is
-              needed. The faded-out ones are hidden from screen readers. */}
+              The faded-out ones are hidden from screen readers. */}
           {backgroundImages.map((image, i) => (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               key={image.src}
-              src={image.src}
+              {...photoProps(image.src)}
               alt={image.alt}
               title={image.title}
               aria-hidden={i !== activeImage}
