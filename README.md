@@ -1,11 +1,14 @@
 # Metal Werx
 
-Website for Metal Werx, a scrap metal recycling and cash-for-cars business. It's built with Next.js 16 (App Router), React 19 and Tailwind CSS 4. The home page, the blog posts, the privacy policy and the services come from the Payload CMS in [metalwerx-payload](../metalwerx-payload), at http://192.168.15.240:3001, and their photos from its object storage. The rest of the copy lives in JavaScript files next to the pages.
+Website for Metal Werx, a scrap metal recycling and cash-for-cars business. It's built with Next.js 16 (App Router), React 19 and Tailwind CSS 4.
+
+Most of the content comes from the Payload CMS in [metalwerx-payload](../metalwerx-payload), at http://192.168.15.240:3001: the home page, the blog posts, the privacy policy, the services and the materials on the What We Buy pages. Their photos come from the CMS's object storage. The rest of the copy, such as the About and Contact pages and the navbar's Services menu, lives in the page files. [docs/payload-cms-migration.md](docs/payload-cms-migration.md) covers how the CMS is set up and how the site reads it.
 
 ## Requirements
 
 - [Git](https://git-scm.com/)
 - [Node.js](https://nodejs.org/) 20.9 or newer, which includes npm. The project is developed on Node 24.
+- A connection to the LAN that the CMS is on (192.168.15.240). The navbar reads the CMS, so every page needs it, both in development and when you build.
 
 ## Install on a new machine
 
@@ -26,14 +29,29 @@ npm ci
 
 ### 3. Connect to the CMS
 
-Add the CMS to `.env.local`:
+Environment files aren't committed to Git, so a fresh clone doesn't have one. Create `.env.local` in the project root:
 
 ```bash
 CMS_URL=http://192.168.15.240:3001
 REVALIDATE_SECRET=<the same value as REVALIDATE_SECRET in the CMS's .env>
 ```
 
-The home page, blog posts, privacy policy and services are edited in the CMS admin at http://192.168.15.240:3001/admin. The site reads them at build time and keeps them in its cache: after a change, the CMS calls the site's `/api/revalidate`, so the change shows on the next visit, and the cache also refreshes by itself every 15 minutes. A post's URL is `/blogs/<slug>`, and a service's `/services/<slug>`. The CMS must be running for `npm run build`.
+If `CMS_URL` is missing, pages fail with `CMS_URL is not set`.
+
+Content is edited in the CMS admin at http://192.168.15.240:3001/admin:
+
+| In the CMS | On the site |
+| --- | --- |
+| Home Page | `/` |
+| Posts | `/blogs` and `/blogs/<slug>` |
+| Privacy Policy | `/privacy-policy` |
+| Services, Services Page | `/services` and `/services/<slug>` |
+| Materials, What We Buy Page | `/what-we-buy`, `/what-we-buy/<slug>` and the navbar's What We Buy menu |
+| Media | The photos on all of the above |
+
+A service or material added in the CMS gets its own page without a code change. The navbar's Services menu is still written in [app/components/navbar.jsx](app/components/navbar.jsx), so a new service needs an entry there as well.
+
+The site reads the CMS when it builds and keeps what it reads in its cache. After each save, the CMS calls the site's `/api/revalidate` with the shared secret, so the change shows on the next visit. The CMS sends that call to the address in its `WEBSITE_URL` setting, which is the production server on port 3123 (see [Production build](#production-build)). The cache also refreshes by itself every 15 minutes.
 
 ### 4. Start the development server
 
@@ -50,7 +68,13 @@ npm run build
 npm start
 ```
 
-`npm start` serves the build at [http://localhost:3000](http://localhost:3000).
+The CMS has to be running while you build, because the pages are built with their content in them. `npm start` serves the build at [http://localhost:3000](http://localhost:3000).
+
+On 192.168.15.240, the production site runs on port 3123, where the CMS sends its revalidation calls. Stop the running server, then:
+
+```bash
+npm run build && npm start -- -p 3123
+```
 
 ## Running on a private LAN
 
@@ -90,12 +114,13 @@ On macOS, click **Allow** when asked whether `node` can accept incoming connecti
 ## Project structure
 
 ```
-app/              Pages and layouts: home, about, blogs, contact-us, privacy-policy
+app/                 Pages and layouts: home, about, blogs, contact-us, privacy-policy, services, what-we-buy
 app/api/revalidate/  Called by the CMS after a change
-app/components/   Navbar, footer, theme toggle and home page sections
-components/ui/    Shared UI components (buttons, accordion, animations, contact globe)
-lib/              CMS reads (cms.js), blog post lookups (blogs.js) and the photo helper (photo.js)
-public/           Static files: the logo and the site's photos (images/)
+app/components/      Navbar, footer, theme toggle and home page sections
+components/ui/       Shared UI components (buttons, accordion, animations, contact globe)
+docs/                Notes on the move from Strapi to the Payload CMS
+lib/                 CMS reads (cms.js), blog post lookups (blogs.js), the photo helper (photo.js) and cn() (utils.js)
+public/              Static files: the logo and the About page's photos (images/)
 ```
 
 ## Deploying
@@ -116,4 +141,8 @@ npx vercel          # preview deployment
 npx vercel --prod   # production, https://metawerx.vercel.app
 ```
 
-The build reads its content from the CMS at `CMS_URL`, which is only on the LAN (192.168.15.240), so a Vercel build can't reach it. To deploy to Vercel, the CMS and its object storage need public addresses, set as `CMS_URL` and `REVALIDATE_SECRET` on Vercel, and the image host in `next.config.mjs` changed to match.
+The build reads its content from the CMS at `CMS_URL`, which is only on the LAN (192.168.15.240), so a Vercel build can't reach it. To deploy to Vercel, the CMS and its object storage need public addresses first. Then:
+
+- set `CMS_URL` and `REVALIDATE_SECRET` on Vercel, for example with `npx vercel env add CMS_URL`;
+- point `remotePatterns` in [next.config.mjs](next.config.mjs) at the public storage address;
+- remove `dangerouslyAllowLocalIP`, which is only there because the storage is on a private address.
