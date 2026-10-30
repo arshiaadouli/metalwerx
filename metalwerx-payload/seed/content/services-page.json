@@ -1,0 +1,23 @@
+{
+  "seo": {
+    "title": "Services",
+    "description": "Scrap metal bin hire, pickup and collection, and commercial recycling from Metal Werx in Hallam, for homes, farms and businesses across Melbourne's south-east."
+  },
+  "hero": {
+    "eyebrow": "What we do",
+    "title": "Our Services",
+    "lede": "Bring your scrap to our Hallam yard, or let us come to you. We hire out scrap bins, collect bulk loads and look after businesses with metal to recycle every week.",
+    "image": "photo-1722695694560-f452b0919d3a.jpg",
+    "imageTitle": "Excavator sorting scrap metal",
+    "cta": {
+      "text": "Get a Quote",
+      "href": "/contact-us"
+    }
+  },
+  "cta": {
+    "heading": "Not Sure Which You Need?",
+    "text": "Tell us what you've got and we'll point you to the right service.",
+    "buttonText": "Get in Touch",
+    "buttonHref": "/contact-us"
+  }
+}

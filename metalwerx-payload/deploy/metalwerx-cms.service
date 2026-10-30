@@ -1,0 +1,15 @@
+[Unit]
+Description=Metal Werx Payload CMS (http://192.168.15.240:3001)
+After=network-online.target seaweedfs.service
+Wants=seaweedfs.service
+
+[Service]
+WorkingDirectory=%h/metalwerx-project/metalwerx-payload
+# Node is installed with nvm, which systemd's PATH doesn't include.
+Environment=PATH=%h/.nvm/versions/node/v24.22.0/bin:/usr/bin:/bin
+ExecStart=%h/.nvm/versions/node/v24.22.0/bin/npm start
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

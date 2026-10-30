@@ -1,0 +1,370 @@
+{
+  "seo": {
+    "title": "Terms & Conditions",
+    "description": "The terms for selling scrap metal or a vehicle to Metal Werx Scrap Metal Recycling in Hallam, hiring a scrap bin, booking a pickup and using our website."
+  },
+  "hero": {
+    "eyebrow": "Legal",
+    "title": "Terms & Conditions",
+    "intro": "The terms that apply when you sell scrap metal or a vehicle to Metal Werx Pty Ltd, trading as Metal Werx Scrap Metal Recycling, hire one of our scrap bins, book a pickup or use our website. These terms took effect on 30 October 2026."
+  },
+  "sections": [
+    {
+      "anchor": "overview",
+      "title": "Overview",
+      "icon": "file-text",
+      "topics": [
+        {
+          "title": "Who we are",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "These terms cover Metal Werx Scrap Metal Recycling, a scrap metal yard at 131 Wedgewood Rd, Hallam VIC 3803, run by Metal Werx Pty Ltd (ABN 19 650 365 067). In these terms, \"we\" and \"us\" mean Metal Werx, and \"you\" means the person selling to us, hiring a bin, booking a pickup or using our website."
+            },
+            {
+              "blockType": "paragraph",
+              "text": "By selling to us, booking a bin or a pickup, or using our website, you agree to these terms."
+            },
+            {
+              "blockType": "callout",
+              "kind": "note",
+              "text": "These terms are waiting for review by our lawyer. We may update them once that review is done."
+            }
+          ]
+        },
+        {
+          "title": "At a glance",
+          "content": [
+            {
+              "blockType": "questions",
+              "items": [
+                {
+                  "question": "How is the price set?",
+                  "answer": "Prices on our website and in quotes are a guide. The price we pay is set when your metal is graded and weighed at our yard."
+                },
+                {
+                  "question": "How do I get paid?",
+                  "answer": "By bank transfer, on the same day we buy your scrap. Scrap metal dealers in Victoria can't pay in cash, so bring your BSB and account number."
+                },
+                {
+                  "question": "What do I need to bring?",
+                  "answer": "Photo ID every time you sell to us. For a vehicle, also proof that you own it."
+                },
+                {
+                  "question": "What can't you take?",
+                  "answer": "Gas bottles, aerosol cans, asbestos, fridges and air conditioners that still hold gas, lithium batteries, and anything holding fuel, oil or chemicals. The full list is below."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "anchor": "selling",
+      "title": "Selling us scrap metal",
+      "icon": "banknote",
+      "topics": [
+        {
+          "title": "Prices and quotes",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "The prices on our website, and any quote we give by phone, email or through our contact form, are a guide in Australian dollars. Scrap metal prices move with the market, so they can change without notice."
+            },
+            {
+              "blockType": "paragraph",
+              "text": "A quote is based on what you tell us and any photos you send. If your metal turns out to be a different grade, weight or condition, for example it has more steel, plastic, insulation or fluids in it than we were told, the price will change to match what we actually receive."
+            }
+          ]
+        },
+        {
+          "title": "Grading and weighing",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "We sort your metal by grade and weigh each grade on its own at our Hallam yard. Clean, sorted metal is paid at a higher price than a mixed or contaminated load. The grade and weight we record at the yard are what we pay for, and we'll show you how we graded your load if you ask."
+            }
+          ]
+        },
+        {
+          "title": "Identification and payment",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "Victorian law requires us to check and record the identity of everyone who sells us scrap metal, and to pay by bank transfer rather than cash. Each time you sell to us, you'll need to show photo ID and give us the BSB and account number we should pay. We make the transfer on the same day we buy your scrap."
+            },
+            {
+              "blockType": "callout",
+              "kind": "note",
+              "text": "If you can't show the identification the law requires, we can't buy your scrap metal or vehicle. How we handle your ID and bank details is set out in our Privacy Policy, linked at the bottom of every page."
+            }
+          ]
+        },
+        {
+          "title": "What you promise us",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "When you sell to us, you confirm that you own what you're selling, or have the owner's permission to sell it, that it isn't stolen, and that what you've told us about it is true."
+            },
+            {
+              "blockType": "paragraph",
+              "text": "We may refuse to buy anything, and we may report items we believe are stolen to Victoria Police."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "anchor": "vehicles",
+      "title": "Selling us a vehicle",
+      "icon": "car",
+      "topics": [
+        {
+          "title": "What we need from you",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "To sell us a car, ute, van or truck, you'll need proof that you own it, such as the registration papers or a receipt, and your photo ID. If the vehicle is registered, cancel the registration with VicRoads."
+            },
+            {
+              "blockType": "paragraph",
+              "text": "Take out your belongings, toll tags and anything else you want to keep before we tow it away. Once we've collected the vehicle, we can't promise to find or return anything left in it."
+            }
+          ]
+        },
+        {
+          "title": "The checks we have to run",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "Victorian law has us photograph and record each vehicle's VIN, or its chassis number if it was built before 1989, and run a registration search to make sure it isn't stolen. Vehicles 15 years old or less are recorded on the Written-Off Vehicle Register as statutory write-offs, which means they can't be registered again."
+            },
+            {
+              "blockType": "paragraph",
+              "text": "We can't buy a vehicle whose VIN or chassis number has been removed, ground off or changed. If it's only worn or damaged, we may still be able to take the vehicle, but we can't pay for it."
+            }
+          ]
+        },
+        {
+          "title": "Towing and payment",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "We tow vehicles away for free and pay by bank transfer on the same day, once the vehicle is collected and the paperwork is checked. If the vehicle isn't as you described it, for example parts are missing or it isn't where you told us, the price may change."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "anchor": "bins-and-pickups",
+      "title": "Bin hire and pickups",
+      "icon": "truck",
+      "topics": [
+        {
+          "title": "Booking",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "Tell us what you have, how much and where it is, and we'll give you a price and book a time that suits you. We'll tell you the price before we book a pickup. If you need to change or cancel a booking, let us know as early as you can."
+            }
+          ]
+        },
+        {
+          "title": "Where the bin goes and getting to it",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "You're responsible for having permission to put the bin where you ask us to, and for clear, safe access for our truck when we deliver, swap or collect. A bin on the road or nature strip usually needs a permit from your local council, so check with your council before you book, and we'll place the bin once it's approved."
+            },
+            {
+              "blockType": "paragraph",
+              "text": "Tell us about anything our truck should avoid, such as soft ground, low wires or overhanging trees. If we can't safely reach the bin or your scrap when we arrive, we may have to come back another time."
+            }
+          ]
+        },
+        {
+          "title": "Filling the bin",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "Our bins are for scrap metal only. Keep out everything listed under What we can't take, and don't fill the bin above its top edge, so it can be carried safely. Mixed metals are fine, though a clean, sorted load gets a better price."
+            },
+            {
+              "blockType": "paragraph",
+              "text": "You can keep a bin for as long as the job takes. It stays our property while it's with you, so please don't move it, and call us when it's full."
+            }
+          ]
+        },
+        {
+          "title": "Getting paid",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "Every bin and pickup load is taken to our Hallam yard, graded and weighed, and the metal is paid for by bank transfer on the same day, as set out under Selling us scrap metal. Commercial customers get a weigh ticket with every load."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "anchor": "what-we-cant-take",
+      "title": "What we can't take",
+      "icon": "triangle-alert",
+      "topics": [
+        {
+          "title": "At the yard, in our bins or with a pickup",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "Some things are dangerous in a scrap yard or can't legally go in with scrap metal. We can't take:"
+            },
+            {
+              "blockType": "questions",
+              "items": [
+                {
+                  "question": "Gas bottles and aerosol cans",
+                  "answer": "Including LPG tanks, even empty ones. Your gas supplier or local council can tell you where to drop them off."
+                },
+                {
+                  "question": "Fridges and air conditioners that still hold gas",
+                  "answer": "Only once a licensed technician has removed the refrigerant gas. It's illegal to release it."
+                },
+                {
+                  "question": "Asbestos",
+                  "answer": "Or anything contaminated with it."
+                },
+                {
+                  "question": "Lithium batteries",
+                  "answer": "From phones, laptops, power tools, e-bikes and scooters, as they can start fires when damaged. B-cycle drop-off points take them for recycling."
+                },
+                {
+                  "question": "Fuel, oil and chemicals",
+                  "answer": "Drain oil, fuel, coolant and hydraulic fluid first. Drums and tanks that still hold them can't go in with the scrap. If you can't drain something before a pickup, tell us when you book."
+                },
+                {
+                  "question": "Anything that isn't metal",
+                  "answer": "General rubbish, timber, plastic and green waste can't go in our bins."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "If something gets through",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "If a load or a bin has something in it we can't take, we may refuse the load, set the item aside for you to collect, or arrange for it to be disposed of safely and pass on what that costs us. We'll tell you if that happens."
+            },
+            {
+              "blockType": "paragraph",
+              "text": "Tell us before you sell or load anything that is, or might be, hazardous. You may be responsible for injury or damage caused by a hazardous item you gave us without telling us."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "anchor": "yard-and-website",
+      "title": "Visiting the yard and our website",
+      "icon": "globe",
+      "topics": [
+        {
+          "title": "Safety at the yard",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "Our yard is a working site with heavy machinery and moving vehicles. Follow our staff's directions, and stay in the areas they show you. We may refuse entry or service to anyone who doesn't follow them."
+            }
+          ]
+        },
+        {
+          "title": "Using our website",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "We try to keep our website accurate and up to date, but it's general information only. Prices, opening details and what we accept can change, so contact us if you need to be sure before you come in."
+            },
+            {
+              "blockType": "paragraph",
+              "text": "The text, logo and design of our website belong to Metal Werx or to the people we license them from. Please don't copy them without our permission. Our website links to other sites, such as Google Maps and social media, which have their own terms."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "anchor": "your-rights",
+      "title": "Your rights and our liability",
+      "icon": "scale",
+      "topics": [
+        {
+          "title": "The Australian Consumer Law",
+          "content": [
+            {
+              "blockType": "callout",
+              "kind": "legal-basis",
+              "text": "Our services come with guarantees that can't be excluded under the Australian Consumer Law. Nothing in these terms excludes, restricts or changes any right or remedy you have under the Australian Consumer Law or any other law that can't be excluded."
+            }
+          ]
+        },
+        {
+          "title": "Our liability",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "As far as the law allows, we aren't liable for any indirect or consequential loss, such as lost profits, arising from our services or our website."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "anchor": "contact",
+      "title": "Changes, law and contact",
+      "icon": "mail",
+      "topics": [
+        {
+          "title": "Changes to these terms",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "We may update these terms from time to time. The current version is always on this page, with the date it took effect, and the version in effect when you deal with us is the one that applies. This version took effect on 30 October 2026."
+            }
+          ]
+        },
+        {
+          "title": "The law that applies",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "These terms are governed by the law of Victoria, Australia, and the courts of Victoria can hear any dispute about them."
+            }
+          ]
+        },
+        {
+          "title": "Contact us",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "For any question about these terms, contact:"
+            },
+            {
+              "blockType": "address",
+              "text": "Metal Werx Scrap Metal Recycling\nMetal Werx Pty Ltd\n131 Wedgewood Rd, Hallam VIC 3803\ninfo@metalwerx.com.au · 0470 131 025"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "cta": {
+    "heading": "Questions about these terms?",
+    "body": "Ask us before you sell, book a bin or book a pickup, and we'll explain how it works.",
+    "buttonText": "Contact Us",
+    "buttonHref": "/contact-us"
+  }
+}

@@ -1,0 +1,537 @@
+[
+  {
+    "file": "images/pexels/10628555.jpg",
+    "folder": "blogs",
+    "usedIn": [
+      "app/blogs/posts.js",
+      "app/what-we-buy/materials.js"
+    ],
+    "alt": "A large mound of mixed scrap metal in a recycling yard under a blue sky",
+    "title": "Scrap metal pile",
+    "source": "https://www.pexels.com/photo/metal-junkyard-under-the-sky-10628555/"
+  },
+  {
+    "file": "images/pexels/5279317.jpg",
+    "folder": "blogs",
+    "usedIn": [
+      "app/blogs/posts.js",
+      "app/what-we-buy/materials.js",
+      "app/components/navbar.jsx"
+    ],
+    "alt": "Tangled scrap copper wire",
+    "title": "Scrap copper wire",
+    "source": "https://www.pexels.com/photo/close-up-photo-of-copper-wires-5279317/"
+  },
+  {
+    "file": "logo.png",
+    "folder": "brand",
+    "usedIn": [
+      "app/components/navbar.jsx",
+      "app/components/footer.jsx"
+    ],
+    "alt": "Metal Werx",
+    "title": "Metal Werx logo"
+  },
+  {
+    "file": "images/unsplash/photo-1536094627107-abf98dedaa8f.jpg",
+    "folder": "home",
+    "usedIn": [
+      "app/home-page.js"
+    ],
+    "alt": "A worker in a hard hat cutting up scrap metal with a gas torch as sparks fly",
+    "title": "Cutting up scrap metal with a torch"
+  },
+  {
+    "file": "images/unsplash/photo-1645216755684-c946ce202427.jpg",
+    "folder": "home",
+    "usedIn": [
+      "app/home-page.js",
+      "app/blogs/posts.js"
+    ],
+    "alt": "An old rusty car sitting in long grass on a farm",
+    "title": "An old car ready for scrap"
+  },
+  {
+    "file": "images/unsplash/photo-1722695510527-cc033e43be1b.jpg",
+    "folder": "home",
+    "usedIn": [
+      "app/home-page.js"
+    ],
+    "alt": "A grapple holding a crushed bale of scrap metal against a blue sky",
+    "title": "Grapple lifting a bale of scrap",
+    "source": "https://unsplash.com/photos/an-excavator-working-on-a-pile-of-scrap-metal-lp6CBQSr1Ek"
+  },
+  {
+    "file": "images/unsplash/photo-1722695694560-f452b0919d3a.jpg",
+    "folder": "home",
+    "usedIn": [
+      "app/home-page.js",
+      "app/services/services.js",
+      "app/about/page.jsx"
+    ],
+    "alt": "An excavator's grapple lifting a bundle of scrap metal in a scrap yard",
+    "title": "Excavator sorting scrap metal",
+    "source": "https://unsplash.com/photos/an-excavator-working-on-a-pile-of-scrap-metal-lp6CBQSr1Ek"
+  },
+  {
+    "file": "images/unsplash/photo-1723365316514-8509dea457f2.jpg",
+    "folder": "home",
+    "usedIn": [
+      "app/home-page.js"
+    ],
+    "alt": "A pile of old motorbike parts, including brake shoes, switches and a speedometer",
+    "title": "Mixed scrap motorbike parts",
+    "source": "https://unsplash.com/photos/an-excavator-working-on-a-pile-of-scrap-metal-lp6CBQSr1Ek"
+  },
+  {
+    "file": "images/pexels/33842119.jpg",
+    "folder": "services",
+    "usedIn": [
+      "app/services/services.js"
+    ],
+    "alt": "A long, rusty blue roll-off bin on brick paving in front of a dark corrugated metal wall",
+    "title": "Roll-off scrap bin",
+    "source": "https://www.pexels.com/photo/rusty-blue-industrial-container-against-metal-wall-33842119/"
+  },
+  {
+    "file": "images/pexels/36397858.jpg",
+    "folder": "services",
+    "usedIn": [
+      "app/services/services.js"
+    ],
+    "alt": "A crane's orange-peel grab dropping shredded scrap metal onto a pile beside open wagons",
+    "title": "Grab loading scrap metal",
+    "source": "https://www.pexels.com/photo/industrial-scrap-metal-recycling-with-claw-crane-36397858/"
+  },
+  {
+    "file": "images/pexels/4953659.jpg",
+    "folder": "services",
+    "usedIn": [
+      "app/services/services.js"
+    ],
+    "alt": "Rusty old farm implements, including a disc plough and a seeder with an iron seat, in a dry paddock beside an old gum tree",
+    "title": "Old farm machinery",
+    "source": "https://www.pexels.com/photo/a-rusty-farm-machines-on-the-brown-grass-field-4953659/"
+  },
+  {
+    "file": "images/unsplash/photo-1598302936625-6075fbd98dd7.jpg",
+    "folder": "services",
+    "usedIn": [
+      "app/services/services.js"
+    ],
+    "alt": "A worker in a welding helmet and leather gloves cuts a steel beam with an angle grinder, sending out a spray of sparks",
+    "title": "Grinding steel in a workshop",
+    "source": "https://unsplash.com/photos/person-grinding-metal-beam-with-sparks-tXJhAFVOHVk"
+  },
+  {
+    "file": "images/unsplash/photo-1723709525972-e5b1af84a839.jpg",
+    "folder": "services",
+    "usedIn": [
+      "app/services/services.js"
+    ],
+    "alt": "A hook-lift truck with its crane raised beside a row of green roll-off bins outside a recycling shed",
+    "title": "Hook-lift truck and bins",
+    "source": "https://unsplash.com/photos/a-crane-is-lifting-a-container-onto-a-truck-b3M-o1I1uz8"
+  },
+  {
+    "file": "images/unsplash/photo-1756753142721-6017ff7b7e11.jpg",
+    "folder": "services",
+    "usedIn": [
+      "app/services/services.js"
+    ],
+    "alt": "A white truck with a tall steel body and a folded grapple crane parked in a concrete yard",
+    "title": "Grapple truck for collections",
+    "source": "https://unsplash.com/photos/a-white-truck-with-a-large-brown-container-is-parked-p2LQxI81DRM"
+  },
+  {
+    "file": "images/unsplash/photo-1758609554573-81474880be44.jpg",
+    "folder": "services",
+    "usedIn": [
+      "app/services/services.js"
+    ],
+    "alt": "A rusty wire cage bin packed with old aluminium road signs and steel poles against a block wall",
+    "title": "Bin of scrap signs and poles",
+    "source": "https://unsplash.com/photos/FmkuQgXzSoQ"
+  },
+  {
+    "file": "images/unsplash/photo-1764114440880-9bdbfe570a4d.jpg",
+    "folder": "services",
+    "usedIn": [
+      "app/services/services.js"
+    ],
+    "alt": "Thick steel offcuts on an old machine bed, surrounded by curls of bright metal shavings",
+    "title": "Steel offcuts and swarf",
+    "source": "https://unsplash.com/photos/7k3IJac07RE"
+  },
+  {
+    "file": "images/unsplash/photo-1776108508755-bf10282f9599.jpg",
+    "folder": "services",
+    "usedIn": [
+      "app/services/services.js"
+    ],
+    "alt": "A heap of rusty steel beams on a cleared demolition site, with skips and a boom lift nearby",
+    "title": "Demolition steel for recycling",
+    "source": "https://unsplash.com/photos/construction-site-with-debris-and-heavy-machinery-psyk9BBI-AU"
+  },
+  {
+    "file": "images/pexels/12902781.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js"
+    ],
+    "alt": "Rows of crushed and stacked scrap cars in an outdoor junkyard",
+    "title": "Junkyard car stacks",
+    "source": "https://www.pexels.com/photo/dumped-cars-on-the-grass-field-12902781/"
+  },
+  {
+    "file": "images/pexels/12951634.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js",
+      "app/components/navbar.jsx"
+    ],
+    "alt": "Stainless steel pipe offcuts",
+    "title": "Stainless steel offcuts",
+    "source": "https://www.pexels.com/photo/container-of-short-stainless-steel-pipes-with-milled-ends-12951634/"
+  },
+  {
+    "file": "images/pexels/14593018.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js",
+      "app/components/navbar.jsx"
+    ],
+    "alt": "A pile of brass screws and nuts",
+    "title": "Brass screws and nuts",
+    "source": "https://www.pexels.com/photo/pile-of-golden-screws-14593018/"
+  },
+  {
+    "file": "images/pexels/16048266.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js"
+    ],
+    "alt": "A mechanic at a workshop bench working on a car alternator",
+    "title": "Alternator on the workbench",
+    "source": "https://www.pexels.com/photo/man-fixing-a-car-alternator-16048266/"
+  },
+  {
+    "file": "images/pexels/16135855.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js"
+    ],
+    "alt": "Several dirty used car engines on a workshop floor",
+    "title": "Used car engines",
+    "source": "https://www.pexels.com/photo/storage-of-used-machinery-16135855/"
+  },
+  {
+    "file": "images/pexels/16938867.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js"
+    ],
+    "alt": "A gold mesh-style alloy wheel on a stack of tyres in front of a roller door",
+    "title": "Gold mesh alloy wheel",
+    "source": "https://www.pexels.com/photo/wheels-stacked-near-wall-16938867/"
+  },
+  {
+    "file": "images/pexels/21470313.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js"
+    ],
+    "alt": "A tangled heap of rusty engine parts and a radiator in a wrecking yard",
+    "title": "Heap of rusty car parts",
+    "source": "https://www.pexels.com/photo/top-view-of-a-pile-of-junk-21470313/"
+  },
+  {
+    "file": "images/pexels/28179319.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js"
+    ],
+    "alt": "A heap of shiny brass plumbing compression olives",
+    "title": "Brass compression fittings",
+    "source": "https://www.pexels.com/photo/brass-plumbing-olive-compression-fittings-28179319/"
+  },
+  {
+    "file": "images/pexels/33585897.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js"
+    ],
+    "alt": "A worn, tarnished brass water tap with a cross-head handle",
+    "title": "Old brass tap",
+    "source": "https://www.pexels.com/photo/close-up-of-aged-brass-water-faucet-handle-33585897/"
+  },
+  {
+    "file": "images/pexels/34194564.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js"
+    ],
+    "alt": "A grey industrial electric gear motor on a wooden workbench",
+    "title": "Industrial electric motor",
+    "source": "https://www.pexels.com/photo/industrial-motor-on-wooden-surface-in-workshop-34194564/"
+  },
+  {
+    "file": "images/pexels/35503911.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js"
+    ],
+    "alt": "Stripped car bodies stacked on steel racks above rows of car doors in a wrecking yard",
+    "title": "Stacked car wrecks",
+    "source": "https://www.pexels.com/photo/stacked-abandoned-cars-in-a-junkyard-outdoors-35503911/"
+  },
+  {
+    "file": "images/pexels/37177070.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js"
+    ],
+    "alt": "An orange car battery in a dark engine bay",
+    "title": "Car battery in engine bay",
+    "source": "https://www.pexels.com/photo/close-up-of-car-battery-in-engine-bay-37177070/"
+  },
+  {
+    "file": "images/pexels/3721272.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js"
+    ],
+    "alt": "Copper pipes joined with a tee fitting against a black background",
+    "title": "Copper pipe joint",
+    "source": "https://www.pexels.com/photo/copper-pipes-on-black-background-3721272/"
+  },
+  {
+    "file": "images/pexels/5090637.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js"
+    ],
+    "alt": "Loose coils of red, yellow, grey and black insulated wire on a bench",
+    "title": "Coloured insulated wire",
+    "source": "https://www.pexels.com/photo/green-red-and-yellow-coated-wires-5090637/"
+  },
+  {
+    "file": "images/pexels/5279344.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js"
+    ],
+    "alt": "A tangle of shiny copper strips and wire offcuts",
+    "title": "Copper strip and wire scrap",
+    "source": "https://www.pexels.com/photo/close-up-photo-of-metal-scraps-5279344/"
+  },
+  {
+    "file": "images/pexels/5661682.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js",
+      "app/components/navbar.jsx"
+    ],
+    "alt": "Alloy wheels stacked on shelves",
+    "title": "Stacked alloy wheels",
+    "source": "https://www.pexels.com/photo/wheel-mags-on-a-stand-5661682/"
+  },
+  {
+    "file": "images/pexels/6602921.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js"
+    ],
+    "alt": "A polished alloy wheel leaning on a stack of used car tyres",
+    "title": "Alloy rim on old tyres",
+    "source": "https://www.pexels.com/photo/aluminum-rim-on-a-pile-of-tires-6602921/"
+  },
+  {
+    "file": "images/pexels/9754820.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js"
+    ],
+    "alt": "A large tangled pile of black insulated electrical cable in a workshop",
+    "title": "Pile of scrap cable",
+    "source": "https://www.pexels.com/photo/close-up-shot-of-black-wires-9754820/"
+  },
+  {
+    "file": "images/unsplash/photo-1561503412-852800622772.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js",
+      "app/components/navbar.jsx",
+      "app/about/page.jsx"
+    ],
+    "alt": "Crushed aluminium drink cans",
+    "title": "Crushed aluminium cans",
+    "source": "https://unsplash.com/photos/crushed-assorted-beverage-cans-lot-k1tUxfs8JYY"
+  },
+  {
+    "file": "images/unsplash/photo-1563456020111-f02d832ae94c.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js",
+      "app/components/navbar.jsx"
+    ],
+    "alt": "An old grey electric motor",
+    "title": "Old electric motor",
+    "source": "https://unsplash.com/photos/gray-ac-motor-2MLhOfRL_hI"
+  },
+  {
+    "file": "images/unsplash/photo-1575704497240-17622d90265f.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js"
+    ],
+    "alt": "A weathered, rusty farm tractor parked beside an open-sided shed",
+    "title": "Rusty old tractor",
+    "source": "https://unsplash.com/photos/brown-tractor-T0BqG4PnUdg"
+  },
+  {
+    "file": "images/unsplash/photo-1671656200343-d2a322492223.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js"
+    ],
+    "alt": "Stainless steel commercial kitchen sinks, splashback and benches",
+    "title": "Stainless steel commercial sinks",
+    "source": "https://unsplash.com/photos/a-stainless-steel-kitchen-with-a-sink-and-oven-Kyqu9GSsV9Q"
+  },
+  {
+    "file": "images/unsplash/photo-1697534444242-ddc344579636.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js"
+    ],
+    "alt": "A rusty yellow crawler bulldozer left on a grassy hilltop",
+    "title": "Abandoned rusty bulldozer",
+    "source": "https://unsplash.com/photos/an-old-bulldozer-sitting-on-the-side-of-a-dirt-road-9TmqJ0m_sSE"
+  },
+  {
+    "file": "images/unsplash/photo-1719242513425-f5eed99b282f.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js",
+      "app/components/navbar.jsx",
+      "app/about/page.jsx"
+    ],
+    "alt": "Old cars in a junkyard",
+    "title": "Old cars in a junkyard",
+    "source": "https://unsplash.com/photos/a-bunch-of-cars-that-are-sitting-in-the-dirt-GcBoM7B40Ck"
+  },
+  {
+    "file": "images/unsplash/photo-1727372417003-3c227717b62c.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js"
+    ],
+    "alt": "A red scrap bin filled with silver cast metal parts and offcuts",
+    "title": "Bin of cast aluminium scrap",
+    "source": "https://unsplash.com/photos/92M96x-BE9s"
+  },
+  {
+    "file": "images/unsplash/photo-1742899273038-67ff67477663.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js",
+      "app/components/navbar.jsx"
+    ],
+    "alt": "Rows of lead-acid batteries",
+    "title": "Lead-acid batteries",
+    "source": "https://unsplash.com/photos/rows-of-batteries-with-red-and-blue-terminals-CH7kRmyBQ4I"
+  },
+  {
+    "file": "images/unsplash/photo-1761507320645-b11a00bfcc34.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js",
+      "app/components/navbar.jsx"
+    ],
+    "alt": "Colourful insulated electrical wires",
+    "title": "Insulated electrical wire",
+    "source": "https://unsplash.com/photos/a-colorful-bundle-of-electrical-wires-on-a-light-background-Sbxf5Dbyerk"
+  },
+  {
+    "file": "images/unsplash/photo-1765211003026-f7666ea3a948.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js"
+    ],
+    "alt": "A black lead-acid car battery with its cables connected, mounted in a car",
+    "title": "Lead-acid car battery",
+    "source": "https://unsplash.com/photos/close-up-of-a-car-battery-with-wires-connected-E4Oz0TZUDe8"
+  },
+  {
+    "file": "images/unsplash/photo-1767340078189-4258fbb7bd7c.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js",
+      "app/components/navbar.jsx",
+      "app/about/page.jsx"
+    ],
+    "alt": "A pile of old car engines and parts",
+    "title": "Old car engines and parts",
+    "source": "https://unsplash.com/photos/pile-of-old-car-engines-and-parts-G-Fno_v4alo"
+  },
+  {
+    "file": "images/unsplash/photo-1776254575132-fbc8f3d50210.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [
+      "app/what-we-buy/materials.js",
+      "app/components/navbar.jsx"
+    ],
+    "alt": "Old rusty industrial machinery",
+    "title": "Old rusty machinery",
+    "source": "https://unsplash.com/photos/old-industrial-machinery-with-rust-and-debris-BpBT7i3JnoM"
+  },
+  {
+    "file": "images/pexels/19825178.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [],
+    "alt": "Racks of metal tube, box section, angle and bar, seen end-on",
+    "title": "Extruded metal sections",
+    "source": "https://www.pexels.com/photo/metal-bars-pipes-and-tubing-on-display-19825178/"
+  },
+  {
+    "file": "images/pexels/9729583.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [],
+    "alt": "Hands holding a cut section of an aluminium window frame",
+    "title": "Aluminium window frame section",
+    "source": "https://www.pexels.com/photo/a-person-holding-an-aluminum-frame-9729583/"
+  },
+  {
+    "file": "images/pexels/11256510.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [],
+    "alt": "Old window and portable air conditioners stacked outdoors, waiting to be recycled",
+    "title": "Old air conditioners",
+    "source": "https://www.pexels.com/photo/photograph-of-broken-air-conditioners-11256510/"
+  },
+  {
+    "file": "images/pexels/11229452.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [],
+    "alt": "Broken, rusting window air conditioners piled up, one with its fan showing",
+    "title": "Broken air conditioners",
+    "source": "https://www.pexels.com/photo/window-type-air-conditioners-11229452/"
+  },
+  {
+    "file": "images/pexels/11256545.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [],
+    "alt": "A stack of old window air conditioners waiting to be recycled",
+    "title": "Air conditioners for recycling",
+    "source": "https://www.pexels.com/photo/white-window-type-air-conditioner-11256545/"
+  },
+  {
+    "file": "images/pexels/3964741.jpg",
+    "folder": "what-we-buy",
+    "usedIn": [],
+    "alt": "Two refrigeration condensing units with large fans, on a steel frame against a weathered wall",
+    "title": "Refrigeration condensing units",
+    "source": "https://www.pexels.com/photo/compressor-blocks-of-air-condition-system-3964741/"
+  }
+]

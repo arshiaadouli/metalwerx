@@ -1,0 +1,96 @@
+{
+  "seo": {
+    "title": "What We Buy",
+    "description": "Metal Werx in Hallam buys copper, brass, aluminium, alloy wheels, stainless steel, HMS steel, electric motors, compressors, air conditioners and aluminium engines. Weighed and paid by bank transfer the same day."
+  },
+  "hero": {
+    "eyebrow": "What we buy",
+    "title": "What We Buy",
+    "lede": "Copper, brass, aluminium, stainless and HMS steel, motors, compressors, air conditioners and engines. If it's metal, chances are we'll buy it. Bring it to our Hallam yard, or we'll come to you.",
+    "image": "10628555.jpg",
+    "imageTitle": "Scrap metal pile",
+    "cta": {
+      "text": "Get a Quote",
+      "href": "/contact-us"
+    }
+  },
+  "priceFactors": {
+    "intro": "The prices on the cards below are averages per tonne, as a guide. What you're paid for your load depends on these five things, and we confirm the price when your scrap is graded and weighed.",
+    "items": [
+      {
+        "title": "Grade",
+        "text": "Each metal is paid by its grade: bright copper wire pays more than soldered pipe, and alloy extrusion more than alloy mix."
+      },
+      {
+        "title": "Cleanliness",
+        "text": "Plastic, rubber, timber, oil and steel fittings left on lower the grade. Strip and drain your scrap for the best price."
+      },
+      {
+        "title": "Sorting",
+        "text": "Keep metals apart. Mixed into a load of something cheaper, such as copper in with steel, a metal is paid at the lower price."
+      },
+      {
+        "title": "Quantity",
+        "text": "Big loads, and regular ones from trades and businesses, can be priced on their own. Ask us for a quote."
+      },
+      {
+        "title": "The Market",
+        "text": "Scrap prices follow the metals market and move with it, so the averages are a guide, not a fixed offer."
+      }
+    ]
+  },
+  "groups": [
+    {
+      "title": "Non-Ferrous & Stainless",
+      "anchor": "non-ferrous",
+      "intro": "Copper, brass, aluminium and stainless steel pay far more than steel, and clean, sorted metal gets the best price. Aluminium is paid by grade: extrusion, alloy mix and wheels each have their own price.",
+      "materials": [
+        "copper",
+        "brass",
+        "alloy-extrusion",
+        "alloy-mix",
+        "aluminium-wheels",
+        "stainless-steel"
+      ]
+    },
+    {
+      "title": "Steel & Mixed Metal",
+      "anchor": "ferrous",
+      "intro": "HMS steel by the tonne, and the things made of more than one metal: electric motors, compressors, air conditioners and aluminium engines, each bought whole at its own price. Too big to bring in? We'll collect it.",
+      "materials": [
+        "hms-steel",
+        "electric-motors",
+        "black-compressors",
+        "ac-units",
+        "white-engines"
+      ]
+    }
+  ],
+  "sellingSteps": {
+    "intro": "Selling scrap at our Hallam yard takes a few minutes.",
+    "items": [
+      {
+        "title": "Bring it in",
+        "text": "Bring your scrap to our Hallam yard in the car, ute or trailer. For bigger loads, we can collect."
+      },
+      {
+        "title": "We sort and weigh it",
+        "text": "We sort your metal by grade and weigh each grade on its own, so every kilo is paid at the right price."
+      },
+      {
+        "title": "Show your ID",
+        "text": "Victorian law requires us to record photo ID from everyone who sells us scrap metal."
+      },
+      {
+        "title": "Get paid",
+        "text": "We pay by bank transfer the same day. Scrap metal dealers in Victoria can't pay in cash, so bring your BSB and account number."
+      }
+    ]
+  },
+  "cta": {
+    "heading": "Not Sure What It's Worth?",
+    "text": "Tell us what you've got and we'll give you a price.",
+    "buttonText": "Get a Quote",
+    "buttonHref": "/contact-us"
+  }
+}

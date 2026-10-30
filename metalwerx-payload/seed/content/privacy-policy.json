@@ -1,0 +1,234 @@
+{
+  "seo": {
+    "title": "Privacy Policy",
+    "description": "How Metal Werx Scrap Metal Recycling in Hallam collects, uses, stores and protects your personal information, under Australia's Privacy Act 1988."
+  },
+  "hero": {
+    "eyebrow": "Legal",
+    "title": "Privacy Policy",
+    "intro": "How Metal Werx Pty Ltd, trading as Metal Werx Scrap Metal Recycling, collects, uses, stores and protects your personal information when you use our website or sell us scrap. This policy took effect on 29 October 2026."
+  },
+  "sections": [
+    {
+      "anchor": "overview",
+      "title": "Overview",
+      "icon": "shield-check",
+      "topics": [
+        {
+          "title": "Who we are",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "This policy covers Metal Werx Scrap Metal Recycling, a scrap metal yard at 131 Wedgewood Rd, Hallam VIC 3803, run by Metal Werx Pty Ltd (ABN 19 650 365 067). In this policy, \"we\" and \"us\" mean Metal Werx."
+            },
+            {
+              "blockType": "paragraph",
+              "text": "We handle personal information in line with the Privacy Act 1988 (Cth) and the Australian Privacy Principles."
+            },
+            {
+              "blockType": "callout",
+              "kind": "note",
+              "text": "This policy replaces an earlier general template and is waiting for review by our lawyer. We may update it once that review is done."
+            }
+          ]
+        },
+        {
+          "title": "At a glance",
+          "content": [
+            {
+              "blockType": "questions",
+              "items": [
+                {
+                  "question": "What do we collect?",
+                  "answer": "What you send us through our website's contact form, and the details Victorian law requires us to record when you sell us scrap metal or a vehicle, such as your photo ID and bank details."
+                },
+                {
+                  "question": "Why do we collect it?",
+                  "answer": "To answer your enquiry, give you a quote, arrange bins, pickups and car removals, pay you, and meet our legal obligations as a scrap metal dealer."
+                },
+                {
+                  "question": "Do we sell it?",
+                  "answer": "No. We don't sell, rent or trade your personal information, and we don't use it for advertising."
+                },
+                {
+                  "question": "Do we use cookies or tracking?",
+                  "answer": "Our website sets no cookies and runs no analytics or advertising trackers. The map on our contact page comes from Google, which has its own policy (see below)."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "anchor": "what-we-collect",
+      "title": "What we collect and why",
+      "icon": "database",
+      "topics": [
+        {
+          "title": "When you contact us",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "When you use the contact form on our website, we collect your name, your email address, your phone number if you give it, your message and any photos you attach. If you call or email us, we collect what you tell us, such as your name, phone number and email address."
+            },
+            {
+              "blockType": "paragraph",
+              "text": "We use these details to reply to you, give you a quote, and arrange a bin, a pickup or a car removal. Messages and photos sent through the form are stored on our own server, where only our staff can see them, after signing in."
+            }
+          ]
+        },
+        {
+          "title": "When you sell us scrap metal or a vehicle",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "Victorian law requires scrap metal dealers to check and record the identity of each person who sells them scrap metal, and to pay by bank transfer rather than cash. So when you sell to us, we collect your name and address, the details of your photo ID, your bank account details (BSB and account number) so we can pay you, and a record of what you sold, its weight and the price."
+            },
+            {
+              "blockType": "paragraph",
+              "text": "When you sell us a vehicle, we also collect proof that you own it and the vehicle's details, such as its registration and identification numbers, to check that it can be sold for scrap."
+            },
+            {
+              "blockType": "callout",
+              "kind": "note",
+              "text": "If you don't give us the identification the law requires, we can't buy your scrap metal or vehicle."
+            }
+          ]
+        },
+        {
+          "title": "When you visit our website",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "Like most websites, the servers that run and deliver ours may record technical details of each visit, such as your IP address, your browser and the pages you asked for. We use these records only to keep the website running and secure."
+            },
+            {
+              "blockType": "paragraph",
+              "text": "Our website doesn't set cookies. It remembers a couple of display choices, such as light or dark mode, in your own browser's storage, and that never leaves your device."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "anchor": "sharing",
+      "title": "Who we share it with",
+      "icon": "info",
+      "topics": [
+        {
+          "title": "When we share your information",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "We only share your personal information when we need to: with Victoria Police, Consumer Affairs Victoria or other authorities when the law requires or allows it, for example to inspect the records scrap metal dealers must keep; with our bank, to pay you; and with businesses that provide services to us, such as IT and email providers, only so they can provide those services."
+            }
+          ]
+        },
+        {
+          "title": "Google Maps",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "The map on our contact page is provided by Google. When it loads, Google receives information such as your IP address and may set its own cookies, under Google's privacy policy at policies.google.com/privacy."
+            }
+          ]
+        },
+        {
+          "title": "Information stored outside Australia",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "Contact form messages are kept on our own server. Some of the services we use, such as email and Google Maps, may store information on servers outside Australia."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "anchor": "security",
+      "title": "Storage and security",
+      "icon": "lock",
+      "topics": [
+        {
+          "title": "How we protect it",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "We take reasonable steps to protect your personal information from misuse, loss and unauthorised access. Contact form messages and photos can only be seen by our staff after signing in, and we keep our dealer records secure."
+            }
+          ]
+        },
+        {
+          "title": "How long we keep it",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "We keep dealer records, including ID and payment details, for as long as the law requires. We keep enquiries only as long as we need them to deal with your enquiry and any work that follows, and then delete them."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "anchor": "your-rights",
+      "title": "Access, correction and complaints",
+      "icon": "scale",
+      "topics": [
+        {
+          "title": "Seeing and correcting your information",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "You can ask to see the personal information we hold about you, and ask us to correct it if it's wrong, out of date or incomplete. We'll reply within 30 days. We may need to check your identity first. If the law lets us refuse a request, we'll tell you why."
+            }
+          ]
+        },
+        {
+          "title": "Making a complaint",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "If you think we've mishandled your personal information, please contact us first. We'll look into it and reply within 30 days. If you're not happy with our answer, you can complain to the Office of the Australian Information Commissioner (OAIC) at oaic.gov.au."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "anchor": "contact",
+      "title": "Contact us",
+      "icon": "mail",
+      "topics": [
+        {
+          "title": "Our privacy contact",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "For any question or request about your personal information, contact:"
+            },
+            {
+              "blockType": "address",
+              "text": "Metal Werx Scrap Metal Recycling\nMetal Werx Pty Ltd\n131 Wedgewood Rd, Hallam VIC 3803\ninfo@metalwerx.com.au · 0470 131 025"
+            }
+          ]
+        },
+        {
+          "title": "Changes to this policy",
+          "content": [
+            {
+              "blockType": "paragraph",
+              "text": "We may update this policy from time to time. The current version is always on this page, with the date it took effect. This version took effect on 29 October 2026."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "cta": {
+    "heading": "Questions about your information?",
+    "body": "Ask us to see or correct your personal information, or ask us anything about this policy.",
+    "buttonText": "Contact Us",
+    "buttonHref": "/contact-us"
+  }
+}
