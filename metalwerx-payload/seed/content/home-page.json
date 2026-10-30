@@ -1,0 +1,211 @@
+{
+  "seo": {
+    "title": "Scrap Metal Recycling & Cash for Cars in Hallam VIC | Metal Werx",
+    "description": "Scrap metal recycling and cash for cars in Hallam, in Melbourne's south-east. Bring scrap to the yard, hire a bin or book a pickup. Paid by bank transfer the same day."
+  },
+  "hero": {
+    "eyebrow": "Metal Werx Scrap Metal Recycling",
+    "title": "Turn Your Scrap Metal Into Cash",
+    "description": "We buy ferrous and non-ferrous metals, car bodies and batteries at our yard in Hallam, serving Melbourne's south-east. Bring your scrap in, hire a bin, or book a pickup. Paid by bank transfer the same day; bring photo ID.",
+    "primaryCta": {
+      "text": "Get a Quote",
+      "href": "/contact-us"
+    },
+    "secondaryCta": {
+      "text": "What We Buy",
+      "href": "/what-we-buy"
+    },
+    "backgroundImages": [
+      {
+        "image": "photo-1722695694560-f452b0919d3a.jpg",
+        "imageTitle": "Excavator sorting scrap metal"
+      },
+      {
+        "image": "photo-1722695510527-cc033e43be1b.jpg",
+        "imageTitle": "Grapple lifting a bale of scrap"
+      },
+      {
+        "image": "photo-1536094627107-abf98dedaa8f.jpg",
+        "imageTitle": "Cutting up scrap metal with a torch"
+      },
+      {
+        "image": "photo-1723365316514-8509dea457f2.jpg",
+        "imageTitle": "Mixed scrap motorbike parts"
+      }
+    ]
+  },
+  "ticker": [
+    {
+      "text": "Copper"
+    },
+    {
+      "text": "Brass"
+    },
+    {
+      "text": "Aluminium"
+    },
+    {
+      "text": "Stainless Steel"
+    },
+    {
+      "text": "Lead"
+    },
+    {
+      "text": "Electric Motors"
+    },
+    {
+      "text": "PVC Wire"
+    },
+    {
+      "text": "Aluminium Wheels"
+    },
+    {
+      "text": "Scrap Car Parts"
+    },
+    {
+      "text": "Scrap Machinery"
+    },
+    {
+      "text": "Unwanted Cars"
+    }
+  ],
+  "whyUs": {
+    "heading": "Why Metal Werx",
+    "intro": "Selling scrap should be simple. Here is how we make it that way.",
+    "reasons": [
+      {
+        "title": "We Buy It All",
+        "description": "Copper, brass, aluminium, stainless steel, lead, motors, wire, car parts, machinery and whole cars.",
+        "href": "/what-we-buy",
+        "image": "photo-1723365316514-8509dea457f2.jpg",
+        "imageTitle": "Mixed scrap metal"
+      },
+      {
+        "title": "We Come to You",
+        "description": "Book a pickup or hire a bin, and we collect the scrap from your home or site.",
+        "href": "/services/pickup-and-collection",
+        "image": "photo-1722695510527-cc033e43be1b.jpg",
+        "imageTitle": "Collecting scrap metal"
+      },
+      {
+        "title": "Built for Business",
+        "description": "Regular collections and bins for workshops, builders, factories and other commercial customers.",
+        "href": "/services/commercial-recycling",
+        "image": "photo-1722695694560-f452b0919d3a.jpg",
+        "imageTitle": "Commercial scrap recycling"
+      }
+    ]
+  },
+  "commercial": {
+    "heading": "Commercial and Industrial Customers",
+    "intro": "We offer a range of services to make recycling your scrap more convenient and rewarding.",
+    "services": [
+      {
+        "title": "Join Us",
+        "href": "/services/commercial-recycling",
+        "icon": "handshake"
+      },
+      {
+        "title": "Arrange a Pick Up",
+        "href": "/services/pickup-and-collection",
+        "icon": "truck"
+      },
+      {
+        "title": "Request a Bin",
+        "href": "/services/bin-hire",
+        "icon": "file-pen"
+      }
+    ]
+  },
+  "cashForCars": {
+    "heading": "Cash for Cars",
+    "subheading": "Get Top Dollar for Old Cars",
+    "body": "Got an old, damaged or unwanted car taking up space? We buy cars, utes, vans and trucks in any condition, running or not. Tell us what you have, we'll give you a fair price, tow it away for free and pay you by bank transfer the same day. It's as simple as 1-2-3.",
+    "image": "photo-1645216755684-c946ce202427.jpg",
+    "imageTitle": "An old car ready for scrap",
+    "steps": [
+      {
+        "title": "Get in Touch",
+        "description": "Tell us the make, model and condition of your car.",
+        "icon": "phone",
+        "points": [
+          {
+            "text": "Via website"
+          },
+          {
+            "text": "Via telephone"
+          },
+          {
+            "text": "Via email"
+          }
+        ]
+      },
+      {
+        "title": "Get the Best Price",
+        "description": "We give you a fair offer for your car.",
+        "icon": "dollar",
+        "points": [
+          {
+            "text": "Top prices"
+          },
+          {
+            "text": "All makes and models"
+          },
+          {
+            "text": "Any condition"
+          }
+        ]
+      },
+      {
+        "title": "We Pick Up Your Car",
+        "description": "We tow it away for free and pay you by bank transfer the same day, once the paperwork is checked.",
+        "icon": "truck",
+        "points": [
+          {
+            "text": "Same-day bank transfer"
+          },
+          {
+            "text": "Quick removal"
+          },
+          {
+            "text": "Reliable service"
+          }
+        ]
+      }
+    ],
+    "cta": {
+      "text": "Get a Free Quote",
+      "href": "/contact-us"
+    }
+  },
+  "faq": {
+    "heading": "Frequently Asked Questions",
+    "intro": "Can't find your answer here? Get in touch and we'll help.",
+    "questions": [
+      {
+        "question": "What metals do you buy?",
+        "answer": "We buy ferrous and non-ferrous metals, including copper, brass, aluminium, stainless steel, lead, electric motors, PVC wire, aluminium wheels, car parts, machinery and whole cars."
+      },
+      {
+        "question": "Do you pick up scrap?",
+        "answer": "Yes. We collect scrap from homes, workshops and commercial sites. Book a pickup and we come to you."
+      },
+      {
+        "question": "Can I hire a bin for my scrap?",
+        "answer": "Yes. We have bins in different sizes, though most jobs end up with a 1 m³ or a 2.4 m³ bin. We drop it off, you fill it, and we collect it when it is full."
+      },
+      {
+        "question": "Do you buy cars that don’t run?",
+        "answer": "Yes. We buy cars, utes, vans and trucks in any condition, running or not, and tow them away for free."
+      },
+      {
+        "question": "Do you take gas bottles?",
+        "answer": "No. We can't take gas bottles or LPG tanks, even empty ones, at the yard, in our bins or with a pickup. Your gas supplier or local council can tell you where to drop them off."
+      },
+      {
+        "question": "How do I get a quote?",
+        "answer": "Contact us through the website, call 0470 131 025 or email info@metalwerx.com.au with what you have."
+      }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+[Unit]
+Description=SeaweedFS object storage for the Metal Werx CMS (S3 API on port 9000)
+After=network-online.target
+
+[Service]
+# Only the S3 API listens on the LAN. The master, volume and filer servers stay
+# on localhost, since the filer accepts writes without a key.
+ExecStart=%h/.local/bin/weed server -dir=%h/seaweedfs/data -ip=127.0.0.1 -ip.bind=127.0.0.1 -filer -s3 -s3.ip.bind=0.0.0.0 -s3.port=9000 -s3.config=%h/seaweedfs/s3.json -s3.port.iceberg=0 -s3.port.lance=0 -master.volumeSizeLimitMB=256 -volume.max=8
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
