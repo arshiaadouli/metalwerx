@@ -1,6 +1,7 @@
 "use client"
 
 import { useRef } from "react"
+import Link from "next/link"
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu"
 import { cva } from "class-variance-authority"
 import { ChevronDown } from "lucide-react"
@@ -53,12 +54,35 @@ const navigationMenuTriggerStyle = cva(
 // usually follows a hover shut the menu again. The first mouse click after the
 // pointer arrives now leaves a hover-opened menu open; further clicks, taps and
 // the keyboard still toggle it.
-function NavigationMenuTrigger({ className, children, onPointerEnter, onPointerDown, onClick, ...props }) {
+// With `href`, the trigger is also a link to the menu's own page: hovering still
+// opens the menu, and a click closes it and follows the link. (Next's Link only
+// navigates when nothing has prevented the default, so the exception for
+// hover-opened menus above doesn't apply to it.)
+function NavigationMenuTrigger({
+  className,
+  children,
+  href,
+  title,
+  onPointerEnter,
+  onPointerDown,
+  onClick,
+  ...props
+}) {
   const pointerType = useRef("")
   const clickedSinceEnter = useRef(false)
+  const label = (
+    <>
+      {children}{" "}
+      <ChevronDown
+        className="relative top-[1px] ml-1 h-3 w-3 transition duration-300 group-data-[state=open]:rotate-180"
+        aria-hidden="true"
+      />
+    </>
+  )
 
   return (
     <NavigationMenuPrimitive.Trigger
+      asChild={Boolean(href)}
       className={cn(navigationMenuTriggerStyle(), "group", className)}
       onPointerEnter={(event) => {
         clickedSinceEnter.current = false
@@ -73,18 +97,20 @@ function NavigationMenuTrigger({ className, children, onPointerEnter, onPointerD
         // A keyboard-triggered click has detail 0.
         const isMouse = event.detail > 0 && pointerType.current === "mouse"
         const hoverOpened =
-          isMouse && !clickedSinceEnter.current && event.currentTarget.dataset.state === "open"
+          !href && isMouse && !clickedSinceEnter.current && event.currentTarget.dataset.state === "open"
         if (isMouse) clickedSinceEnter.current = true
         // Radix skips its toggle when the default is prevented.
         if (hoverOpened) event.preventDefault()
       }}
       {...props}
     >
-      {children}{" "}
-      <ChevronDown
-        className="relative top-[1px] ml-1 h-3 w-3 transition duration-300 group-data-[state=open]:rotate-180"
-        aria-hidden="true"
-      />
+      {href ? (
+        <Link href={href} title={title}>
+          {label}
+        </Link>
+      ) : (
+        label
+      )}
     </NavigationMenuPrimitive.Trigger>
   )
 }

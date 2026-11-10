@@ -91,16 +91,18 @@ const photos = (items) => items.map((item) => photo(item.image, item.imageTitle)
 // The strings of a list of { text } rows.
 const texts = (rows) => rows.map((row) => row.text);
 
-// The home page, in the shape the home page sections take (see app/page.jsx).
+// The home page, in the shape the home page sections take (see app/page.jsx),
+// with updatedAt, when it was last saved, for the sitemap.
 export async function getHomePage() {
   "use cache";
   cacheTag("cms:home-page");
-  const { seo, hero, ticker, whyUs, commercial, cashForCars, faq } = await fetchCms(
+  const { seo, hero, ticker, whyUs, commercial, cashForCars, faq, updatedAt } = await fetchCms(
     "globals/home-page",
     { depth: 1 },
   );
   return {
     seo,
+    updatedAt,
     hero: { ...hero, backgroundImages: photos(hero.backgroundImages) },
     ticker: texts(ticker),
     whyUs: { ...whyUs, reasons: whyUs.reasons.map(withPhoto) },

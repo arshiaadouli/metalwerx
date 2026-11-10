@@ -63,10 +63,10 @@ export const metadata = {
   alternates: { canonical: "./" },
   title: {
     template: "%s | Metal Werx",
-    default: "Scrap Metal Recycling in Hallam VIC | Metal Werx",
+    default: "Scrap Metal Recycling Melbourne | Hallam Yard | Metal Werx",
   },
   description:
-    "Scrap metal recycling in Hallam, in Melbourne's south-east, for homes, farms and businesses. Metal Werx buys ferrous and non-ferrous metals, car bodies and batteries.",
+    "Sell scrap metal in Melbourne: drop it at our Hallam yard (open Mon–Sat) or book a bin or pickup in the south-east. Paid same day by bank transfer.",
   openGraph,
   twitter: { card: "summary_large_image" },
 };

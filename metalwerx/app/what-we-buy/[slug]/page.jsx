@@ -6,7 +6,16 @@ import { Reveal } from "@/components/ui/reveal";
 import { getPrices } from "@/lib/cms";
 import { openGraph } from "@/lib/metadata";
 import { CtaBand, Details, ServiceHero, Steps } from "@/app/services/sections";
-import { priceAmount, priceBadge, priceDate, units } from "@/app/prices/format";
+import {
+  lowerName,
+  otherUnit,
+  perKg,
+  priceAmount,
+  priceBadge,
+  priceDate,
+  priceText,
+  units,
+} from "@/app/prices/format";
 import { getMaterial, getMaterials } from "../materials";
 
 // The page for one material, written in the CMS (see ../materials.js).
@@ -30,15 +39,22 @@ export async function generateStaticParams() {
   return materials.map(({ slug }) => ({ slug }));
 }
 
-// The header photo is also the preview image when the page is shared.
+// The header photo is also the preview image when the page is shared. With a
+// price, the description carries it per kg and the day it was set, so it
+// updates with the price table; the CMS's description is for a material
+// without one.
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const material = await getMaterial(slug);
+  const [material, prices] = await Promise.all([getMaterial(slug), getPrices()]);
   if (!material) return { title: "Material not found" };
-  const { seo, image } = material;
+  const { seo, image, heading, summary } = material;
+  const price = prices.find((other) => other.slug === slug);
+  const kg = price && perKg(price);
   return {
     title: seo.title,
-    description: seo.description,
+    description: kg
+      ? `We pay ${priceAmount(kg)}/kg for ${lowerName(heading)} at our Hallam yard (${priceDate(price.updatedAt)}; grade affects the price). ${summary}`
+      : seo.description,
     openGraph: { ...openGraph, images: [{ url: image.src, alt: image.alt }] },
   };
 }
@@ -92,6 +108,7 @@ export default async function MaterialPage({ params }) {
 // the header photo, so it uses the fixed palette like the rest of the header
 // (see ServiceHero).
 function HeroPrice({ price }) {
+  const other = otherUnit(price);
   const link =
     "text-white underline underline-offset-4 transition-colors hover:text-chrome focus-visible:text-chrome focus-visible:outline-none";
   return (
@@ -104,6 +121,7 @@ function HeroPrice({ price }) {
           {priceAmount(price)}
         </span>{" "}
         <span className="text-chrome">{units[price.unit]}</span>
+        {other && <span className="ml-3 text-sm text-aluminium tabular-nums">{priceText(other)}</span>}
       </p>
       <p className="mt-2 max-w-xl text-sm leading-6 text-aluminium">
         An average as of <time dateTime={price.updatedAt}>{priceDate(price.updatedAt)}</time>.

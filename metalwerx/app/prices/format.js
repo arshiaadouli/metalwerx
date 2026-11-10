@@ -31,3 +31,23 @@ export function priceBadge(price) {
   const amount = price && priceAmount(price);
   return amount ? `Average ${amount} ${units[price.unit]}` : null;
 }
+
+// The price per kg, whichever weight unit it's set in, as { price, unit }, or
+// null for a price set each or not set.
+export function perKg({ price, unit }) {
+  if (price == null || unit === "each") return null;
+  return { price: unit === "tonne" ? price / 1000 : price, unit: "kg" };
+}
+
+// The same price in the other weight unit: per kg for one set per tonne and
+// per tonne for one set per kg; null for a price set each or not set.
+export function otherUnit(price) {
+  if (price.price == null || price.unit === "each") return null;
+  return price.unit === "tonne" ? perKg(price) : { price: price.price * 1000, unit: "tonne" };
+}
+
+// "$14,000 per tonne"
+export const priceText = (price) => `${priceAmount(price)} ${units[price.unit]}`;
+
+// "scrap copper" from "Scrap Copper", keeping acronyms such as HMS as they are.
+export const lowerName = (name) => name.replace(/\b[A-Z][a-z]+/g, (word) => word.toLowerCase());

@@ -111,6 +111,7 @@ On macOS, click **Allow** when asked whether `node` can accept incoming connecti
 | `npm run build` | Create a production build in `.next/` |
 | `npm start` | Serve the production build |
 | `npm run lint` | Run ESLint |
+| `npm test` | Run the unit tests (`*.test.js`, with Node's test runner) |
 
 ## Project structure
 

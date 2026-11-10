@@ -32,9 +32,10 @@ import { photoProps } from "@/lib/photo";
 // buttons, as a bar from lg up and a slide-out sheet below it. A menu entry
 // with items opens a dropdown (an accordion in the sheet) of { title,
 // description, url } items, each with an icon or a photo thumbnail, under a
-// link to the entry's own page. The What We Buy items come from the CMS (see
-// Navbar below); the Services items are written here, so a service added in
-// the CMS needs an entry here too.
+// link to the entry's own page; from lg up the entry's label is that link too,
+// with the dropdown opening on hover. The What We Buy items come from the CMS
+// (see Navbar below); the Services items are written here, so a service added
+// in the CMS needs an entry here too.
 
 const logo = {
   src: "/logo.png",
@@ -280,7 +281,11 @@ function MenuItem({ item }) {
   }
   return (
     <NavigationMenuItem className="text-muted-foreground">
-      <NavigationMenuTrigger className="font-oswald uppercase tracking-[0.15em]">
+      <NavigationMenuTrigger
+        href={item.url}
+        title={item.title}
+        className="font-oswald uppercase tracking-[0.15em]"
+      >
         {item.title}
       </NavigationMenuTrigger>
       <NavigationMenuContent>

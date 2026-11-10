@@ -146,12 +146,12 @@ export default function AboutSection({
                 className="flex flex-wrap gap-x-4"
               >
                 <div className="mb-2 flex items-center gap-2 text-xs sm:text-base">
-                  <span className="font-bold text-ink-cherry">{first.value}</span>
+                  <span className="font-bold text-ink-cherry">{first.value}</span>{" "}
                   <span className="text-ink-soft">{first.label}</span>
                   <span aria-hidden="true" className="text-ink-muted">|</span>
                 </div>
                 <div className="mb-2 flex items-center gap-2 text-xs sm:text-base">
-                  <span className="font-bold text-ink-cherry">{second.value}</span>
+                  <span className="font-bold text-ink-cherry">{second.value}</span>{" "}
                   <span className="text-ink-soft">{second.label}</span>
                 </div>
               </TimelineContent>
@@ -167,7 +167,7 @@ export default function AboutSection({
                   {...reveal}
                   className="mb-2 flex items-center gap-2 font-bebas-neue text-2xl tracking-wide sm:text-3xl lg:text-[2.25cqw]"
                 >
-                  <span className="text-ink-cherry">{featured.value}</span>
+                  <span className="text-ink-cherry">{featured.value}</span>{" "}
                   <span className="text-ink-soft">{featured.label}</span>
                 </TimelineContent>
                 <TimelineContent
@@ -176,7 +176,7 @@ export default function AboutSection({
                   {...reveal}
                   className="mb-2 flex items-center gap-2 text-xs sm:text-base"
                 >
-                  <span className="font-bold text-ink-cherry">{fourth.value}</span>
+                  <span className="font-bold text-ink-cherry">{fourth.value}</span>{" "}
                   <span className="text-ink-soft">{fourth.label}</span>
                   <span aria-hidden="true" className="text-ink-muted lg:hidden">|</span>
                 </TimelineContent>

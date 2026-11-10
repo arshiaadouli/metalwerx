@@ -4,7 +4,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { getPrices } from "@/lib/cms";
 import { cn } from "@/lib/utils";
 import { priceBadge } from "@/app/prices/format";
-import { CtaBand, ServiceHero, Steps } from "@/app/services/sections";
+import { CtaBand, PriceFactors, ServiceHero, Steps } from "@/app/services/sections";
 import { getMaterials, getWhatWeBuyPage } from "./materials";
 
 // The copy and photos come from the CMS (see materials.js).
@@ -50,45 +50,6 @@ export default async function WhatWeBuyPage() {
 
       <CtaBand {...cta} />
     </main>
-  );
-}
-
-// Why what you're paid can differ from the averages on the cards below. The
-// material pages and /prices link here, to #price-factors.
-function PriceFactors({ heading, intro, items }) {
-  return (
-    <section id="price-factors" aria-labelledby="price-factors-heading" className="scroll-mt-8 bg-panel">
-      <div className="mx-auto w-full max-w-7xl px-6 py-16 sm:py-20">
-        <Reveal as="header" className="text-center">
-          <h2
-            id="price-factors-heading"
-            className="font-oswald text-2xl font-semibold uppercase tracking-[0.2em] text-ink-cherry sm:text-3xl"
-          >
-            {heading || "What Affects the Price"}
-          </h2>
-          {intro && (
-            <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-ink-soft sm:text-base">
-              {intro}
-            </p>
-          )}
-        </Reveal>
-
-        <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
-          {items.map(({ title, text }, i) => (
-            <Reveal
-              as="li"
-              key={title}
-              step={i}
-              className="rounded-2xl border border-line bg-surface p-6"
-            >
-              <div aria-hidden="true" className="h-1 w-10 bg-cherry" />
-              <h3 className="mt-5 font-oswald text-lg uppercase tracking-[0.15em]">{title}</h3>
-              <p className="mt-3 text-sm leading-6 text-ink-soft">{text}</p>
-            </Reveal>
-          ))}
-        </ul>
-      </div>
-    </section>
   );
 }
 
