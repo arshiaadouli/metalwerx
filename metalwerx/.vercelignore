@@ -1,4 +1,2 @@
 # Env files stay local: set Vercel's env vars with `vercel env add` instead.
 .env*
-# Old output of the previous "prisma-client" generator, no longer used.
-/app/generated/prisma

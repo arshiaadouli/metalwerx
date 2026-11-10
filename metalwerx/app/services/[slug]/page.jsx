@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import IndexFaq from "@/app/components/index-faq";
+import AreasServed from "@/app/components/areas-served";
+import Faq from "@/app/components/faq";
 import { NotchedProjectCard } from "@/components/ui/notched-project-card";
 import { Reveal } from "@/components/ui/reveal";
+import { openGraph } from "@/lib/metadata";
 import { CtaBand, Details, ServiceHero, Steps } from "../sections";
 import { getService, getServices } from "../services";
 
@@ -33,7 +35,7 @@ export async function generateMetadata({ params }) {
   return {
     title: seo.title,
     description: seo.description,
-    openGraph: { images: [{ url: image.url, alt: image.alt }] },
+    openGraph: { ...openGraph, images: [{ url: image.src, alt: image.alt }] },
   };
 }
 
@@ -67,8 +69,9 @@ export default async function ServicePage({ params }) {
       <Details {...service.details} />
       {/* The home page's FAQ section, which has no top padding of its own. */}
       <div className="border-t border-line bg-surface pt-20 sm:pt-24">
-        <IndexFaq heading="Frequently Asked Questions" {...service.faq} />
+        <Faq heading="Frequently Asked Questions" {...service.faq} />
       </div>
+      <AreasServed />
       <OtherServices services={others} />
       <CtaBand {...service.cta} />
     </main>
@@ -131,7 +134,7 @@ function OtherServices({ services }) {
                 href={`/services/${slug}`}
                 title={title}
                 description={summary}
-                image={image.url}
+                image={image.src}
                 imageAlt={image.alt}
                 sizes="(min-width: 40rem) 50vw, 100vw"
                 monochrome

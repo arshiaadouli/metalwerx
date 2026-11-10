@@ -1,4 +1,4 @@
-import { NotFoundGlitch } from "@/components/ui/be-ui-404-not-found";
+import { NotFoundGlitch } from "@/components/ui/not-found-glitch";
 
 export default function BlogNotFound() {
   return (

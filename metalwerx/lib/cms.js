@@ -1,12 +1,19 @@
 import "server-only";
 import { cacheTag } from "next/cache";
+import { mediaPath } from "./media";
 
 // The Payload CMS (metalwerx-payload) at CMS_URL holds the home page copy, the
-// blog posts, the privacy policy, the services and the materials (What We
-// Buy). Their photos are files in its object storage, linked by URL. Each
-// read is cached and tagged: the CMS
-// calls /api/revalidate with the tag after a change, and the cache also
-// refreshes by itself every 15 minutes (the default cacheLife).
+// blog posts, the privacy policy, the terms and conditions, the services, the
+// materials (What We Buy) and their prices. Their photos are files in its
+// object storage, which the site serves at /media (see lib/media.js). Each
+// read is cached and tagged: the CMS calls /api/revalidate with the tag after
+// a change, and the cache also refreshes by itself every 15 minutes (the
+// default cacheLife).
+//
+// Payload's JSON is passed on as it is, apart from three reshapes:
+//   - a photo (an image upload and its imageTitle) becomes { src, alt, title }
+//   - a list of { text } rows becomes a list of strings
+//   - a link to another document becomes that document's slug
 
 function cmsUrl() {
   const url = process.env.CMS_URL;
@@ -27,12 +34,62 @@ async function fetchCms(path, query = {}) {
   return res.json();
 }
 
-// A media document, as { src, alt, title }. title is the tooltip where the
-// photo is used, falling back to the photo's own.
+// Uploads a photo sent with a contact form message (a File) to the CMS's
+// message-photos collection and returns its id, for createMessage's photos.
+// The CMS only takes it with the shared MESSAGES_SECRET.
+export async function uploadMessagePhoto(file) {
+  const url = new URL("/api/message-photos", cmsUrl());
+  const body = new FormData();
+  body.set("file", file, file.name);
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "x-messages-secret": process.env.MESSAGES_SECRET ?? "" },
+    body,
+    signal: AbortSignal.timeout(60000),
+  });
+  if (!res.ok) {
+    throw new Error(`The CMS returned ${res.status} for ${url.pathname}: ${await res.text()}`);
+  }
+  const { doc } = await res.json();
+  return doc.id;
+}
+
+// Saves a contact form message ({ name, phone, email, message, photos }) in
+// the CMS's messages collection; photos are the ids uploadMessagePhoto
+// returned. The CMS only takes it with the shared MESSAGES_SECRET.
+export async function createMessage(message) {
+  const url = new URL("/api/messages", cmsUrl());
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "x-messages-secret": process.env.MESSAGES_SECRET ?? "",
+    },
+    body: JSON.stringify(message),
+    signal: AbortSignal.timeout(10000),
+  });
+  if (!res.ok) {
+    throw new Error(`The CMS returned ${res.status} for ${url.pathname}: ${await res.text()}`);
+  }
+}
+
+// A media document as { src, alt, title }: src is the photo's path on this
+// site (see lib/media.js), and title the tooltip where the photo is used,
+// falling back to the photo's own.
 function photo(media, title) {
   if (!media || typeof media !== "object") return null;
-  return { src: media.url, alt: media.alt ?? "", title: title || media.title || undefined };
+  return { src: mediaPath(media.url), alt: media.alt ?? "", title: title || media.title || undefined };
 }
+
+// A document or group with an image upload and its tooltip, with the photo in
+// their place.
+const withPhoto = ({ imageTitle, ...doc }) => ({ ...doc, image: photo(doc.image, imageTitle) });
+
+// The photos of a list of image rows.
+const photos = (items) => items.map((item) => photo(item.image, item.imageTitle));
+
+// The strings of a list of { text } rows.
+const texts = (rows) => rows.map((row) => row.text);
 
 // The home page, in the shape the home page sections take (see app/page.jsx).
 export async function getHomePage() {
@@ -42,69 +99,35 @@ export async function getHomePage() {
     "globals/home-page",
     { depth: 1 },
   );
-  const link = ({ text, href }) => ({ text, href });
-
   return {
     seo,
-    hero: {
-      eyebrow: hero.eyebrow,
-      title: hero.title,
-      description: hero.description,
-      primaryCta: link(hero.primaryCta),
-      secondaryCta: link(hero.secondaryCta),
-      backgroundImages: hero.backgroundImages.map((item) => photo(item.image, item.imageTitle)),
-    },
-    ticker: ticker.map((item) => item.text),
-    whyUs: {
-      heading: whyUs.heading,
-      intro: whyUs.intro,
-      reasons: whyUs.reasons.map(({ title, description, href, image, imageTitle }) => ({
-        title,
-        description,
-        href,
-        image: photo(image, imageTitle),
-      })),
-    },
-    commercial: {
-      heading: commercial.heading,
-      intro: commercial.intro,
-      services: commercial.services.map(({ title, href, icon }) => ({ title, href, icon })),
-    },
+    hero: { ...hero, backgroundImages: photos(hero.backgroundImages) },
+    ticker: texts(ticker),
+    whyUs: { ...whyUs, reasons: whyUs.reasons.map(withPhoto) },
+    commercial,
     cashForCars: {
-      heading: cashForCars.heading,
-      subheading: cashForCars.subheading,
-      body: cashForCars.body,
-      image: photo(cashForCars.image, cashForCars.imageTitle),
-      steps: cashForCars.steps.map(({ title, description, points, icon }) => ({
-        title,
-        description,
-        points: points.map((point) => point.text),
-        icon,
-      })),
-      cta: link(cashForCars.cta),
+      ...withPhoto(cashForCars),
+      steps: cashForCars.steps.map((step) => ({ ...step, points: texts(step.points) })),
     },
-    faq: {
-      heading: faq.heading,
-      intro: faq.intro,
-      questions: faq.questions.map(({ question, answer }) => ({ question, answer })),
-    },
+    faq,
   };
 }
 
-// Every blog post, newest first, as { id, title, date, description, cover,
-// paragraphs, text }: id is the slug, date a Date at midnight UTC, cover the
-// cover photo or null, paragraphs the body, and text the whole body, for
-// reading time.
+// Every blog post, newest first, as { id, title, date, updated, description,
+// cover, paragraphs, text }: id is the slug, date a Date at midnight UTC,
+// updated when it was last saved in the CMS, cover the cover photo or null,
+// paragraphs the body, and text the whole body, for reading time.
 export async function getPosts() {
   "use cache";
   cacheTag("cms:posts");
   const { docs } = await fetchCms("posts", { depth: 1, limit: 1000, sort: "-date" });
   return docs.map((post) => {
-    const paragraphs = post.body.map((paragraph) => paragraph.text);
+    const paragraphs = texts(post.body);
     return {
       id: post.slug,
       title: post.title,
       date: new Date(post.date),
+      updated: new Date(post.updatedAt),
       description: post.description,
       cover: photo(post.cover),
       paragraphs,
@@ -114,17 +137,40 @@ export async function getPosts() {
 }
 
 // The privacy policy as stored: seo, hero, sections (each with topics made of
-// content blocks) and cta. See app/privacy-policy/page.jsx.
+// content blocks) and cta. See app/components/legal-page.jsx.
 export async function getPrivacyPolicy() {
   "use cache";
   cacheTag("cms:privacy-policy");
   return fetchCms("globals/privacy-policy", { depth: 0 });
 }
 
+// The terms and conditions, in the same shape as the privacy policy. See
+// app/terms/page.jsx.
+export async function getTerms() {
+  "use cache";
+  cacheTag("cms:terms");
+  return fetchCms("globals/terms", { depth: 0 });
+}
+
+// The fields a service and a material share, in the shape the sections in
+// app/services/sections.jsx take. Icons stay lucide names, such as
+// "container"; app/services/services.js and app/what-we-buy/materials.js turn
+// them into components.
+function pageDoc(doc) {
+  const { overview, details } = doc;
+  return {
+    ...withPhoto(doc),
+    overview: { ...overview, paragraphs: texts(overview.paragraphs) },
+    details: {
+      ...details,
+      images: photos(details.images),
+      lists: details.lists.map((list) => ({ ...list, items: texts(list.items) })),
+    },
+  };
+}
+
 // The services, in their order on /services, and the /services page's header
-// and closing band. Photos are { url, alt, title } here, as the services
-// sections take them (see app/services/sections.jsx), and icons are lucide
-// names, such as "container" (see app/services/services.js).
+// and closing band.
 export async function getServicesContent() {
   "use cache";
   cacheTag("cms:services");
@@ -132,74 +178,34 @@ export async function getServicesContent() {
     fetchCms("services", { depth: 1, limit: 100, sort: "order" }),
     fetchCms("globals/services-page", { depth: 1 }),
   ]);
-  const servicePhoto = (media, title) => {
-    const image = photo(media, title);
-    return image && { url: image.src, alt: image.alt, title: image.title };
-  };
-  const band = ({ heading, text, buttonText, buttonHref }) => ({
-    heading,
-    text,
-    cta: { text: buttonText, href: buttonHref },
-  });
-
-  const services = docs.map((service) => ({
-    slug: service.slug,
-    anchor: service.anchor,
-    title: service.title,
-    heading: service.heading,
-    icon: service.icon,
-    summary: service.summary,
-    seo: service.seo,
-    lede: service.lede,
-    image: servicePhoto(service.image, service.imageTitle),
-    overview: {
-      heading: service.overview.heading,
-      paragraphs: service.overview.paragraphs.map((paragraph) => paragraph.text),
-      features: service.overview.features.map(({ icon, title, text }) => ({ icon, title, text })),
-    },
-    steps: {
-      intro: service.steps.intro,
-      items: service.steps.items.map(({ title, text }) => ({ title, text })),
-    },
-    details: {
-      heading: service.details.heading,
-      intro: service.details.intro,
-      images: service.details.images.map((item) => servicePhoto(item.image, item.imageTitle)),
-      lists: service.details.lists.map(({ title, kind, items }) => ({
-        title,
-        kind,
-        items: items.map((item) => item.text),
-      })),
-    },
-    faq: {
-      intro: service.faq.intro,
-      questions: service.faq.questions.map(({ question, answer }) => ({ question, answer })),
-    },
-    cta: band(service.cta),
-  }));
-
-  const { seo, hero, cta } = page;
-  return {
-    services,
-    page: {
-      seo,
-      hero: {
-        eyebrow: hero.eyebrow,
-        title: hero.title,
-        lede: hero.lede,
-        image: servicePhoto(hero.image, hero.imageTitle),
-        cta: { text: hero.cta.text, href: hero.cta.href },
-      },
-      cta: band(cta),
-    },
-  };
+  return { services: docs.map(pageDoc), page: { ...page, hero: withPhoto(page.hero) } };
 }
 
-// The materials, and the /what-we-buy page's header, groups of cards, selling
-// steps and closing band. Photos are { url, alt, title } and icons lucide
-// names (see app/what-we-buy/materials.js). A material's
-// related and a group's materials are slugs; a material whose steps have no
-// items takes the page's selling steps.
+// What the yard pays for each material, as [{ slug, price, unit, updatedAt }]:
+// slug is the material's, price the average in AUD or null when not set, unit
+// is "kg", "tonne" or "each", and updatedAt an ISO date. See app/prices.
+export async function getPrices() {
+  "use cache";
+  cacheTag("cms:price");
+  const { docs } = await fetchCms("price", {
+    depth: 1,
+    limit: 100,
+    "populate[materials][slug]": true,
+  });
+  return docs
+    .filter((price) => typeof price.material === "object")
+    .map(({ material, price, unit, updatedAt }) => ({
+      slug: material.slug,
+      price: price ?? null,
+      unit,
+      updatedAt,
+    }));
+}
+
+// The materials, and the /what-we-buy page's header, what affects the price,
+// groups of cards, selling steps and closing band. A material's related and a
+// group's materials are slugs, and a material with no steps of its own takes
+// the page's selling steps.
 export async function getWhatWeBuyContent() {
   "use cache";
   cacheTag("cms:materials");
@@ -207,83 +213,27 @@ export async function getWhatWeBuyContent() {
     fetchCms("materials", { depth: 1, limit: 100 }),
     fetchCms("globals/what-we-buy-page", { depth: 1 }),
   ]);
-  const materialPhoto = (media, title) => {
-    const image = photo(media, title);
-    return image && { url: image.src, alt: image.alt, title: image.title };
-  };
-  const band = ({ heading, text, buttonText, buttonHref }) => ({
-    heading,
-    text,
-    cta: { text: buttonText, href: buttonHref },
-  });
-  const steps = ({ intro, items }) => ({
-    intro,
-    items: items.map(({ title, text }) => ({ title, text })),
-  });
   // A relationship at depth 1 is the document, or its id if it's not readable.
-  const slugs = (refs) => {
-    const byId = new Map(docs.map((material) => [material.id, material.slug]));
-    return (refs ?? [])
-      .map((ref) => (typeof ref === "object" ? ref.slug : byId.get(ref)))
+  const slugById = new Map(docs.map((doc) => [doc.id, doc.slug]));
+  const slugs = (refs) =>
+    (refs ?? [])
+      .map((ref) => (typeof ref === "object" ? ref.slug : slugById.get(ref)))
       .filter(Boolean);
-  };
 
-  const sellingSteps = steps(page.sellingSteps);
-  const materials = docs.map((material) => ({
-    slug: material.slug,
-    anchor: material.anchor,
-    title: material.title,
-    heading: material.heading,
-    icon: material.icon,
-    summary: material.summary,
-    seo: material.seo,
-    lede: material.lede,
-    image: materialPhoto(material.image, material.imageTitle),
-    overview: {
-      heading: material.overview.heading,
-      paragraphs: material.overview.paragraphs.map((paragraph) => paragraph.text),
-      gradesTitle: material.overview.gradesTitle || undefined,
-      grades: material.overview.grades.map(({ title, text }) => ({ title, text })),
-    },
-    steps: material.steps?.items?.length ? steps(material.steps) : sellingSteps,
-    details: {
-      heading: material.details.heading,
-      intro: material.details.intro,
-      images: material.details.images.map((item) => materialPhoto(item.image, item.imageTitle)),
-      lists: material.details.lists.map(({ title, kind, items }) => ({
-        title,
-        kind,
-        items: items.map((item) => item.text),
-      })),
-    },
-    faq: {
-      intro: material.faq.intro,
-      questions: material.faq.questions.map(({ question, answer }) => ({ question, answer })),
-    },
-    related: slugs(material.related),
-    cta: band(material.cta),
-  }));
-
-  const { seo, hero, groups, cta } = page;
   return {
-    materials,
+    materials: docs.map((doc) => ({
+      ...pageDoc(doc),
+      steps: doc.steps.items.length > 0 ? doc.steps : page.sellingSteps,
+      related: slugs(doc.related),
+    })),
     page: {
-      seo,
-      hero: {
-        eyebrow: hero.eyebrow,
-        title: hero.title,
-        lede: hero.lede,
-        image: materialPhoto(hero.image, hero.imageTitle),
-        cta: { text: hero.cta.text, href: hero.cta.href },
-      },
-      groups: groups.map(({ anchor, title, intro, materials: refs }) => ({
+      ...page,
+      hero: withPhoto(page.hero),
+      groups: page.groups.map(({ anchor, materials, ...group }) => ({
+        ...group,
         id: anchor,
-        title,
-        intro,
-        slugs: slugs(refs),
+        slugs: slugs(materials),
       })),
-      sellingSteps,
-      cta: band(cta),
     },
   };
 }

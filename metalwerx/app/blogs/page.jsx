@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { CutTitle, Enter } from "@/components/ui/enter";
 import { Reveal } from "@/components/ui/reveal";
-import { getBlogs } from "@/lib/blogs";
+import { getPosts } from "@/lib/cms";
 import { photoProps } from "@/lib/photo";
 import BlogViews from "./blog-views";
 import { formatDate, isoDate, readingStats } from "./format";
@@ -38,7 +38,7 @@ export default function BlogsPage() {
 }
 
 async function BlogList() {
-  const blogs = await getBlogs();
+  const blogs = await getPosts();
 
   if (blogs.length === 0) {
     return <p className="mt-12 text-ink-soft">No posts yet.</p>;

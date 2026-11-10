@@ -1,7 +1,10 @@
-import { NotFoundGlitch } from "@/components/ui/be-ui-404-not-found";
+import { NotFoundGlitch } from "@/components/ui/not-found-glitch";
 
+// No canonical URL: the layout's would name /_not-found, and a missing page
+// shouldn't claim one.
 export const metadata = {
   title: "Page not found",
+  alternates: { canonical: null },
 };
 
 // Shown for any URL without a page, including the navbar and footer links to

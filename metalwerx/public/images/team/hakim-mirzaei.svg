@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 60 400 400">
+  <!-- An illustrated avatar for Hakim Mirzaei, drawn by AI. It isn't a likeness:
+       swap in a real photo once there is one. -->
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="35%" r="75%">
+      <stop offset="0" stop-color="#3A3A3A"/>
+      <stop offset="1" stop-color="#141414"/>
+    </radialGradient>
+    <linearGradient id="disc" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C50000"/>
+      <stop offset="1" stop-color="#4A0808"/>
+    </linearGradient>
+    <linearGradient id="hat" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#C9C9C9"/>
+    </linearGradient>
+    <clipPath id="shirt">
+      <path d="M30 500C30 430 80 398 155 382C170 400 230 400 245 382C320 398 370 430 370 500Z"/>
+    </clipPath>
+  </defs>
+
+  <rect y="0" width="400" height="500" fill="url(#bg)"/>
+  <circle cx="200" cy="235" r="150" fill="url(#disc)"/>
+  <circle cx="200" cy="235" r="150" fill="none" stroke="#FF4040" stroke-opacity="0.35" stroke-width="3"/>
+
+  <!-- Neck -->
+  <path d="M166 290V365C180 385 220 385 234 365V290Z" fill="#9C6A47"/>
+  <path d="M166 296C180 330 220 330 234 296V318C222 342 178 342 166 318Z" fill="#82553A"/>
+
+  <!-- Two-tone hi-vis work shirt: fluoro yellow over navy, with reflective tape -->
+  <g transform="translate(0 -25)">
+    <g clip-path="url(#shirt)">
+      <rect width="400" height="500" fill="#1F2A44"/>
+      <rect width="400" height="448" fill="#E6EC2E"/>
+      <rect y="440" width="400" height="16" fill="#DADADA"/>
+      <path d="M200 404V500" stroke="#C9CF22" stroke-width="4"/>
+      <circle cx="200" cy="418" r="4" fill="#C9CF22"/>
+    </g>
+    <path d="M158 383L200 404L178 422L148 392Z" fill="#D2D827"/>
+    <path d="M242 383L200 404L222 422L252 392Z" fill="#D2D827"/>
+  </g>
+
+  <!-- Ears -->
+  <ellipse cx="124" cy="234" rx="13" ry="22" fill="#A8734F"/>
+  <ellipse cx="276" cy="234" rx="13" ry="22" fill="#A8734F"/>
+  <ellipse cx="125" cy="234" rx="6" ry="12" fill="#8A5A3C"/>
+  <ellipse cx="275" cy="234" rx="6" ry="12" fill="#8A5A3C"/>
+
+  <!-- Face: a broader jaw, with a soft shadow down one side and light stubble -->
+  <path d="M124 214C124 148 160 122 200 122C240 122 276 148 276 214C276 270 254 316 200 322C146 316 124 270 124 214Z" fill="#B87D58"/>
+  <path d="M250 146C268 166 276 188 276 214C276 270 254 316 200 322C236 300 258 262 258 214C258 182 254 162 250 146Z" fill="#A8734F" opacity="0.7"/>
+  <path d="M130 250C136 292 160 318 200 322C240 318 264 292 270 250C262 280 240 300 200 302C160 300 138 280 130 250Z" fill="#3A2A20" opacity="0.22"/>
+
+  <!-- Sideburns under the hard hat -->
+  <path d="M126 196H140V236L130 232Z" fill="#1E1915"/>
+  <path d="M274 196H260V236L270 232Z" fill="#1E1915"/>
+
+  <!-- White hard hat -->
+  <path d="M116 196C116 128 156 92 200 92C244 92 284 128 284 196Z" fill="url(#hat)"/>
+  <path d="M200 93C190 120 188 160 190 196H210C212 160 210 120 200 93Z" fill="#E4E4E4"/>
+  <path d="M100 200C100 186 130 182 200 182C270 182 300 186 300 200C300 210 270 212 200 212C130 212 100 210 100 200Z" fill="#EDEDED"/>
+  <path d="M100 200C100 210 130 212 200 212C270 212 300 210 300 200" fill="none" stroke="#B5B5B5" stroke-width="3"/>
+
+  <!-- Eyebrows, eyes, nose, moustache and smile -->
+  <path d="M154 221Q170 214 186 220M214 220Q230 214 246 221" fill="none" stroke="#1E1915" stroke-width="7" stroke-linecap="round"/>
+  <ellipse cx="170" cy="240" rx="6.5" ry="7.5" fill="#1A1210"/>
+  <ellipse cx="230" cy="240" rx="6.5" ry="7.5" fill="#1A1210"/>
+  <circle cx="172.5" cy="237.5" r="2" fill="#FFFFFF"/>
+  <circle cx="232.5" cy="237.5" r="2" fill="#FFFFFF"/>
+  <path d="M199 246L192 268Q200 275 210 269" fill="none" stroke="#8A5A3C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M174 286C184 274 196 276 200 280C204 276 216 274 226 286C214 284 206 286 200 288C194 286 186 284 174 286Z" fill="#1E1915"/>
+  <path d="M182 293Q200 309 218 293" fill="none" stroke="#6E3528" stroke-width="5" stroke-linecap="round"/>
+</svg>

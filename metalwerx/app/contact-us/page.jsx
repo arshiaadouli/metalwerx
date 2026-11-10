@@ -1,33 +1,38 @@
 import { Mail, MapPin, Phone } from "lucide-react";
-import ContactWithGlobe from "@/components/ui/contact-with-globe";
+import ContactWithGlobe from "./contact-with-globe";
+import AreasServed from "@/app/components/areas-served";
+import ContactFindUs from "@/app/components/contact-find-us";
+import { socialLinks } from "@/app/components/social-links";
+import { business, formattedAddress, telHref } from "@/lib/business";
+import { sendMessage } from "./actions";
 
+// "absolute" keeps the layout's "| Metal Werx" suffix off, since the title
+// already names the business.
 export const metadata = {
-  title: "Contact Us",
-  description:
-    "Get a quote for your scrap metal, book a pickup or hire a bin. Call, email or send Metal Werx a message.",
+  title: { absolute: `Contact ${business.name}, ${formattedAddress.replace(/ \d{4}$/, "")}` },
+  description: `Get a quote for your scrap metal, book a pickup or hire a bin. Call ${business.phone.display}, email or visit ${business.name} at ${formattedAddress}.`,
 };
 
-// The phone number and email are placeholders: the yard's real details still
-// need to be added here.
+// The details themselves are in lib/business.js.
 const contactLinks = [
   {
     icon: <Phone />,
     label: "Call us",
-    value: "0470 131 025",
-    href: "tel:+610470131025",
+    value: business.phone.display,
+    href: telHref,
   },
   {
     icon: <Mail />,
     label: "Email us",
-    value: "info@metalwerx.com.au",
-    href: "mailto:info@metalwerx.com.au",
+    value: business.email,
+    href: `mailto:${business.email}`,
   },
   {
     icon: <MapPin />,
     label: "Visit the yard",
-    value: "131 Wedgewood Rd, Hallam VIC 3803",
-    href: "https://www.google.com/maps/search/?api=1&query=Metal+Werx+Scrap+Metal+Recycling",
-  },
+    value: formattedAddress,
+    href: business.mapsUrl,
+  }
 ];
 
 export default function ContactUsPage() {
@@ -37,7 +42,10 @@ export default function ContactUsPage() {
         title="Contact Us"
         description="Need a quote for your scrap, a pickup or a bin? Get in touch and we'll get back to you."
         contactLinks={contactLinks}
+        action={sendMessage}
       />
+      <ContactFindUs />
+      <AreasServed />
     </main>
   );
 }

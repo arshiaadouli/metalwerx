@@ -73,14 +73,17 @@
 :root {
   color-scheme: dark;
 
-  --surface: #0C0C0C;     /* page background (carbon) */
-  --panel: #171717;       /* cards (mill-scale) */
-  --well: #222222;        /* fills inside cards: fields, tiles, skeletons (gunmetal) */
-  --line: #222222;        /* card borders and dividers (gunmetal) */
+  /* The dark greys sit a step above the carbon end of the palette, so the
+     theme reads as charcoal rather than pure black. */
+  --surface: #1A1A1A;     /* page background */
+  --panel: #232323;       /* cards */
+  --well: #2E2E2E;        /* fills inside cards: fields, tiles, skeletons */
+  --line: #2E2E2E;        /* card borders and dividers */
   --ink: #F8F8F8;         /* headings (chrome) */
   --ink-soft: #CFCFCF;    /* body copy (aluminium) */
-  --ink-muted: #7A7A7A;   /* dates and labels (steel) */
-  --ink-cherry: #FF0000;  /* red text (cherry-bright) */
+  /* Steel and cherry-bright text fall short of WCAG AA contrast on these greys. */
+  --ink-muted: #8A8A8A;   /* dates and labels */
+  --ink-cherry: #FF4040;  /* red text */
 
   /* shadcn/ui tokens, mapped onto the theme colours. */
   --background: var(--surface);
@@ -91,39 +94,41 @@
   --popover-foreground: var(--ink);
   --primary: #C50000;
   --primary-foreground: #F8F8F8;
-  --secondary: #222222;
+  --secondary: #2E2E2E;
   --secondary-foreground: var(--ink);
-  --muted: #2D2D2D;
+  --muted: #383838;
   --muted-foreground: var(--ink-soft);
-  --accent: #2D2D2D;
+  --accent: #383838;
   --accent-foreground: var(--ink);
   --destructive: #FF0000;
   --destructive-foreground: #F8F8F8;
-  --border: #2D2D2D;
-  --input: #2D2D2D;
+  --border: #383838;
+  --input: #383838;
   --ring: #C50000;
 }
 
 [data-theme="light"] {
   color-scheme: light;
 
-  --surface: #FFFFFF;
-  --panel: #F8F8F8;
-  --well: #ECECEC;
-  --line: #E2E2E2;
+  /* Off-white rather than pure white, to soften the glare, with a faint red
+     tint so the greys lean toward the cherry accents. */
+  --surface: #F8EEEE;
+  --panel: #F1E7E7;
+  --well: #E5DBDB;
+  --line: #DBD1D1;
   --ink: #0C0C0C;
   --ink-soft: #2D2D2D;
-  /* Steel and cherry-bright text fall short of WCAG AA contrast on white. */
-  --ink-muted: #666666;
+  /* Steel and cherry-bright text fall short of WCAG AA contrast on these greys. */
+  --ink-muted: #5E5E5E;
   --ink-cherry: #C50000;
 
   --popover: var(--surface);
-  --secondary: #ECECEC;
-  --muted: #F0F0F0;
+  --secondary: #E5DBDB;
+  --muted: #E9DFDF;
   --muted-foreground: #525252;
-  --accent: #F0F0F0;
-  --border: #E2E2E2;
-  --input: #CFCFCF;
+  --accent: #E9DFDF;
+  --border: #DBD1D1;
+  --input: #C8BEBE;
 }
 
 @theme inline {

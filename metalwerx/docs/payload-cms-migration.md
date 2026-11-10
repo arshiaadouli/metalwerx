@@ -120,7 +120,7 @@ On the last commit, `git grep -i strapi` found 55 lines in 17 files. All of them
 grep -rni strapi --exclude-dir=node_modules --exclude-dir=.next --exclude-dir=.git .
 ```
 
-This returns no matches. The Strapi project itself still exists at `~/metalwerx-cms`, but it isn't running and the website no longer refers to it.
+This returns no matches. The old Strapi project at `~/metalwerx-cms` was deleted on 29 Oct.
 
 ## 5. Bringing the photos into the project
 
@@ -357,16 +357,17 @@ The fields are the same as in Services, and the collection reuses the same `phot
 
 | Field | How it differs from Services |
 | --- | --- |
-| `icon` | Its own list of 12: cylinder, wrench, layers, disc-3, cooking-pot, battery-full, cable, zap, cog, tractor, car-front, recycle. Shown in the pill above the `<h1>`. |
+| `icon` | Its own list of 17: cylinder, wrench, layers, disc-3, cooking-pot, battery-full, cable, zap, cog, tractor, car-front, recycle, anvil, shapes, engine, air-vent, refrigerator. Shown in the pill above the `<h1>`. |
 | `related` ("We also buy") | Links to up to 3 other materials, suggested at the foot of the page |
 | `overview` | `grades[]` (`title`, `text`) replaces `features`, under an optional `gradesTitle` that defaults to "Grades We Buy" |
-| `steps` | Optional. With no items, the page shows the selling steps from the What We Buy Page. Only Scrap Machinery and Unwanted Cars have steps of their own. |
+| `steps` | Optional. With no items, the page shows the selling steps from the What We Buy Page. No material has steps of its own at the moment. |
 | *(no `order` field)* | The order comes from the What We Buy Page's groups. The admin lists materials by title. |
 
 - **Hook:** clears `cms:materials` after a save or a delete.
-- **Current materials:**
-  - Non-ferrous: Copper, Brass, Aluminium, Aluminium Wheels, Stainless Steel, Lead, PVC Wire, Electric Motors
-  - Ferrous: Unwanted Cars, Scrap Car Parts, Scrap Machinery
+- **Current materials** (since 29 October 2026, from the owner's price list; each has an average price per tonne in Prices):
+  - Non-Ferrous & Stainless (`#non-ferrous`): Copper, Brass, Alloy Extrusion, Alloy Mix, Aluminium Wheels, Stainless Steel
+  - Steel & Mixed Metal (`#ferrous`): HMS Steel, Electric Motors, Black Compressors, AC Units, White Engines
+  - Aluminium, Steel & Iron, Lead, PVC Wire, Scrap Car Parts, Scrap Machinery and Unwanted Cars were removed. Their old URLs redirect (see `next.config.mjs`).
 - **Website side:** `app/what-we-buy/materials.js` went from 1,424 lines of copy to an 80-line loader.
 
 ### 7.7 Users (`users`)
@@ -448,6 +449,8 @@ An `iconList` icon is one of globe, monitor, link, server, clock or network.
 - **Layout:** the "On this page" sidebar and the section numbers are generated from `sections`.
 - **Hook:** clears `cms:privacy-policy`.
 
+**Terms & Conditions (`terms`)**, added on 29 Oct, has the same fields and blocks: both globals are made by `legalPage()` in `src/globals/legalPage.ts`, which also adds the section icons file-text, banknote, car, truck, triangle-alert and globe. On the website, `/terms` and `/privacy` share one layout, `app/components/legal-page.jsx`. Its hook clears `cms:terms`, and its first text is `seed/content/terms.json`.
+
 ### 8.3 Services Page (`services-page`)
 
 The header and the closing band of `/services`. The rows between them come from the Services collection, in `order`.
@@ -466,13 +469,14 @@ The header and the closing band of `/services`. The rows between them come from 
 | --- | --- |
 | `seo` | `title`, `description` |
 | `hero` | `eyebrow`, `title`, `lede`, a photo with its tooltip, and a button (`cta`) |
+| `priceFactors` | `heading` (optional, defaults to "What Affects the Price"), `intro`, `items[]` (`title`, `text`): why what you're paid can differ from the average prices. Shown under the header at `/what-we-buy#price-factors`, which the material pages and `/prices` link to; hidden while it has no items. |
 | `groups[]` | `title`, `anchor`, `intro`, `materials` (see below) |
 | `sellingSteps` | `intro`, `items[]`: how selling at the yard works. Shown on this page and on every material page without its own steps. |
 | `cta` | The closing band |
 
 Each group is a section of material cards at `/what-we-buy#<anchor>`. Its `materials` field is an ordered list of links to Materials: the cards in that section.
 
-- **Current content:** a `non-ferrous` group with 8 materials, a `ferrous` group with 3, and 4 selling steps.
+- **Current content:** 5 price factors (grade, cleanliness, sorting, quantity and the market), a `non-ferrous` group with 6 materials, a `ferrous` group with 5, and 4 selling steps.
 - **The groups also:**
   - set the order of the navbar's What We Buy menu;
   - provide the anchors the footer's Ferrous and Non-Ferrous links point to.
@@ -492,7 +496,8 @@ All CMS reads go through this one server-only module:
 | --- | --- | --- | --- |
 | `getHomePage()` | `globals/home-page?depth=1` | `cms:home-page` | `/` |
 | `getPosts()` | `posts?depth=1&limit=1000&sort=-date` | `cms:posts` | `lib/blogs.js` → `/blogs`, `/blogs/[slug]` |
-| `getPrivacyPolicy()` | `globals/privacy-policy?depth=0` | `cms:privacy-policy` | `/privacy-policy` |
+| `getPrivacyPolicy()` | `globals/privacy-policy?depth=0` | `cms:privacy-policy` | `/privacy` |
+| `getTerms()` | `globals/terms?depth=0` | `cms:terms` | `/terms` |
 | `getServicesContent()` | `services?depth=1&limit=100&sort=order` and `globals/services-page?depth=1` | `cms:services` | `app/services/services.js` → `/services`, `/services/[slug]` |
 | `getWhatWeBuyContent()` | `materials?depth=1&limit=100` and `globals/what-we-buy-page?depth=1` | `cms:materials` | `app/what-we-buy/materials.js` → `/what-we-buy`, `/what-we-buy/[slug]`, the navbar |
 
@@ -534,10 +539,11 @@ Which saves refresh which pages:
 | --- | --- | --- |
 | Home Page | `cms:home-page` | `/` |
 | A post | `cms:posts` | `/blogs`, `/blogs/<slug>` |
-| Privacy Policy | `cms:privacy-policy` | `/privacy-policy` |
+| Privacy Policy | `cms:privacy-policy` | `/privacy` |
+| Terms & Conditions | `cms:terms` | `/terms` |
 | A service, or the Services Page | `cms:services` | `/services`, `/services/<slug>` |
 | A material, or the What We Buy Page | `cms:materials` | `/what-we-buy`, `/what-we-buy/<slug>`, and the navbar on every page |
-| A media file | All of the above except `cms:privacy-policy` | Every page with photos |
+| A media file | All of the above except `cms:privacy-policy` and `cms:terms` | Every page with photos |
 
 ### 9.3 Routes: 14 folders became 2
 
@@ -630,6 +636,7 @@ The content comes from these files in `seed/content/`, which were made from the 
 - `home-page.json`
 - `posts.json`
 - `privacy-policy.json`
+- `terms.json`
 - `services.json`
 - `services-page.json`
 - `materials.json`
@@ -637,7 +644,7 @@ The content comes from these files in `seed/content/`, which were made from the 
 
 ### MCP tools and access
 
-The MCP server has 22 tools:
+The MCP server has 24 tools:
 
 | Content | Tools |
 | --- | --- |
@@ -647,6 +654,7 @@ The MCP server has 22 tools:
 | Media | `findMedia`, `updateMedia` |
 | Home Page | `findHomePage`, `updateHomePage` |
 | Privacy Policy | `findPrivacyPolicy`, `updatePrivacyPolicy` |
+| Terms & Conditions | `findTerms`, `updateTerms` |
 | Services Page | `findServicesPage`, `updateServicesPage` |
 | What We Buy Page | `findWhatWeBuyPage`, `updateWhatWeBuyPage` |
 
@@ -751,6 +759,5 @@ Roughly in order of importance:
     - `app/home-page.js` and `app/blogs/posts.js` aren't used by the site any more; only the one-off `seed/inventory.mjs` reads them. Delete them, or leave them out of the commit, so there's one source of truth.
     - The website's `.env` still has the old MongoDB `DATABASE_URL`. Nothing reads it.
     - `.gitignore`, `.vercelignore` and `eslint.config.mjs` still mention `app/generated/prisma`.
-    - The old Strapi project is still at `~/metalwerx-cms`. Archive or delete it once nothing more is needed from it.
     - The website README says the home page, posts, privacy policy and services come from the CMS, but doesn't mention What We Buy.
     - The CMS README says `inventory.mjs` rebuilds `images.json`, which is no longer true (section 10).

@@ -2,7 +2,7 @@
 
 Website for Metal Werx, a scrap metal recycling and cash-for-cars business. It's built with Next.js 16 (App Router), React 19 and Tailwind CSS 4.
 
-Most of the content comes from the Payload CMS in [metalwerx-payload](../metalwerx-payload), at http://192.168.15.240:3001: the home page, the blog posts, the privacy policy, the services and the materials on the What We Buy pages. Their photos come from the CMS's object storage. The rest of the copy, such as the About and Contact pages and the navbar's Services menu, lives in the page files. [docs/payload-cms-migration.md](docs/payload-cms-migration.md) covers how the CMS is set up and how the site reads it.
+Most of the content comes from the Payload CMS in [metalwerx-payload](../metalwerx-payload), at http://192.168.15.240:3001: the home page, the blog posts, the privacy policy, the terms and conditions, the services and the materials on the What We Buy pages. Their photos come from the CMS's object storage. The rest of the copy, such as the About and Contact pages and the navbar's Services menu, lives in the page files. [docs/payload-cms-migration.md](docs/payload-cms-migration.md) covers how the CMS is set up and how the site reads it.
 
 ## Requirements
 
@@ -44,7 +44,8 @@ Content is edited in the CMS admin at http://192.168.15.240:3001/admin:
 | --- | --- |
 | Home Page | `/` |
 | Posts | `/blogs` and `/blogs/<slug>` |
-| Privacy Policy | `/privacy-policy` |
+| Privacy Policy | `/privacy` |
+| Terms & Conditions | `/terms` |
 | Services, Services Page | `/services` and `/services/<slug>` |
 | Materials, What We Buy Page | `/what-we-buy`, `/what-we-buy/<slug>` and the navbar's What We Buy menu |
 | Media | The photos on all of the above |
@@ -114,13 +115,16 @@ On macOS, click **Allow** when asked whether `node` can accept incoming connecti
 ## Project structure
 
 ```
-app/                 Pages and layouts: home, about, blogs, contact-us, privacy-policy, services, what-we-buy
+app/                 Pages: home, about, blogs, contact-us, prices, privacy, terms, services, what-we-buy.
+                     A page's own pieces sit next to it, e.g. app/contact-us/contact-with-globe.jsx
 app/api/revalidate/  Called by the CMS after a change
-app/components/      Navbar, footer, theme toggle and home page sections
-components/ui/       Shared UI components (buttons, accordion, animations, contact globe)
+app/media/           Serves the CMS's photos from its object storage
+app/components/      Shared by several pages: navbar, footer, theme toggle, structured data,
+                     the legal page layout, the FAQ and the home page sections (index-*)
+components/ui/       Generic building blocks: button, accordion, sheet, menu, cards and the entrance motion
+lib/                 CMS reads (cms.js), the yard's details (business.js), photos (photo.js, media.js) and cn() (utils.js)
+public/              Static files: the logo, llms.txt and the stock photos (images/)
 docs/                Notes on the move from Strapi to the Payload CMS
-lib/                 CMS reads (cms.js), blog post lookups (blogs.js), the photo helper (photo.js) and cn() (utils.js)
-public/              Static files: the logo and the About page's photos (images/)
 ```
 
 ## Deploying
@@ -144,5 +148,4 @@ npx vercel --prod   # production, https://metawerx.vercel.app
 The build reads its content from the CMS at `CMS_URL`, which is only on the LAN (192.168.15.240), so a Vercel build can't reach it. To deploy to Vercel, the CMS and its object storage need public addresses first. Then:
 
 - set `CMS_URL` and `REVALIDATE_SECRET` on Vercel, for example with `npx vercel env add CMS_URL`;
-- point `remotePatterns` in [next.config.mjs](next.config.mjs) at the public storage address;
-- remove `dangerouslyAllowLocalIP`, which is only there because the storage is on a private address.
+- set `MEDIA_BUCKET_URL` to the storage bucket's public address. The site serves the CMS's photos itself at `/media/...` (see [lib/media.js](lib/media.js)), reading them from that address, which defaults to `http://192.168.15.240:9000/metalwerx-media`.

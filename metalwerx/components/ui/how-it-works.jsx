@@ -48,7 +48,7 @@ function StepCard({ number, icon, title, description, points }) {
     <Reveal
       as="li"
       step={number - 1}
-      className="row-span-3 grid grid-rows-subgrid gap-y-5 rounded-2xl border border-line bg-panel p-6 shadow-lg transition-[scale,box-shadow,border-color] duration-300 ease-in-out light:bg-white hover:border-cherry/50 hover:shadow-xl motion-safe:hover:scale-105"
+      className="row-span-3 grid grid-rows-subgrid gap-y-5 rounded-2xl border border-line bg-panel p-6 shadow-lg transition-[scale,box-shadow,border-color] duration-300 ease-in-out light:bg-surface hover:border-cherry/50 hover:shadow-xl motion-safe:hover:scale-105"
     >
       <div className="flex size-12 items-center justify-center rounded-lg bg-well text-ink-cherry">
         {icon}

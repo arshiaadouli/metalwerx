@@ -30,10 +30,14 @@ function AccordionTrigger({ className, children, ...props }) {
   )
 }
 
+// forceMount keeps closed panels in the page's HTML, so crawlers that don't run
+// JavaScript still read every FAQ answer; data-[state=closed]:hidden hides them
+// with CSS instead. A panel then can't animate closed, only open.
 function AccordionContent({ className, children, ...props }) {
   return (
     <AccordionPrimitive.Content
-      className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
+      forceMount
+      className="overflow-hidden text-sm data-[state=closed]:hidden data-[state=open]:animate-accordion-down"
       {...props}
     >
       <div className={cn("pb-4 pt-0", className)}>{children}</div>

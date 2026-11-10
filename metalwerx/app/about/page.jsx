@@ -1,5 +1,7 @@
-import AboutSection from "@/components/ui/about-section";
-import AboutHighlights from "../components/about-highlights";
+import AboutSection from "./about-section";
+import AboutBusinessDetails from "./about-business-details";
+import AboutHighlights from "./about-highlights";
+import AboutTeam from "./about-team";
 
 export const metadata = {
   title: "About Us",
@@ -21,7 +23,7 @@ const image = {
 const stats = [
   { value: "Ferrous", label: "and non-ferrous metals" },
   { value: "Free", label: "car removal" },
-  { value: "Cash", label: "for scrap" },
+  { value: "Same-day", label: "bank transfer" },
   { value: "Bin hire", label: "and pickups" },
 ];
 
@@ -39,11 +41,13 @@ const highlights = [
     gradient: "cherry",
     title: "Your Trusted Scrap Metal Recycler",
     description:
-      "At Metal Werx, we specialize in providing top-notch scrap metal recycling services. Our dedicated team is committed to helping you turn your scrap into cash while supporting sustainable practices.",
+      "At Metal Werx, we specialize in providing top-notch scrap metal recycling services. Our dedicated team is committed to getting you paid for your scrap while supporting sustainable practices.",
     ctaText: "Talk to us",
     ctaHref: "/contact-us",
     // https://unsplash.com/photos/a-bunch-of-cars-that-are-sitting-in-the-dirt-GcBoM7B40Ck
     imageUrl: unsplash("photo-1719242513425-f5eed99b282f"),
+    imageAlt:
+      "A scrap yard of old cars and boats behind a wire fence, with a small excavator and a green vintage sedan in front",
   },
   {
     gradient: "gray",
@@ -54,6 +58,7 @@ const highlights = [
     ctaHref: "/contact-us",
     // https://unsplash.com/photos/crushed-assorted-beverage-cans-lot-k1tUxfs8JYY
     imageUrl: unsplash("photo-1561503412-852800622772"),
+    imageAlt: "A bale of crushed aluminium drink cans",
   },
   {
     gradient: "orange",
@@ -64,6 +69,32 @@ const highlights = [
     ctaHref: "/contact-us",
     // https://unsplash.com/photos/pile-of-old-car-engines-and-parts-G-Fno_v4alo
     imageUrl: unsplash("photo-1767340078189-4258fbb7bd7c"),
+    imageAlt: "A pile of old car engines and parts",
+  },
+];
+
+// The names and emails are the ones the business gave on 29 Oct 2026, the roles
+// on 30 Oct. The portraits in public/images/team are illustrated avatars drawn
+// by AI, not likenesses: swap in real photos (square, at least 400px) once
+// there are some.
+const team = [
+  {
+    name: "Mahdi Amiri",
+    role: "Owner",
+    email: "mahdi@metalwerx.com.au",
+    photo: {
+      src: "/images/team/mahdi-amiri.svg",
+      alt: "Illustrated avatar of Mahdi Amiri",
+    },
+  },
+  {
+    name: "Hakim Mirzaei",
+    role: "Co-Founder",
+    email: "hakim@metalwerx.com.au",
+    photo: {
+      src: "/images/team/hakim-mirzaei.svg",
+      alt: "Illustrated avatar of Hakim Mirzaei",
+    },
   },
 ];
 
@@ -78,11 +109,19 @@ export default function AboutPage() {
         paragraphs={paragraphs}
         name="Metal Werx"
         tagline="Scrap Metal Recycling | Hallam VIC"
-        ctaPrompt="Ready to turn your scrap into cash?"
+        ctaPrompt="Ready to get paid for your scrap?"
         cta={{ text: "Get a Quote", href: "/contact-us" }}
       />
 
       <AboutHighlights heading="Why choose Metal Werx" cards={highlights} />
+
+      <AboutTeam
+        heading="Our Team"
+        intro="Questions about a load, a car or a bin? Email either of us directly."
+        members={team}
+      />
+
+      <AboutBusinessDetails />
     </main>
   );
 }

@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import IndexFaq from "@/app/components/index-faq";
+import Faq from "@/app/components/faq";
 import { NotchedProjectCard } from "@/components/ui/notched-project-card";
 import { Reveal } from "@/components/ui/reveal";
+import { getPrices } from "@/lib/cms";
+import { openGraph } from "@/lib/metadata";
 import { CtaBand, Details, ServiceHero, Steps } from "@/app/services/sections";
+import { priceAmount, priceBadge, priceDate, units } from "@/app/prices/format";
 import { getMaterial, getMaterials } from "../materials";
 
 // The page for one material, written in the CMS (see ../materials.js).
@@ -36,15 +39,17 @@ export async function generateMetadata({ params }) {
   return {
     title: seo.title,
     description: seo.description,
-    openGraph: { images: [{ url: image.url, alt: image.alt }] },
+    openGraph: { ...openGraph, images: [{ url: image.src, alt: image.alt }] },
   };
 }
 
 export default async function MaterialPage({ params }) {
   const { slug } = await params;
-  const materials = await getMaterials();
+  const [materials, prices] = await Promise.all([getMaterials(), getPrices()]);
   const material = materials.find((other) => other.slug === slug);
   if (!material) notFound();
+  const priceBySlug = new Map(prices.map((price) => [price.slug, price]));
+  const price = priceBySlug.get(slug);
   const related = material.related
     .map((relatedSlug) => materials.find((other) => other.slug === relatedSlug))
     .filter(Boolean);
@@ -66,22 +71,58 @@ export default async function MaterialPage({ params }) {
           { text: "Get a Quote", href: "/contact-us" },
           { text: "How It Works", href: "#how-it-works", outline: true },
         ]}
-      />
+      >
+        {price && priceAmount(price) && <HeroPrice price={price} />}
+      </ServiceHero>
       <Overview {...material.overview} />
       <Steps {...material.steps} />
       <Details {...material.details} />
       {/* The home page's FAQ section, which has no top padding of its own. */}
       <div className="border-t border-line bg-surface pt-20 sm:pt-24">
-        <IndexFaq heading="Frequently Asked Questions" {...material.faq} />
+        <Faq heading="Frequently Asked Questions" {...material.faq} />
       </div>
-      {related.length > 0 && <Related materials={related} />}
+      {related.length > 0 && <Related materials={related} prices={priceBySlug} />}
       <CtaBand {...material.cta} />
     </main>
   );
 }
 
+// The average we pay for the material, as on /prices, under the header's lede,
+// with a link to what moves it (the price factors on /what-we-buy). It's over
+// the header photo, so it uses the fixed palette like the rest of the header
+// (see ServiceHero).
+function HeroPrice({ price }) {
+  const link =
+    "text-white underline underline-offset-4 transition-colors hover:text-chrome focus-visible:text-chrome focus-visible:outline-none";
+  return (
+    <div className="border-l-4 border-cherry pl-5">
+      <p className="font-oswald text-xs uppercase tracking-[0.3em] text-aluminium">
+        We Pay on Average
+      </p>
+      <p className="mt-1">
+        <span className="font-bebas-neue text-5xl tracking-wide text-white tabular-nums sm:text-6xl">
+          {priceAmount(price)}
+        </span>{" "}
+        <span className="text-chrome">{units[price.unit]}</span>
+      </p>
+      <p className="mt-2 max-w-xl text-sm leading-6 text-aluminium">
+        An average as of <time dateTime={price.updatedAt}>{priceDate(price.updatedAt)}</time>.
+        What you&apos;re paid depends on the grade, how clean and sorted it is, how much you bring
+        and the metals market; we confirm the price when your scrap is graded and weighed.{" "}
+        <Link href="/what-we-buy#price-factors" title="What affects the price" className={link}>
+          What affects the price
+        </Link>
+        {" · "}
+        <Link href="/prices" title="Scrap metal prices" className={link}>
+          See all prices
+        </Link>
+      </p>
+    </div>
+  );
+}
+
 // The overview beside the grades the yard sorts the material into.
-function Overview({ heading, paragraphs, gradesTitle = "Grades We Buy", grades }) {
+function Overview({ heading, paragraphs, gradesTitle, grades }) {
   return (
     <section aria-labelledby="overview" className="bg-surface">
       <div className="mx-auto grid w-full max-w-7xl gap-12 px-6 py-20 sm:py-24 lg:grid-cols-[2fr_3fr] lg:gap-16">
@@ -105,7 +146,7 @@ function Overview({ heading, paragraphs, gradesTitle = "Grades We Buy", grades }
             step={1}
             className="font-oswald text-sm uppercase tracking-[0.3em] text-ink-cherry"
           >
-            {gradesTitle}
+            {gradesTitle || "Grades We Buy"}
           </Reveal>
           <ul className="mt-6 grid gap-6 sm:grid-cols-2">
             {grades.map(({ title, text }, i) => (
@@ -127,7 +168,9 @@ function Overview({ heading, paragraphs, gradesTitle = "Grades We Buy", grades }
   );
 }
 
-function Related({ materials }) {
+// Each card shows the average we pay for its material, as on /prices, when it
+// has a price.
+function Related({ materials, prices }) {
   return (
     <section aria-labelledby="related" className="bg-panel">
       <div className="mx-auto w-full max-w-7xl px-6 py-20 sm:py-24">
@@ -147,8 +190,9 @@ function Related({ materials }) {
                 href={`/what-we-buy/${slug}`}
                 title={title}
                 description={summary}
-                image={image.url}
+                image={image.src}
                 imageAlt={image.alt}
+                badge={priceBadge(prices.get(slug))}
                 monochrome
                 surface="var(--panel)"
               />

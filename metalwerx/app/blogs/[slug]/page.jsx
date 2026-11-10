@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getBlogBySlug, getBlogs } from "@/lib/blogs";
+import JsonLd from "@/app/components/json-ld";
+import { getPosts } from "@/lib/cms";
+import { business } from "@/lib/business";
+import { openGraph } from "@/lib/metadata";
 import { photoProps } from "@/lib/photo";
+import { Button } from "@/components/ui/button";
 import { CutTitle, Enter } from "@/components/ui/enter";
 import { Reveal } from "@/components/ui/reveal";
 import { excerpt, formatDate, isoDate, readingStats } from "../format";
@@ -16,24 +20,26 @@ export const ensureStatic = "navigation";
 // Every post is prerendered at build time, and one added in the CMS later on
 // its first visit. Any other slug is a 404.
 export async function generateStaticParams() {
-  const blogs = await getBlogs();
-  return blogs.map((blog) => ({ slug: blog.id }));
+  return (await getPosts()).map((blog) => ({ slug: blog.id }));
 }
 
-// The cover photo is also the preview image when the post is shared.
+// Shared as an article, with its dates. The cover photo is also the preview
+// image, when there is one.
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const blog = await getBlogBySlug(slug);
+  const blog = (await getPosts()).find((post) => post.id === slug);
   if (!blog) return { title: "Post not found" };
   const { cover } = blog;
   return {
     title: blog.title,
     description: excerpt(blog.description),
-    ...(cover && {
-      openGraph: {
-        images: [{ url: cover.src, alt: cover.alt }],
-      },
-    }),
+    openGraph: {
+      ...openGraph,
+      type: "article",
+      publishedTime: blog.date.toISOString(),
+      modifiedTime: blog.updated.toISOString(),
+      ...(cover && { images: [{ url: cover.src, alt: cover.alt }] }),
+    },
   };
 }
 
@@ -42,11 +48,12 @@ const LATEST_COUNT = 3;
 
 export default async function BlogPage({ params }) {
   const { slug } = await params;
-  const blog = await getBlogBySlug(slug);
+  const posts = await getPosts();
+  const blog = posts.find((post) => post.id === slug);
   if (!blog) notFound();
   // Newest first. It can include this post, which is then marked as the one
   // being read.
-  const latest = (await getBlogs()).slice(0, LATEST_COUNT);
+  const latest = posts.slice(0, LATEST_COUNT);
 
   // Large screens widen the page for a sidebar to the right of the post.
   // Smaller ones keep the post's width and put the sidebar after it.
@@ -73,11 +80,31 @@ export default async function BlogPage({ params }) {
   );
 }
 
+// The post is also given to search engines as a BlogPosting. Posts don't name
+// a writer yet, so the yard is the author, under the same name as in
+// app/components/business-json-ld.jsx.
 function BlogArticle({ blog }) {
   const { words, minutes } = readingStats(blog.text);
+  const url = `${business.url}/blogs/${blog.id}`;
+  const yard = { "@type": "Organization", name: business.name, url: business.url };
+  const blogJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: blog.title,
+    description: blog.description,
+    url,
+    mainEntityOfPage: url,
+    datePublished: isoDate(blog.date),
+    dateModified: blog.updated.toISOString(),
+    ...(blog.cover && { image: new URL(blog.cover.src, business.url).href }),
+    wordCount: words,
+    author: yard,
+    publisher: yard,
+  };
 
   return (
     <article className="mt-10">
+      <JsonLd data={blogJsonLd} />
       <header>
         <Enter as="p" step={1} className="font-oswald text-sm uppercase tracking-[0.3em] text-cherry">
           Metal Werx Blog
@@ -128,6 +155,8 @@ function BlogArticle({ blog }) {
       )}
 
       <BlogBody paragraphs={blog.paragraphs} />
+
+      <NextSteps />
 
       <footer className="mt-16 border-t border-line pt-8">
         <BackLink />
@@ -211,6 +240,43 @@ function LatestPosts({ posts, currentId }) {
         </Link>
       </Reveal>
     </aside>
+  );
+}
+
+// Under every post, so each one links on to what the yard buys and the quote
+// form.
+function NextSteps() {
+  return (
+    <Reveal
+      as="aside"
+      aria-labelledby="next-steps"
+      className="mt-16 rounded-2xl border border-line bg-panel p-6 sm:p-8"
+    >
+      <h2 id="next-steps" className="font-bebas-neue text-4xl tracking-wide text-ink">
+        Got Scrap to Sell?
+      </h2>
+      <p className="mt-2 max-w-xl leading-7 text-ink-soft">
+        See what we buy at our Hallam yard, or tell us what you have and we&apos;ll give you a
+        quote.
+      </p>
+      <div className="mt-6 flex flex-wrap gap-4">
+        <Button asChild size="lg" className="font-oswald uppercase tracking-[0.15em]">
+          <Link href="/contact-us" title="Get a Quote">
+            Get a Quote
+          </Link>
+        </Button>
+        <Button
+          asChild
+          size="lg"
+          variant="outline"
+          className="font-oswald uppercase tracking-[0.15em]"
+        >
+          <Link href="/what-we-buy" title="What We Buy">
+            What We Buy
+          </Link>
+        </Button>
+      </div>
+    </Reveal>
   );
 }
 

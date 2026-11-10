@@ -6,6 +6,9 @@ import {
   Bebas_Neue,
   Oswald,
 } from "next/font/google";
+import { openGraph } from "@/lib/metadata";
+import Analytics from "./components/analytics";
+import BusinessJsonLd from "./components/business-json-ld";
 import Footer from "./components/footer";
 import Navbar from "./components/navbar";
 import ThemeScript from "./components/theme-script";
@@ -50,19 +53,28 @@ const oswald = Oswald({
 
 // Page titles read "Contact Us | Metal Werx". The default and description are
 // fallbacks for pages that don't set their own.
+// The site answers on both metalwerx.com.au and www (which the proxy redirects
+// here), so every page names the bare domain as its canonical URL. "./" is
+// resolved against each page's own path.
+// The Open Graph defaults are in lib/metadata.js, which pages that set their
+// own preview image spread in.
 export const metadata = {
+  metadataBase: new URL("https://metalwerx.com.au"),
+  alternates: { canonical: "./" },
   title: {
     template: "%s | Metal Werx",
-    default: "Metal Werx Scrap Metal Recycling",
+    default: "Scrap Metal Recycling in Hallam VIC | Metal Werx",
   },
   description:
-    "Scrap metal recycling for homes, farms and businesses. Metal Werx buys ferrous and non-ferrous metals, car bodies and batteries.",
+    "Scrap metal recycling in Hallam, in Melbourne's south-east, for homes, farms and businesses. Metal Werx buys ferrous and non-ferrous metals, car bodies and batteries.",
+  openGraph,
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html
-      lang="en"
+      lang="en-AU"
       data-theme="dark"
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} ${sairaStencil.variable} ${bebasNeue.variable} ${oswald.variable} h-full antialiased`}
@@ -75,6 +87,8 @@ export default function RootLayout({ children }) {
         {children}
         <Footer />
         <ThemeToggle />
+        <BusinessJsonLd />
+        <Analytics />
       </body>
     </html>
   );

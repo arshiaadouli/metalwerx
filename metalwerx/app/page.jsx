@@ -1,10 +1,10 @@
 import IndexCashForCars from "./components/index-cash-for-cars";
 import IndexCommercial from "./components/index-commercial";
-import IndexFaq from "./components/index-faq";
+import Faq from "./components/faq";
 import IndexHero from "./components/index-hero";
 import IndexMarquee from "./components/index-marquee";
+import IndexVisitUs from "./components/index-visit-us";
 import IndexWhyUs from "./components/index-why-us";
-import ScrapJourney from "./components/scrap-journey/scrap-journey";
 import { getHomePage } from "@/lib/cms";
 
 // The whole page must be static HTML, so search engines get the copy in the
@@ -28,15 +28,13 @@ export default async function Home() {
 
   return (
     <main className="flex flex-1 flex-col">
-      {/* The scroll-driven 3D tour of selling scrap at the yard, ending on
-          the hero's CTAs. */}
-      {/* <ScrapJourney primaryCta={hero.primaryCta} secondaryCta={hero.secondaryCta} /> */}
       <IndexHero {...hero} />
       <IndexMarquee items={ticker} />
       <IndexWhyUs {...whyUs} />
       <IndexCommercial {...commercial} />
       <IndexCashForCars {...cashForCars} />
-      <IndexFaq {...faq} />
+      <Faq {...faq} />
+      <IndexVisitUs />
     </main>
   );
 }

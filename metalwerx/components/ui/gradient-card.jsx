@@ -15,7 +15,8 @@ import { cn } from "@/lib/utils";
 //   title, description
 //   ctaText, ctaHref  the link at the bottom
 //   imageUrl        the card's background photo, a path in public/ (see
-//                   lib/photo.js); it's decorative, so it has no alt text
+//                   lib/photo.js)
+//   imageAlt        the photo's alt text, describing what it shows
 //   className?, ref?, and any other <div> props
 // The original tucks a cut-out graphic into one corner of a pastel card. Here
 // the photo covers the whole card instead, and the gradient becomes a shade
@@ -59,6 +60,7 @@ function GradientCard({
   ctaText,
   ctaHref,
   imageUrl,
+  imageAlt,
   ...props
 }) {
   return (
@@ -83,7 +85,7 @@ function GradientCard({
             // Three to a row from lg, otherwise the full width.
             <motion.img
               {...photoProps(imageUrl, "(min-width: 64rem) 33vw, 100vw")}
-              alt=""
+              alt={imageAlt ?? ""}
               title={title}
               loading="lazy"
               variants={imageAnimation}

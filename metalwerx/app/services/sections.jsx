@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { CutTitle, Enter } from "@/components/ui/enter";
 import { Reveal } from "@/components/ui/reveal";
 import { ScrollLink } from "@/components/ui/scroll-link";
+import JsonLd from "@/app/components/json-ld";
+import { business } from "@/lib/business";
 import { photoProps } from "@/lib/photo";
 import { cn } from "@/lib/utils";
 
@@ -17,7 +19,7 @@ export function Photo({ image, sizes, className, priority = false }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      {...photoProps(image.url, sizes)}
+      {...photoProps(image.src, sizes)}
       alt={image.alt}
       title={image.title}
       loading={priority ? "eager" : "lazy"}
@@ -29,14 +31,24 @@ export function Photo({ image, sizes, className, priority = false }) {
 
 // The page header: a photo across the full width, shaded on the left where the
 // text sits. Props:
-//   image         { url, alt, title }
+//   image         { src, alt, title }
 //   breadcrumbs   [{ name, href? }]; the last, with no href, is this page
 //   icon?, eyebrow  the pill above the title
 //   title, lede
+//   children?     under the lede, such as what we pay for a material
 //   actions       [{ text, href, outline? }]
 // Text over the photo stays light in both themes, so the shade and text use the
 // fixed palette, not the theme colours.
-export function ServiceHero({ image, breadcrumbs, icon: Icon, eyebrow, title, lede, actions = [] }) {
+export function ServiceHero({
+  image,
+  breadcrumbs,
+  icon: Icon,
+  eyebrow,
+  title,
+  lede,
+  actions = [],
+  children,
+}) {
   return (
     // isolate keeps the photo and shade (-z-10) above the header's background.
     <header className="relative isolate overflow-hidden bg-carbon">
@@ -76,11 +88,16 @@ export function ServiceHero({ image, breadcrumbs, icon: Icon, eyebrow, title, le
         <Enter as="p" step={3} className="mt-8 max-w-2xl text-lg leading-8 text-chrome">
           {lede}
         </Enter>
+        {children && (
+          <Enter step={4} className="mt-10">
+            {children}
+          </Enter>
+        )}
 
         {/* An in-page link, like "How It Works", eases the page down to its
             section rather than jumping. */}
         {actions.length > 0 && (
-          <Enter step={4} className="mt-10 flex flex-wrap gap-4">
+          <Enter step={children ? 5 : 4} className="mt-10 flex flex-wrap gap-4">
             {actions.map(({ text, href, outline }) => {
               const ActionLink = href.startsWith("#") ? ScrollLink : Link;
               return (
@@ -108,9 +125,23 @@ export function ServiceHero({ image, breadcrumbs, icon: Icon, eyebrow, title, le
   );
 }
 
+// The trail is also given to search engines as a BreadcrumbList. The last item
+// is this page, which needs no URL of its own.
 function Breadcrumbs({ items }) {
+  const breadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map(({ name, href }, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name,
+      ...(href && { item: `${business.url}${href === "/" ? "" : href}` }),
+    })),
+  };
+
   return (
     <nav aria-label="Breadcrumb">
+      <JsonLd data={breadcrumbJsonLd} />
       <ol className="flex flex-wrap items-center gap-2 font-oswald text-xs uppercase tracking-[0.2em] text-aluminium">
         {items.map(({ name, href }, i) => (
           <li key={name} className="flex items-center gap-2">
@@ -135,16 +166,25 @@ function Breadcrumbs({ items }) {
   );
 }
 
-// The red band at the foot of the page. cta is { text, href }.
-export function CtaBand({ heading, text, cta }) {
+// The band at the foot of the page: a photo across the full width, shaded so
+// the text reads over it. image is the photo's URL; it only sets the scene, so
+// it has no alt text. As in ServiceHero, the shade and text use the fixed
+// palette.
+export function CtaBand({ heading, text, buttonText, buttonHref, image }) {
   return (
-    <section
-      aria-labelledby="cta-band"
-      className="relative isolate overflow-hidden bg-linear-to-br from-cherry-dark via-ember to-clinker"
-    >
+    // isolate keeps the photo and shade (-z-10) above the section's background.
+    <section aria-labelledby="cta-band" className="relative isolate overflow-hidden bg-carbon">
+      <Photo
+        image={{ src: image, alt: "" }}
+        sizes="100vw"
+        className="absolute inset-0 -z-10 size-full object-cover"
+      />
+      {/* On small screens the text runs the full width, so the right side
+          stays dark enough for it too. */}
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-carbon/60" />
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-[repeating-linear-gradient(135deg,transparent_0_24px,rgb(255_255_255/0.04)_24px_48px)]"
+        className="absolute inset-0 -z-10 bg-linear-to-r from-carbon/90 via-carbon/50 to-transparent"
       />
       <div className="mx-auto flex w-full max-w-7xl flex-col items-start gap-8 px-6 py-16 sm:py-20 lg:flex-row lg:items-center lg:justify-between">
         <Reveal>
@@ -159,8 +199,8 @@ export function CtaBand({ heading, text, cta }) {
             size="lg"
             className="gap-2 bg-white font-oswald uppercase tracking-[0.15em] text-cherry-dark transition-all duration-300 hover:gap-4 hover:bg-chrome"
           >
-            <Link href={cta.href} title={cta.text}>
-              {cta.text}
+            <Link href={buttonHref} title={buttonText}>
+              {buttonText}
               <ArrowRight aria-hidden="true" className="size-5" />
             </Link>
           </Button>
