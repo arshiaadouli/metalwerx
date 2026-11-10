@@ -2,7 +2,7 @@
 
 Website for Metal Werx, a scrap metal recycling and cash-for-cars business. It's built with Next.js 16 (App Router), React 19 and Tailwind CSS 4.
 
-Most of the content comes from the Payload CMS in [metalwerx-payload](../metalwerx-payload), at http://192.168.15.240:3001: the home page, the blog posts, the privacy policy, the terms and conditions, the services and the materials on the What We Buy pages. Their photos come from the CMS's object storage. The rest of the copy, such as the About and Contact pages and the navbar's Services menu, lives in the page files. [docs/payload-cms-migration.md](docs/payload-cms-migration.md) covers how the CMS is set up and how the site reads it.
+Most of the content comes from the Payload CMS in [metalwerx-payload](../metalwerx-payload), at http://192.168.15.240:3001: the home page, the blog posts, the privacy policy, the terms and conditions, the services and the materials on the What We Buy pages. Their photos come from the CMS's object storage. The rest of the copy, such as the About and Contact pages and the navbar's Services menu, lives in the page files. [docs/payload-to-nextjs.md](docs/payload-to-nextjs.md) explains how content flows from the CMS to the pages, for a developer new to Payload; [docs/payload-cms-migration.md](docs/payload-cms-migration.md) records how the CMS was set up during the move from Strapi.
 
 ## Requirements
 

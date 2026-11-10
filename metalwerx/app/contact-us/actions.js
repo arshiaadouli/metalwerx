@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { createMessage, uploadMessagePhoto } from "@/lib/cms";
 import { photosProblem } from "@/lib/message-photos";
+import { sendTelegramMessage, sendTelegramPhotos } from "@/lib/telegram";
 
 // At most RATE_LIMIT messages from one address in RATE_WINDOW, so a script
 // can't flood the CMS. Counted in memory, so the count starts again when the
@@ -80,5 +81,17 @@ export async function sendMessage(previousState, formData) {
     console.error("Couldn't save a contact form message:", error);
     return failed("Sorry, your message couldn't be sent. Please try again, or call or email us.");
   }
+
+  // Tell the owner on Telegram: the message, then its photos as one album.
+  // The message is saved either way, so a Telegram failure is only logged.
+  try {
+    await sendTelegramMessage(
+      `New contact form message from ${fields.name} (${fields.email}, ${fields.phone || "no phone"}):\n\n${fields.message}`,
+    );
+    if (photos.length > 0) await sendTelegramPhotos(photos);
+  } catch (error) {
+    console.error("Couldn't send Telegram message:", error);
+  }
+
   return { status: "sent" };
 }
