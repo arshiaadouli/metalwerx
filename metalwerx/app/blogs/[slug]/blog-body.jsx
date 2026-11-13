@@ -4,10 +4,11 @@ import { linkMentions } from "./link-mentions";
 // Renders a post body as paragraphs, on the server, so the post is in the
 // prerendered page. A single line break inside a paragraph stays a line break,
 // and the first mention of a metal or service links to its page (see
-// link-mentions.js), so every post points on to the pages that sell.
-export default function BlogBody({ paragraphs }) {
+// link-mentions.js), so every post points on to the pages that sell. A
+// suburb's page (app/areas/[slug]) uses it too, with its own spacing.
+export default function BlogBody({ paragraphs, className = "mt-10 border-t border-line pt-10" }) {
   return (
-    <div className="mt-10 space-y-6 border-t border-line pt-10 text-lg leading-8 text-ink-soft">
+    <div className={`space-y-6 text-lg leading-8 text-ink-soft ${className}`}>
       {linkMentions(paragraphs).map((parts, i) => (
         <p key={i}>
           {parts.map((part, j) =>

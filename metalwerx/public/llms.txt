@@ -1,7 +1,7 @@
 # Metal Werx Scrap Metal Recycling
 
 > Scrap metal recycling yard at 131 Wedgewood Rd, Hallam VIC 3803, in Melbourne's south-east, run by Metal Werx Pty Ltd (ABN 19 650 365 067).
-> Buys ferrous and non-ferrous metals, car bodies and batteries from homes, farms and businesses, and hires out bins and picks up scrap.
+> Buys ferrous and non-ferrous metals from homes, farms and businesses, and hires out bins and picks up scrap.
 > Pays by bank transfer only, as Victorian law requires of scrap metal dealers, on the same day it buys the scrap; sellers need photo ID.
 > Phone 0470 131 025, email info@metalwerx.com.au.
 
@@ -12,7 +12,7 @@
 - [Bin hire](https://metalwerx.com.au/services/bin-hire): bins in different sizes, most often 1 m³ or 2.4 m³
 - [Pickup and collection](https://metalwerx.com.au/services/pickup-and-collection)
 - [Commercial recycling](https://metalwerx.com.au/services/commercial-recycling)
-- [Sell an unwanted car](https://metalwerx.com.au/#cash-for-cars)
+- [Areas we cover](https://metalwerx.com.au/areas): the south-east Melbourne suburbs the bins and pickups reach, each with its drive to the yard, and pages for ten of them
 - [Contact and quotes](https://metalwerx.com.au/contact-us): phone, email, map and the quote form
 - [About](https://metalwerx.com.au/about): who runs the yard, with its ABN and ACN
 

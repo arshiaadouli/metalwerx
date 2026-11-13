@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { createMessage, uploadMessagePhoto } from "@/lib/cms";
 import { photosProblem } from "@/lib/message-photos";
 import { sendTelegramMessage, sendTelegramPhotos } from "@/lib/telegram";
+import { turnstilePasses } from "./turnstile";
 
 // At most RATE_LIMIT messages from one address in RATE_WINDOW, so a script
 // can't flood the CMS. Counted in memory, so the count starts again when the
@@ -66,6 +67,17 @@ export async function sendMessage(previousState, formData) {
   // is saved.
   if (String(formData.get("website") ?? "") !== "") return { status: "sent" };
   const address = (await headers()).get("x-forwarded-for")?.split(",")[0].trim();
+  // Before the rate limit, so failed checks don't use up a visitor's sends.
+  const human = await turnstilePasses(
+    String(formData.get("cf-turnstile-response") ?? ""),
+    address,
+  ).catch((error) => {
+    console.error("Couldn't check a Turnstile token:", error);
+    return false;
+  });
+  if (!human) {
+    return failed("The security check didn't pass. Please try it again, or call or email us.");
+  }
   if (address && overLimit(address)) {
     return failed(
       "You've sent several messages in the last few minutes. Please wait a little, or call or email us.",

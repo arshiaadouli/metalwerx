@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useCallback, useEffect, useRef, useState } from "react";
+import Script from "next/script";
 import { MotionConfig, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, X } from "lucide-react";
 import * as d3 from "d3";
@@ -565,6 +566,40 @@ function Field({ id, label, optional, children }) {
 // its file out of the input, so the form sends only what's left. resetKey
 // changes after each send, when React empties the form, and the previews go
 // with it.
+// Cloudflare Turnstile, to show a person sent the form. It puts its token in a
+// hidden cf-turnstile-response input, which the Server Action checks (see
+// turnstile.js). A token works once, so resetKey draws a new widget after each
+// send. Off without NEXT_PUBLIC_TURNSTILE_SITE_KEY.
+const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+
+function Turnstile({ resetKey }) {
+  const ref = useRef(null);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    if (!loaded) return;
+    const id = window.turnstile.render(ref.current, {
+      sitekey: turnstileSiteKey,
+      theme: document.documentElement.dataset.theme === "light" ? "light" : "dark",
+      // The full-size widget needs 300px; narrow phones get the compact one.
+      size: ref.current.offsetWidth < 300 ? "compact" : "flexible",
+    });
+    return () => window.turnstile.remove(id);
+  }, [loaded, resetKey]);
+
+  if (!turnstileSiteKey) return null;
+  return (
+    <>
+      {/* onReady runs on every mount, so the widget comes back after client-side navigation. */}
+      <Script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
+        onReady={() => setLoaded(true)}
+      />
+      <div ref={ref} />
+    </>
+  );
+}
+
 function PhotosField({ resetKey }) {
   const inputRef = useRef(null);
   const [photos, setPhotos] = useState([]);
@@ -884,6 +919,8 @@ export default function ContactWithGlobe({
                 </Field>
 
                 <PhotosField resetKey={state} />
+
+                <Turnstile resetKey={state} />
 
                 <div className="mt-1 flex flex-wrap items-center gap-x-5 gap-y-3">
                   <Button

@@ -7,8 +7,8 @@ import { ArrowRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { CutTitle } from "@/components/ui/enter";
 import { TimelineContent } from "@/components/ui/timeline-animation";
-import { VerticalCutReveal } from "@/components/ui/vertical-cut-reveal";
 
 // AboutSection3 from 21st.dev (about-section), ported to JSX and the Metal Werx
 // theme. Props:
@@ -87,9 +87,9 @@ export default function AboutSection({
     <MotionConfig reducedMotion="user">
       <section
         ref={sectionRef}
-        className={cn("bg-panel px-6 py-16 font-montserrat text-ink sm:py-24", className)}
+        className={cn("bg-panel py-16 font-montserrat text-ink sm:py-24", className)}
       >
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto w-full max-w-7xl px-6">
           <div className="@container relative">
             {/* Sits in the strip the cut-out leaves along the photo's top edge. */}
             <div className="absolute -top-3 left-0 z-10 flex items-center gap-2 sm:-top-2 md:top-0 lg:top-4">
@@ -148,7 +148,7 @@ export default function AboutSection({
                 <div className="mb-2 flex items-center gap-2 text-xs sm:text-base">
                   <span className="font-bold text-ink-cherry">{first.value}</span>{" "}
                   <span className="text-ink-soft">{first.label}</span>
-                  <span aria-hidden="true" className="text-ink-muted">|</span>
+                  <span aria-hidden="true" className="hidden text-ink-muted sm:inline">|</span>
                 </div>
                 <div className="mb-2 flex items-center gap-2 text-xs sm:text-base">
                   <span className="font-bold text-ink-cherry">{second.value}</span>{" "}
@@ -157,8 +157,10 @@ export default function AboutSection({
               </TimelineContent>
 
               {/* From lg up, sits in the notch at the photo's bottom-right corner,
-                  right-aligned so neither line runs onto the photo. */}
-              <div className="right-0 bottom-16 flex flex-row-reverse gap-4 lg:absolute lg:flex-col lg:items-end lg:gap-0">
+                  right-aligned so neither line runs onto the photo. On a phone
+                  the two don't fit on one line, so they wrap, the large one
+                  last, rather than squeeze. */}
+              <div className="right-0 bottom-16 flex flex-row-reverse flex-wrap-reverse justify-end gap-x-4 lg:absolute lg:flex-col lg:flex-nowrap lg:items-end lg:gap-0">
                 {/* Bebas Neue only ships weight 400, so no font-bold (it would be faux bold).
                     From lg up the size follows the photo's width (cqw), as the notch does. */}
                 <TimelineContent
@@ -178,7 +180,7 @@ export default function AboutSection({
                 >
                   <span className="font-bold text-ink-cherry">{fourth.value}</span>{" "}
                   <span className="text-ink-soft">{fourth.label}</span>
-                  <span aria-hidden="true" className="text-ink-muted lg:hidden">|</span>
+                  <span aria-hidden="true" className="hidden text-ink-muted sm:inline lg:hidden">|</span>
                 </TimelineContent>
               </div>
             </div>
@@ -187,21 +189,9 @@ export default function AboutSection({
           <div className="grid gap-8 lg:grid-cols-3">
             <div className="lg:col-span-2">
               <h1 className="mb-8 font-bebas-neue text-4xl leading-[1.1] tracking-wide text-ink sm:text-5xl md:text-6xl">
-                {/* Starts just after the last stat (step 4). */}
-                <VerticalCutReveal
-                  splitBy="words"
-                  staggerDuration={0.05}
-                  staggerFrom="first"
-                  reverse
-                  transition={{
-                    type: "spring",
-                    stiffness: 250,
-                    damping: 30,
-                    delay: 5 * STEP,
-                  }}
-                >
-                  {title}
-                </VerticalCutReveal>
+                {/* Starts just after the last stat (step 4). The words are the
+                    heading's own text, so crawlers read the title once. */}
+                <CutTitle step={5}>{title}</CutTitle>
               </h1>
 
               <TimelineContent

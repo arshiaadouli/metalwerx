@@ -22,7 +22,7 @@
       "heading": "Clean Copper Pays Best",
       "paragraphs": [
         {
-          "text": "Copper is graded on how clean it is. Bare, bright wire is worth the most, clean pipe a little less, and copper with solder, paint, fittings or insulation less again. Sorting it before you come in can lift the price of the whole load."
+          "text": "Copper is graded on how clean it is. Bare, bright wire is worth the most, clean pipe a little less, and copper with solder, paint, fittings or lagging less again. Sorting it before you come in can lift the price of the whole load."
         },
         {
           "text": "Plumbers, electricians and air-con installers bring us their offcuts, and so do homeowners clearing out a shed or renovating. A handful of pipe or a ute load, we'll weigh it and pay you for it."
@@ -110,7 +110,7 @@
       "questions": [
         {
           "question": "Should I strip insulated copper wire?",
-          "answer": "Only if it's thick. Stripped copper is worth more than wire with the insulation on, but thin cable takes a long time to strip for very little gain. We buy insulated cable as it is, as PVC wire. Never burn the insulation off: it's illegal, the smoke is toxic, and burnt wire is graded lower."
+          "answer": "Yes, if you want to sell it. We buy copper wire stripped, not with the insulation on. Thick cable strips quickly, but thin cable takes a long time for very little copper. Never burn the insulation off: it's illegal, the smoke is toxic, and burnt wire is graded lower."
         },
         {
           "question": "Do you buy copper hot water cylinders?",
@@ -118,7 +118,7 @@
         },
         {
           "question": "Why was my copper paid at a lower grade?",
-          "answer": "Copper is graded on how clean it is. Solder, paint, fittings, insulation and corrosion all move it down a grade. Ask us and we'll show you what held your load back, so you know for next time."
+          "answer": "Copper is graded on how clean it is. Solder, paint, fittings, lagging and corrosion all move it down a grade. Ask us and we'll show you what held your load back, so you know for next time."
         },
         {
           "question": "Do you buy copper from trades and businesses?",
@@ -665,7 +665,7 @@
         },
         {
           "question": "What about the wheel weights?",
-          "answer": "Wheel weights can be lead, steel or zinc. Prise them off before you come in, and we'll buy the lead ones as lead."
+          "answer": "Wheel weights can be lead, steel or zinc. Prise them off before you come in."
         },
         {
           "question": "Do you buy steel wheels?",
@@ -1061,7 +1061,7 @@
               "text": "Have compressors degassed by a licensed technician"
             },
             {
-              "text": "Cut off long power leads and sell them as wire"
+              "text": "Cut off long power leads"
             }
           ]
         }

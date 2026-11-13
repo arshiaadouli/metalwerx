@@ -61,6 +61,7 @@ const sections = [
     links: [
       ...(openingHours.length > 0 ? [{ name: "Opening Hours", href: "/contact-us#hours" }] : []),
       { name: "Find Us", href: "/contact-us#location" },
+      { name: "Areas We Cover", href: "/areas" },
       { name: "Get a Quote", href: "/contact-us" },
     ],
   },
@@ -98,7 +99,7 @@ export default function Footer() {
             </Link>
             <p className="mt-4 max-w-sm text-sm font-medium text-muted-foreground">
               Scrap metal recycling in Hallam, in Melbourne&apos;s south-east, for homes, farms
-              and businesses. We buy ferrous and non-ferrous metals, car bodies and batteries.
+              and businesses. We buy ferrous and non-ferrous metals.
             </p>
             <address className="mt-6 not-italic">
               <ul className="space-y-3 text-sm font-medium text-muted-foreground">

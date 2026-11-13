@@ -266,9 +266,6 @@
             },
             {
               "text": "Washing machines, stoves and hot water systems"
-            },
-            {
-              "text": "Car bodies, engines and parts"
             }
           ]
         },
@@ -306,10 +303,6 @@
         {
           "question": "What do I need to have ready?",
           "answer": "Clear access for our truck, plus your photo ID and bank details. Victorian law requires us to record the ID of everyone who sells us scrap, and we pay by bank transfer the same day, not in cash."
-        },
-        {
-          "question": "Can you take an old car at the same time?",
-          "answer": "Yes. We buy cars, utes, vans and trucks in any condition, running or not, and tow them away for free. You'll need proof that you own the vehicle and photo ID."
         },
         {
           "question": "My load is small. Should I book a pickup?",

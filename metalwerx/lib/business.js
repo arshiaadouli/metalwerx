@@ -2,8 +2,9 @@
 // and in the structured data in app/components/business-json-ld.jsx. The legal
 // details are from the ABN Lookup record for ABN 19 650 365 067 (extracted
 // 29 Oct 2026). The name, address, phone number, website and hours are the
-// ones the business gave on 29 Oct 2026. The email and suburbs served are
-// still placeholders: the yard's real details still need to be added here.
+// ones the business gave on 29 Oct 2026. The email is still a placeholder:
+// the yard's real one still needs to be added here. The suburbs it covers are
+// in app/areas/suburbs.js.
 // The same details are also typed into public/llms.txt and, in the CMS, the
 // privacy policy, terms and home page FAQ, so a change here needs making
 // there too.
@@ -41,31 +42,6 @@ export const business = {
   ],
   // Shown under the hours.
   hoursNote: "Closed on Sundays.",
-  // The suburbs the yard's bins, pickups and car towing cover. A placeholder
-  // guess at the suburbs within about 15 km of the yard, until the business
-  // gives its own list.
-  areasServed: [
-    "Beaconsfield",
-    "Berwick",
-    "Cranbourne",
-    "Cranbourne North",
-    "Dandenong",
-    "Dandenong North",
-    "Dandenong South",
-    "Doveton",
-    "Endeavour Hills",
-    "Hallam",
-    "Hampton Park",
-    "Keysborough",
-    "Lynbrook",
-    "Lyndhurst",
-    "Narre Warren",
-    "Narre Warren North",
-    "Narre Warren South",
-    "Noble Park",
-    "Rowville",
-    "Springvale",
-  ],
 
   // Still to come from the business. Each is left off the site, and out of the
   // structured data, until it's filled in here.

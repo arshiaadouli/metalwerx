@@ -1,12 +1,14 @@
+import { CtaBand } from "@/app/services/sections";
 import AboutSection from "./about-section";
 import AboutBusinessDetails from "./about-business-details";
 import AboutHighlights from "./about-highlights";
+import AboutStory from "./about-story";
 import AboutTeam from "./about-team";
 
 export const metadata = {
   title: "About Us",
   description:
-    "Metal Werx is a scrap metal recycling yard in Hallam, VIC. We buy ferrous and non-ferrous metals, car bodies and batteries, hire out bins and pick up loads.",
+    "Metal Werx is a scrap metal recycling yard in Hallam, VIC. We buy ferrous and non-ferrous metals, hire out bins and pick up loads.",
 };
 
 // "An excavator working on a pile of scrap metal", also in the home page hero,
@@ -22,54 +24,55 @@ const image = {
 // years in business or tonnes recycled, once the yard has them.
 const stats = [
   { value: "Ferrous", label: "and non-ferrous metals" },
-  { value: "Free", label: "car removal" },
+  { value: "Mon–Sat", label: "at the Hallam yard" },
   { value: "Same-day", label: "bank transfer" },
   { value: "Bin hire", label: "and pickups" },
 ];
 
 const paragraphs = [
-  "Metal Werx is a scrap metal recycling yard in Hallam, in Melbourne's south-east. We buy ferrous and non-ferrous metals, car bodies and batteries from homes, farms and businesses.",
-  "Bring your scrap to the yard, hire a bin, or have us pick it up. Whether it's a ute-load of offcuts or an old car, we'll give you a fair price and keep the metal out of landfill.",
+  "Metal Werx is a scrap metal recycling yard in Hallam, in Melbourne's south-east. We buy ferrous and non-ferrous metals from homes, farms and businesses.",
+  "Bring your scrap to the yard, hire a bin, or have us pick it up. Whether it's a handful of pipe or a ute-load of offcuts, we'll give you a fair price and keep the metal out of landfill.",
 ];
 
-// Free stock photos saved in public/images (see lib/photo.js), also used in the
-// navbar's What We Buy menu, cropped by each card to fill its background.
+// Free stock photos saved in public/images (see lib/photo.js), cropped by each
+// card to fill its background.
 const unsplash = (id) => `/images/unsplash/${id}.jpg`;
+const pexels = (id) => `/images/pexels/${id}.jpg`;
 
+// The three ways to sell, each linking to the page that covers it in full. As
+// with the stats, the cards only say what those pages already say.
 const highlights = [
   {
     gradient: "cherry",
-    title: "Your Trusted Scrap Metal Recycler",
+    title: "Bring It to the Yard",
     description:
-      "At Metal Werx, we specialize in providing top-notch scrap metal recycling services. Our dedicated team is committed to getting you paid for your scrap while supporting sustainable practices.",
-    ctaText: "Talk to us",
-    ctaHref: "/contact-us",
-    // https://unsplash.com/photos/a-bunch-of-cars-that-are-sitting-in-the-dirt-GcBoM7B40Ck
-    imageUrl: unsplash("photo-1719242513425-f5eed99b282f"),
-    imageAlt:
-      "A scrap yard of old cars and boats behind a wire fence, with a small excavator and a green vintage sedan in front",
+      "Load the car, ute or trailer and drive in. Selling takes a few minutes, and small loads are welcome.",
+    ctaText: "What we buy",
+    ctaHref: "/what-we-buy",
+    imageUrl: unsplash("photo-1536094627107-abf98dedaa8f"),
+    imageAlt: "A worker in a hard hat cutting up scrap metal with a gas torch as sparks fly",
   },
   {
     gradient: "gray",
-    title: "Competitive Pricing",
+    title: "Hire a Bin or Book a Pickup",
     description:
-      "We offer competitive prices that reflect the true value of your scrap metal. Enjoy honest and transparent transactions with every visit.",
-    ctaText: "Get a quote",
-    ctaHref: "/contact-us",
-    // https://unsplash.com/photos/crushed-assorted-beverage-cans-lot-k1tUxfs8JYY
-    imageUrl: unsplash("photo-1561503412-852800622772"),
-    imageAlt: "A bale of crushed aluminium drink cans",
+      "Too much to carry? We drop a scrap bin at your site and take it away when it's full, or bring the truck and crew to load heavy scrap for you.",
+    ctaText: "Our services",
+    ctaHref: "/services",
+    imageUrl: pexels("33842119"),
+    imageAlt:
+      "A long, rusty blue roll-off bin on brick paving in front of a dark corrugated metal wall",
   },
   {
     gradient: "orange",
-    title: "Effortless Recycling Experience",
+    title: "Recycling for Business",
     description:
-      "Experience a seamless recycling process with our efficient drop-off services, making it easier than ever to dispose of your metal waste responsibly.",
-    ctaText: "Plan a drop-off",
-    ctaHref: "/contact-us",
-    // https://unsplash.com/photos/pile-of-old-car-engines-and-parts-G-Fno_v4alo
-    imageUrl: unsplash("photo-1767340078189-4258fbb7bd7c"),
-    imageAlt: "A pile of old car engines and parts",
+      "Workshops, builders and manufacturers get bins sized to their output, swaps on a set day or on call, and a weigh ticket with every load.",
+    ctaText: "Commercial recycling",
+    ctaHref: "/services/commercial-recycling",
+    imageUrl: unsplash("photo-1598302936625-6075fbd98dd7"),
+    imageAlt:
+      "A worker in a welding helmet and leather gloves cuts a steel beam with an angle grinder, sending out a spray of sparks",
   },
 ];
 
@@ -113,15 +116,26 @@ export default function AboutPage() {
         cta={{ text: "Get a Quote", href: "/contact-us" }}
       />
 
-      <AboutHighlights heading="Why choose Metal Werx" cards={highlights} />
+      <AboutStory />
+
+      <AboutHighlights heading="Three Ways to Sell Your Scrap" cards={highlights} />
 
       <AboutTeam
         heading="Our Team"
-        intro="Questions about a load, a car or a bin? Email either of us directly."
+        intro="Questions about a load, a bin or a pickup? Email either of us directly."
         members={team}
       />
 
       <AboutBusinessDetails />
+
+      {/* A photo that isn't shown higher up the page: copper strip and wire. */}
+      <CtaBand
+        heading="Got Scrap to Sell?"
+        text="Tell us what you've got and we'll give you a price."
+        buttonText="Get a Quote"
+        buttonHref="/contact-us"
+        image={pexels("5279344")}
+      />
     </main>
   );
 }

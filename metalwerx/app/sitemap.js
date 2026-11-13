@@ -7,9 +7,11 @@ import {
   getTerms,
   getWhatWeBuyContent,
 } from "@/lib/cms";
+import { suburbs } from "@/app/areas/suburbs";
 
-// /sitemap.xml, for search engines. It lists the fixed pages and every blog
-// post, service and material in the CMS. The CMS reads are cached and tagged
+// /sitemap.xml, for search engines. It lists the fixed pages, the suburbs with
+// a page of their own (see app/areas/local.js) and every blog post,
+// service and material in the CMS. The CMS reads are cached and tagged
 // (see lib/cms.js), so a post or material added there shows up here once the
 // CMS revalidates its tag. URLs use the bare domain, as the canonical URLs do
 // (see app/layout.jsx). Each page's lastModified is when its content was last
@@ -62,6 +64,10 @@ export default async function sitemap() {
       page(`/what-we-buy/${slug}`, "monthly", 0.8, latest(updatedAt, priceUpdated[slug])),
     ),
     page("/prices", "weekly", 0.8, pricesUpdated),
+    page("/areas", "monthly", 0.7),
+    ...suburbs
+      .filter((suburb) => suburb.local)
+      .map(({ slug }) => page(`/areas/${slug}`, "yearly", 0.5)),
     page("/blogs", "weekly", 0.6, latestPost),
     ...posts.map(({ id, date }) => page(`/blogs/${id}`, "yearly", 0.5, date)),
     page("/about", "yearly", 0.5),

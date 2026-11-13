@@ -3,7 +3,8 @@ import { Reveal } from "@/components/ui/reveal";
 import { business, formattedAddress, mapEmbedUrl, openingHours } from "@/lib/business";
 
 // /contact-us's map and opening hours, the #location and #hours the navbar and
-// footer link to. The hours only show once they're filled in lib/business.js.
+// footer link to, also on each suburb's page (app/areas/[slug]). The hours
+// only show once they're filled in lib/business.js.
 export default function ContactFindUs() {
   return (
     <section

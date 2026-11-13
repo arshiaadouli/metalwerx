@@ -1,8 +1,8 @@
 # Metal Werx
 
-Website for Metal Werx, a scrap metal recycling and cash-for-cars business. It's built with Next.js 16 (App Router), React 19 and Tailwind CSS 4.
+Website for Metal Werx, a scrap metal recycling business. It's built with Next.js 16 (App Router), React 19 and Tailwind CSS 4.
 
-Most of the content comes from the Payload CMS in [metalwerx-payload](../metalwerx-payload), at http://192.168.15.240:3001: the home page, the blog posts, the privacy policy, the terms and conditions, the services and the materials on the What We Buy pages. Their photos come from the CMS's object storage. The rest of the copy, such as the About and Contact pages and the navbar's Services menu, lives in the page files. [docs/payload-to-nextjs.md](docs/payload-to-nextjs.md) explains how content flows from the CMS to the pages, for a developer new to Payload; [docs/payload-cms-migration.md](docs/payload-cms-migration.md) records how the CMS was set up during the move from Strapi.
+Most of the content comes from the Payload CMS in [metalwerx-payload](../metalwerx-payload), at http://192.168.15.240:3001: the home page, the blog posts, the privacy policy, the terms and conditions, the services and the materials on the What We Buy pages. Their photos come from the CMS's object storage. The rest of the copy, such as the About and Contact pages and the navbar's Services menu, lives in the page files. The suburbs the yard covers are a list in [app/areas/suburbs.js](app/areas/suburbs.js): each row gets a line on `/areas` and its own page at `/areas/<suburb>`. [docs/payload-to-nextjs.md](docs/payload-to-nextjs.md) explains how content flows from the CMS to the pages, for a developer new to Payload; [docs/payload-cms-migration.md](docs/payload-cms-migration.md) records how the CMS was set up during the move from Strapi.
 
 ## Requirements
 
@@ -37,6 +37,8 @@ REVALIDATE_SECRET=<the same value as REVALIDATE_SECRET in the CMS's .env>
 ```
 
 If `CMS_URL` is missing, pages fail with `CMS_URL is not set`.
+
+The contact form shows a Cloudflare Turnstile check when `NEXT_PUBLIC_TURNSTILE_SITE_KEY` and `TURNSTILE_SECRET_KEY` are set (from the Cloudflare dashboard, under Turnstile). The site key is built into the page, so rebuild after changing it.
 
 Content is edited in the CMS admin at http://192.168.15.240:3001/admin:
 
@@ -116,7 +118,7 @@ On macOS, click **Allow** when asked whether `node` can accept incoming connecti
 ## Project structure
 
 ```
-app/                 Pages: home, about, blogs, contact-us, prices, privacy, terms, services, what-we-buy.
+app/                 Pages: home, about, areas, blogs, contact-us, prices, privacy, terms, services, what-we-buy.
                      A page's own pieces sit next to it, e.g. app/contact-us/contact-with-globe.jsx
 app/api/revalidate/  Called by the CMS after a change
 app/media/           Serves the CMS's photos from its object storage

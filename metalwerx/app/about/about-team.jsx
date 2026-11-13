@@ -20,9 +20,9 @@ export default function AboutTeam({ heading, intro, members }) {
     <MotionConfig reducedMotion="user">
       <section
         aria-labelledby="our-team"
-        className="bg-panel px-6 pb-16 font-montserrat sm:pb-24"
+        className="bg-panel pb-16 font-montserrat sm:pb-24"
       >
-        <div className="mx-auto max-w-6xl">
+        <div className="mx-auto w-full max-w-7xl px-6">
           <h2
             id="our-team"
             className="mb-4 font-bebas-neue text-3xl tracking-wide text-ink sm:text-4xl"

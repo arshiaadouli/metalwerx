@@ -6,7 +6,7 @@
   "hero": {
     "eyebrow": "Metal Werx Scrap Metal Recycling",
     "title": "Get Paid for Scrap Metal in Melbourne's South-East",
-    "description": "We buy ferrous and non-ferrous metals, car bodies and batteries at our yard in Hallam, serving Melbourne's south-east. Bring your scrap in, hire a bin, or book a pickup. Paid by bank transfer the same day; bring photo ID.",
+    "description": "We buy ferrous and non-ferrous metals at our yard in Hallam, serving Melbourne's south-east. Bring your scrap in, hire a bin, or book a pickup. Paid by bank transfer the same day; bring photo ID.",
     "primaryCta": {
       "text": "Get a Quote",
       "href": "/contact-us"
@@ -48,25 +48,10 @@
       "text": "Stainless Steel"
     },
     {
-      "text": "Lead"
-    },
-    {
       "text": "Electric Motors"
     },
     {
-      "text": "PVC Wire"
-    },
-    {
       "text": "Aluminium Wheels"
-    },
-    {
-      "text": "Scrap Car Parts"
-    },
-    {
-      "text": "Scrap Machinery"
-    },
-    {
-      "text": "Unwanted Cars"
     }
   ],
   "whyUs": {
@@ -75,7 +60,7 @@
     "reasons": [
       {
         "title": "We Buy It All",
-        "description": "Copper, brass, aluminium, stainless steel, lead, motors, wire, car parts, machinery and whole cars.",
+        "description": "Copper, brass, aluminium, stainless and HMS steel, motors, compressors, air conditioners and engines.",
         "href": "/what-we-buy",
         "image": "photo-1723365316514-8509dea457f2.jpg",
         "imageTitle": "Mixed scrap metal"
@@ -118,64 +103,64 @@
     ]
   },
   "cashForCars": {
-    "heading": "Cash for Cars",
-    "subheading": "Get Top Dollar for Old Cars",
-    "body": "Got an old, damaged or unwanted car taking up space? We buy cars, utes, vans and trucks in any condition, running or not. Tell us what you have, we'll give you a fair price, tow it away for free and pay you by bank transfer the same day. It's as simple as 1-2-3.",
-    "image": "photo-1645216755684-c946ce202427.jpg",
-    "imageTitle": "An old car ready for scrap",
+    "heading": "Scrap Copper",
+    "subheading": "Clean Copper Pays Best",
+    "body": "Copper pays more per kilo than any other common scrap metal. Bring in your pipe, wire and offcuts, and we'll grade it, weigh it and pay you for every kilo. Sorting it before you come in can lift the price of the whole load.",
+    "image": "5279317.jpg",
+    "imageTitle": "Scrap copper wire",
     "steps": [
       {
-        "title": "Get in Touch",
-        "description": "Tell us the make, model and condition of your car.",
-        "icon": "phone",
-        "points": [
-          {
-            "text": "Via website"
-          },
-          {
-            "text": "Via telephone"
-          },
-          {
-            "text": "Via email"
-          }
-        ]
-      },
-      {
-        "title": "Get the Best Price",
-        "description": "We give you a fair offer for your car.",
-        "icon": "dollar",
-        "points": [
-          {
-            "text": "Top prices"
-          },
-          {
-            "text": "All makes and models"
-          },
-          {
-            "text": "Any condition"
-          }
-        ]
-      },
-      {
-        "title": "We Pick Up Your Car",
-        "description": "We tow it away for free and pay you by bank transfer the same day, once the paperwork is checked.",
+        "title": "Bring It In",
+        "description": "Bring your scrap to our Hallam yard in the car, ute or trailer. For bigger loads, we can collect.",
         "icon": "truck",
+        "points": [
+          {
+            "text": "Drop off at the yard"
+          },
+          {
+            "text": "Hire a bin"
+          },
+          {
+            "text": "Book a pickup"
+          }
+        ]
+      },
+      {
+        "title": "We Sort and Weigh It",
+        "description": "We sort your metal by grade and weigh each grade on its own, so every kilo is paid at the right price.",
+        "icon": "scale",
+        "points": [
+          {
+            "text": "Graded by how clean it is"
+          },
+          {
+            "text": "Each grade weighed on its own"
+          },
+          {
+            "text": "Paid for every kilo"
+          }
+        ]
+      },
+      {
+        "title": "Get Paid",
+        "description": "We pay by bank transfer the same day. Bring photo ID and your BSB and account number.",
+        "icon": "dollar",
         "points": [
           {
             "text": "Same-day bank transfer"
           },
           {
-            "text": "Quick removal"
+            "text": "Photo ID required"
           },
           {
-            "text": "Reliable service"
+            "text": "No cash, by law"
           }
         ]
       }
     ],
     "cta": {
-      "text": "Get a Free Quote",
-      "href": "/contact-us"
+      "text": "See Copper Prices",
+      "href": "/what-we-buy/copper"
     }
   },
   "faq": {
@@ -184,7 +169,7 @@
     "questions": [
       {
         "question": "What metals do you buy?",
-        "answer": "We buy ferrous and non-ferrous metals, including copper, brass, aluminium, stainless steel, lead, electric motors, PVC wire, aluminium wheels, car parts, machinery and whole cars."
+        "answer": "We buy ferrous and non-ferrous metals, including copper, brass, aluminium, stainless steel, HMS steel, electric motors, compressors, air conditioners and aluminium engines."
       },
       {
         "question": "Do you pick up scrap?",
@@ -193,10 +178,6 @@
       {
         "question": "Can I hire a bin for my scrap?",
         "answer": "Yes. We have bins in different sizes, though most jobs end up with a 1 m³ or a 2.4 m³ bin. We drop it off, you fill it, and we collect it when it is full."
-      },
-      {
-        "question": "Do you buy cars that don’t run?",
-        "answer": "Yes. We buy cars, utes, vans and trucks in any condition, running or not, and tow them away for free."
       },
       {
         "question": "Do you take gas bottles?",

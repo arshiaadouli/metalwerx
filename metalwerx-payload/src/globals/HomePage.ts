@@ -77,9 +77,15 @@ export const HomePage: GlobalConfig = {
       ],
     },
     {
+      // Still named for the cars it used to be about: renaming a field needs a
+      // database migration, so only the label changed.
       name: 'cashForCars',
-      label: 'Cash for cars',
+      label: 'Featured material',
       type: 'group',
+      admin: {
+        description:
+          'The photo, text and three steps between the commercial section and the FAQ. It features one material from What We Buy.',
+      },
       fields: [
         { name: 'heading', type: 'text', required: true },
         { name: 'subheading', type: 'text' },

@@ -39,11 +39,24 @@ const nextConfig = {
       { source: "/privacy-policy", destination: "/privacy", permanent: true },
       { source: "/what-we-buy/aluminium", destination: "/what-we-buy/alloy-mix", permanent: true },
       { source: "/what-we-buy/scrap-steel", destination: "/what-we-buy/hms-steel", permanent: true },
-      { source: "/what-we-buy/unwanted-cars", destination: "/#cash-for-cars", permanent: true },
+      { source: "/what-we-buy/unwanted-cars", destination: "/what-we-buy", permanent: true },
       { source: "/what-we-buy/lead", destination: "/what-we-buy", permanent: true },
       { source: "/what-we-buy/pvc-wire", destination: "/what-we-buy", permanent: true },
       { source: "/what-we-buy/scrap-car-parts", destination: "/what-we-buy", permanent: true },
       { source: "/what-we-buy/scrap-machinery", destination: "/what-we-buy", permanent: true },
+      // Addresses that used to work and that Google still asks for: /home was
+      // the home page of the WordPress site once on this domain, /about-us
+      // this site's first About page, and /contact and /blog are near misses
+      // of the real ones that old links pointed at.
+      { source: "/home", destination: "/", permanent: true },
+      { source: "/about-us", destination: "/about", permanent: true },
+      { source: "/contact", destination: "/contact-us", permanent: true },
+      { source: "/blog", destination: "/blogs", permanent: true },
+      // Blog posts deleted from the CMS on 11 Nov 2026: the yard doesn't buy
+      // cars, batteries or insulated wire.
+      { source: "/blogs/scrapping-an-old-car-what-to-do-before-we-tow-it-away", destination: "/blogs", permanent: true },
+      { source: "/blogs/old-car-batteries-why-theyre-worth-bringing-in", destination: "/blogs", permanent: true },
+      { source: "/blogs/insulated-wire-should-you-strip-it-before-you-sell-it", destination: "/blogs", permanent: true },
     ];
   },
   experimental: {

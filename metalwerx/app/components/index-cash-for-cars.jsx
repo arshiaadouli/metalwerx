@@ -26,10 +26,15 @@ const icons = {
   check: CircleCheck,
 };
 
-// The copy, photo and steps are in the CMS (see lib/cms.js).
+// A photo beside a heading and a paragraph, over three steps and a button,
+// between the commercial section and the FAQ. It features one material from
+// What We Buy; the copy, photo and steps are in the CMS (see lib/cms.js).
+// shortcut: the CMS field, and so this component, still carry the name from
+// when the section was about buying cars, because renaming a CMS field needs a
+// database migration. Rename both with the next change to the CMS schema.
 export default function IndexCashForCars({ heading, subheading, body, image, steps, cta }) {
   return (
-    <section id="cash-for-cars" className="bg-surface font-montserrat text-ink">
+    <section id="featured" className="bg-surface font-montserrat text-ink">
       <div className="mx-auto w-full max-w-7xl px-6 py-20 sm:py-24">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Half the page beside the text from lg. */}

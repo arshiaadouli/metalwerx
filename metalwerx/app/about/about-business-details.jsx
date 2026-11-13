@@ -1,8 +1,9 @@
-import { abnLookupUrl, business, formattedAddress } from "@/lib/business";
+import { abnLookupUrl, business, formattedAddress, openingHours } from "@/lib/business";
 
 // The About page's legal details: who runs the yard, its ABN and ACN, its GST
 // registration and, once it's filled in, its second-hand dealer registration
-// with Consumer Affairs Victoria, all from lib/business.js.
+// with Consumer Affairs Victoria, then where the yard is and when it's open,
+// all from lib/business.js.
 // The date is parsed as midnight UTC, so it's formatted in UTC to keep the day.
 const since = new Date(business.registeredSince);
 const formatSince = (options) =>
@@ -35,15 +36,28 @@ const details = [
     ? [{ term: "Dealer registration", value: business.dealerRegistration }]
     : []),
   { term: "Yard", value: formattedAddress },
+  ...(openingHours.length > 0
+    ? [
+        {
+          term: "Opening hours",
+          value: openingHours.map(({ days, times }) => (
+            <span key={days} className="block">
+              {days}
+              <span className="block font-normal text-ink-soft tabular-nums">{times}</span>
+            </span>
+          )),
+        },
+      ]
+    : []),
 ];
 
 export default function AboutBusinessDetails() {
   return (
     <section
       aria-labelledby="business-details"
-      className="bg-panel px-6 pb-16 font-montserrat sm:pb-24"
+      className="mx-auto w-full max-w-7xl bg-panel px-6 pb-16 font-montserrat sm:pb-24"
     >
-      <div className="mx-auto max-w-6xl rounded-2xl border border-line bg-surface p-6 sm:p-8">
+      <div className="rounded-2xl border border-line bg-surface p-6 sm:p-8">
         <h2
           id="business-details"
           className="mb-4 font-bebas-neue text-3xl tracking-wide text-ink sm:text-4xl"
