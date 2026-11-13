@@ -1,0 +1,52 @@
+# CI: checks both apps on GitHub's servers for every push to master and every pull request.
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+# A new push to the same branch cancels the run still going for the old one.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# The jobs only read the code, so the token they get can't write to the repo.
+permissions:
+  contents: read
+
+jobs:
+  site:
+    name: Site (metalwerx)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: metalwerx
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: metalwerx/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      # No `npm run build`: it reads every page from the CMS, which only the LAN can reach.
+
+  cms:
+    name: CMS (metalwerx-payload)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: metalwerx-payload
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: metalwerx-payload/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npx tsc --noEmit
